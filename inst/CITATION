@@ -1,0 +1,13 @@
+citHeader("To cite {{MCube}} in publications use:")
+
+bibentry(
+  bibtype  = "Article",
+  title    = "A unified framework for identification of cell-type-specific spatially variable genes in spatial transcriptomic studies",
+  author   = c(as.person("Zhiwei Wang"), as.person("Yeqin Zeng"), as.person("Ziyue Tan"), as.person("Yuheng Chen"), as.person("Xinrui Huang"), as.person("Hongyu Zhao"), as.person("Zhixiang Lin"), as.person("Can Yang")),
+  journal  = ,
+  year     = "2025",
+  volume   = ,
+  number   = ,
+  pages    = ,
+  doi      =
+)
