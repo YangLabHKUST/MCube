@@ -1,6 +1,22 @@
+#' Construct the kernel matrix
+#'
+#' @param coordinates A matrix of spatial coordinates.
+#' Each row represents a spot and each column represents a spatial dimension.
+#' @param standardize A logical value.
+#' If `TRUE`, the coordinates will be standardized. Default is `TRUE`.
+#' @param kernel_type A character string specifying the kernel type.
+#' It must be one of "linear", "Gaussian", "Cauchy", "periodic", or "Gaussian_transformed". Default is "Gaussian".
+#' @param length_scale A numeric value specifying the length scale of the kernel.
+#' If `NULL`, the length scale will be estimated from the coordinates. Default is `NULL`.
+#' @param sparse A numeric value specifying the threshold for sparsifying the kernel matrix.
+#' If `NULL`, the kernel matrix will not be sparsified. Default is `NULL`.
+#'
+#' @return A kernel matrix.
+#'
+#' @export
 mcubeKernel <- function(
-    coordinates, standardize = TRUE,
-    kernel_type = "Gaussian", length_scale = NULL, sparse = NULL) {
+        coordinates, standardize = TRUE,
+        kernel_type = "Gaussian", length_scale = NULL, sparse = NULL) {
     if (kernel_type == "linear") {
         if (standardize) {
             coordinates <- scale(coordinates, center = TRUE, scale = TRUE)
@@ -51,6 +67,16 @@ mcubeKernel <- function(
     return(kernel_mat)
 }
 
+#' Estimate the length scale of the kernel
+#'
+#' @param coordinates A matrix of spatial coordinates.
+#' Each row represents a spot and each column represents a spatial dimension.
+#' @param standardize A logical value.
+#' If `TRUE`, the coordinates will be standardized. Default is `TRUE`.
+#'
+#' @return A numeric value specifying the length scale of the kernel.
+#'
+#' @export
 mcubeLengthScale <- function(coordinates, standardize = TRUE) {
     if (standardize) {
         coordinates <- scale(coordinates, center = TRUE, scale = FALSE)
@@ -64,7 +90,7 @@ mcubeLengthScale <- function(coordinates, standardize = TRUE) {
             sort(x, decreasing = FALSE)[2]
         }
     )
-    length_scale <- median(dist_min)
+    length_scale <- median(dist_min) * sqrt(6)
 
     if (is.na(length_scale)) {
         warning("mcubeLengthScale: length_scale estimatet from the data is NA!")
@@ -74,102 +100,3 @@ mcubeLengthScale <- function(coordinates, standardize = TRUE) {
 
     return(length_scale)
 }
-
-# mcubeKernel <- function(
-#     counts = NULL, coordinates, standardize = TRUE,
-#     kernel_type = "Gaussian", length_scale = NULL,
-#     sparse = NULL) {
-#     if (kernel_type == "linear") {
-#         if (standardize) {
-#             coordinates <- scale(coordinates, center = TRUE, scale = TRUE)
-#         }
-#         kernel_mat <- tcrossprod(coordinates)
-#     } else {
-#         # Set the length scale
-#         if (is.null(counts) && is.null(length_scale)) {
-#             stop("mcubeKernel: length scale is either estimated from counts or provided by the user!") # End
-#         } else if (is.null(length_scale)) {
-#             length_scale <- mcubeLengthScale(counts)
-#         } else if (length_scale <= 0) {
-#             stop("mcubeKernel: length_scale must be positive!") # End
-#         }
-#         message("mcubeKernel: length scale is set as ", length_scale, " for the ", kernel_type, " kernel.")
-
-#         if (standardize) {
-#             coordinates <- scale(coordinates, center = TRUE, scale = FALSE)
-#             coordinates <- coordinates / sqrt(median(rowSums(coordinates^2)))
-#         }
-
-#         if (kernel_type == "Gaussian") {
-#             kernel_mat <- exp(
-#                 -as.matrix(dist(coordinates)^2) / length_scale
-#             )
-#         } else if (kernel_type == "Cauchy") {
-#             kernel_mat <- 1 /
-#                 (1 + as.matrix(dist(coordinates)^2) / length_scale)
-#         } else if (kernel_type == "periodic") {
-#             kernel_mat <- exp(
-#                 -sin(pi * as.matrix(dist(coordinates)))^2 / length_scale
-#             )
-#         }
-#     }
-
-#     if (!is.null(sparse)) {
-#         kernel_mat[kernel_mat < sparse] <- 0
-#     }
-
-#     rownames(kernel_mat) <- colnames(kernel_mat) <- rownames(coordinates)
-
-#     return(kernel_mat)
-# }
-
-# mcubeLengthScale <- function(counts, method = NULL) {
-#     n_spots <- nrow(counts)
-#     # log_counts <- log(1e+3 * counts / rowSums(counts) + 1)
-#     log_counts <- log(counts + 1)
-#     if (is.null(method)) {
-#         method <- ifelse(n_spots > 10000, "Silverman", "SJ")
-#     }
-
-#     if (method == "SJ") {
-#         length_scale_SJ <- apply(
-#             log_counts,
-#             MARGIN = 2,
-#             FUN = function(x) {
-#                 tryCatch(
-#                     {
-#                         bw.SJ(x, method = "dpi")
-#                     },
-#                     error = function(e) {
-#                         return(NA)
-#                     }
-#                 )
-#             }
-#         )
-#         length_scale <- median(length_scale_SJ, na.rm = TRUE)
-#     } else if (method == "Silverman") {
-#         length_scale_Silverman <- apply(
-#             log_counts,
-#             MARGIN = 2,
-#             FUN = function(x) {
-#                 tryCatch(
-#                     {
-#                         bw.nrd0(x)
-#                     },
-#                     error = function(e) {
-#                         return(NA)
-#                     }
-#                 )
-#             }
-#         )
-#         length_scale <- median(length_scale_Silverman, na.rm = TRUE)
-#     }
-
-#     if (is.na(length_scale)) {
-#         warning("mcubeLengthScale: length_scale estimatet from the data is NA!\n")
-#         warning("mcubeLengthScale: length_scale will be set as 0.1!\n")
-#         length_scale <- 0.1
-#     }
-
-#     return(length_scale)
-# }
