@@ -40,5 +40,5 @@ The package is developed by Zhiwei Wang (<zhiwei.wang@connect.ust.hk>).
 
 ## Contact
 
-Please feel free to contact Zhiwei Wang (<zhiwei.wang@connect.ust.hk>),
-Prof. or Prof. Can Yang (<macyang@ust.hk>) if any inquiries.
+Please feel free to contact Zhiwei Wang (<zhiwei.wang@connect.ust.hk>)
+or Prof. Can Yang (<macyang@ust.hk>) if any inquiries.
