@@ -11,7 +11,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Suggests: 
     foreach,
+    ggplot2,
     iterators,
+    plotly,
     renv,
+    rgl,
     rmarkdown,
+    tiff,
     usethis
