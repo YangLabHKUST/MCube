@@ -42,7 +42,7 @@ Zhiwei Wang, Yeqin Zeng, Ziyue Tan, Yuheng Chen, Xinrui Huang, Hongyu Zhao, Zhix
 
 ## Development
 
-The package is developed by [Zhiwei Wang](https://sites.google.com/view/statwangz).
+The R package `MCube` is developed by [Zhiwei Wang](https://sites.google.com/view/statwangz).
 
 ## Contact
 
