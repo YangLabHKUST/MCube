@@ -2,7 +2,7 @@
 #'
 #' @description Fit the null MMM models for all celltype-gene pairs using a PQL-based approach.
 #'
-#' @import parallel, doParallel, foreach, iterators
+#' @import parallel doParallel foreach iterators
 #'
 #' @param object An \code{\linkS4class{MCUBE}} object.
 #' @param reference_threshold A numeric value between 0 and 1.

@@ -1,5 +1,7 @@
 #' Construct the kernel matrix
 #'
+#' @importFrom stats median
+#'
 #' @param coordinates A matrix of spatial coordinates.
 #' Each row represents a spot and each column represents a spatial dimension.
 #' @param standardize A logical value.
@@ -25,8 +27,7 @@ mcubeKernel <- function(
     } else {
         if (standardize) {
             coordinates <- scale(coordinates, center = TRUE, scale = FALSE)
-            # coordinates <- coordinates / sqrt(median(rowSums(coordinates^2)))
-            coordinates <- coordinates / sqrt(median(rowSums(coordinates^2)))
+            coordinates <- coordinates / sqrt(stats::median(rowSums(coordinates^2)))
         }
 
         # Set the length scale
@@ -69,6 +70,8 @@ mcubeKernel <- function(
 
 #' Estimate the length scale of the kernel
 #'
+#' @importFrom stats median
+#'
 #' @param coordinates A matrix of spatial coordinates.
 #' Each row represents a spot and each column represents a spatial dimension.
 #' @param standardize A logical value.
@@ -80,7 +83,7 @@ mcubeKernel <- function(
 mcubeLengthScale <- function(coordinates, standardize = TRUE) {
     if (standardize) {
         coordinates <- scale(coordinates, center = TRUE, scale = FALSE)
-        coordinates <- coordinates / sqrt(median(rowSums(coordinates^2)))
+        coordinates <- coordinates / sqrt(stats::median(rowSums(coordinates^2)))
     }
     dist <- as.matrix(dist(coordinates))
     dist_min <- apply(
@@ -90,7 +93,7 @@ mcubeLengthScale <- function(coordinates, standardize = TRUE) {
             sort(x, decreasing = FALSE)[2]
         }
     )
-    length_scale <- median(dist_min) * sqrt(6)
+    length_scale <- stats::median(dist_min) * sqrt(6)
 
     if (is.na(length_scale)) {
         warning("mcubeLengthScale: length_scale estimatet from the data is NA!")

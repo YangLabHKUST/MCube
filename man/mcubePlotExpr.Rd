@@ -14,7 +14,7 @@ mcubePlotExpr(
   background = TRUE,
   expr_threshold = 1,
   spot_size = 1,
-  palettes = pals::brewer.blues(20),
+  palettes = pals::brewer.bugn(20)[11:20],
   opacity_target = 1,
   opacity_background = 0.2,
   xlim = NULL,

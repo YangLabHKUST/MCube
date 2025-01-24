@@ -1,6 +1,7 @@
 #' Plot the spatial distribution of gene expression
 #'
-#' @import ggplot2, pals
+#' @import ggplot2
+#' @importFrom pals brewer.bugn
 #'
 #' @param counts A matrix of gene expression counts.
 #' Each row represents a spot and each column represents a gene.
@@ -33,7 +34,7 @@
 mcubePlotExpr <- function(
     counts, coordinates, gene, spots = NULL, normalize = TRUE,
     he_image = NULL, background = TRUE, expr_threshold = 1,
-    spot_size = 1, palettes = pals::brewer.blues(20),
+    spot_size = 1, palettes = pals::brewer.bugn(20)[11:20],
     opacity_target = 1, opacity_background = 0.2,
     xlim = NULL, ylim = NULL, ratio = 1, title = NULL) {
   # Check sample names
@@ -120,7 +121,8 @@ mcubePlotExpr <- function(
 
 #' Plot the spatial distribution of cell type proportions
 #'
-#' @import ggplot2, pals
+#' @import ggplot2
+#' @importFrom pals brewer.orrd
 #'
 #' @param proportion A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
@@ -205,7 +207,8 @@ mcubePlotPropCellType <- function(
 
 #' Plot the spatial distribution of cell type proportions in 3D
 #'
-#' @import plotly, rgl
+#' @importFrom plotly plot_ly add_markers layout
+#' @importFrom rgl open3d par3d view3d spheres3d decorate3d
 #'
 #' @param proportion A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
@@ -326,7 +329,8 @@ mcubePlotPropCellType3D <- function(
 
 #' Plot the heatmap of cell type proportions
 #'
-#' @import heatmap, pals
+#' @importFrom pheatmap pheatmap
+#' @importFrom pals brewer.purd
 #'
 #' @param proportion A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
@@ -500,7 +504,8 @@ mcubePlotPvalues <- function(
 
 #' Plot the spatial distribution of gene expression variations
 #'
-#' @import ggplot2, pals
+#' @import ggplot2
+#' @importFrom pals brewer.piyg
 #'
 #' @param object An \code{\linkS4class{MCUBE}} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.
@@ -721,8 +726,8 @@ mcubePlotExprCellTypeBinary <- function(
 
 #' Plot the spatial distribution of gene expression variations in 3D
 #'
-#' @import plotly
-#' @import rgl
+#' @importFrom plotly plot_ly layout
+#' @importFrom rgl open3d par3d view3d spheres3d decorate3d
 #'
 #' @param object An \code{\linkS4class{MCUBE}} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.

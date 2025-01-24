@@ -2,7 +2,7 @@
 #'
 #' @description Examine whether a gene is a spatially variable gene specific to a cell type using score test for all celltype-gene pairs.
 #'
-#' @import parallel, doParallel, foreach, iterators
+#' @import parallel doParallel foreach iterators
 #'
 #' @param object An \code{\linkS4class{MCUBE}} object with fitted results of the null model.
 #' @param kernels_list A list containing the kernel matrices for testing.
