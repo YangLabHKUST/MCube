@@ -23,7 +23,7 @@ mcubePlotExprCellType(
 )
 }
 \arguments{
-\item{object}{An \code{\linkS4class{MCUBE}} object with fitted results of the null model.}
+\item{object}{An \code{\link{MCUBE-class}} object with fitted results of the null model.}
 
 \item{celltype}{A character specifying the cell type to plot.}
 
