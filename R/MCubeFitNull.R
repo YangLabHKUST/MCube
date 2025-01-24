@@ -38,14 +38,15 @@ mcubeFitNull <- function(
         batch_id = object@batch_id[object@spots],
         proportion = object@proportion[object@spots, , drop = FALSE],
         reference = object@reference[, object@celltype_gene_test_pairs[i, "gene"]],
-        used_for_reference = object@used_for_reference[object@celltype_gene_test_pairs[i, "gene"]],
+        used_for_deconvolution = object@used_for_deconvolution[object@celltype_gene_test_pairs[i, "gene"]],
         spot_effects = object@spot_effects[object@spots],
         platform_effect = object@platform_effects[, object@celltype_gene_test_pairs[i, "gene"]],
         celltype_test = object@celltype_gene_test_pairs[i, "celltype"],
         proportion_threshold = object@config$proportion_threshold,
         reference_threshold = object@config$reference_threshold_fit,
         safeguard = object@config$safeguard,
-        iter_max = object@config$iter_max, tol = object@config$tol,
+        iter_max = object@config$iter_max,
+        tol = object@config$tol,
         verbose = verbose
       ))
       object@null_models <- append(object@null_models, list(null_model_results_i))
@@ -80,7 +81,8 @@ mcubeFitNull <- function(
       .combine = "c"
     ) %dopar% {
       null_model_results_i <- try(mcubeFitNullSinglePair(
-        Y = as.vector(Y_i), library_size = object@library_size[object@spots],
+        Y = as.vector(Y_i),
+        library_size = object@library_size[object@spots],
         X = object@covariates[object@spots, , drop = FALSE],
         batch_id = object@batch_id[object@spots],
         proportion = object@proportion[object@spots, , drop = FALSE],
@@ -92,7 +94,8 @@ mcubeFitNull <- function(
         proportion_threshold = object@config$proportion_threshold,
         reference_threshold = object@config$reference_threshold_fit,
         safeguard = object@config$safeguard,
-        iter_max = object@config$iter_max, tol = object@config$tol,
+        iter_max = object@config$iter_max,
+        tol = object@config$tol,
         verbose = verbose
       ))
       list(null_model_results_i)
