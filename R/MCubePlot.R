@@ -510,7 +510,7 @@ mcubePlotPvalues <- function(
 #' @importFrom pals brewer.piyg
 #' @importFrom scales rescale
 #'
-#' @param object An \code{\link{MCUBE-class}} object with fitted results of the null model.
+#' @param object An {"\link[=MCUBE-class]{MCUBE}"} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.
 #' @param gene A character specifying the gene to plot.
 #' @param spots A character vector specifying the spots to plot.
@@ -625,7 +625,7 @@ mcubePlotExprCellType <- function(
 #'
 #' @import ggplot2
 #'
-#' @param object An \code{\link{MCUBE-class}} object with fitted results of the null model.
+#' @param object An {"\link[=MCUBE-class]{MCUBE}"} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.
 #' @param gene A character specifying the gene to plot.
 #' @param spots A character vector specifying the spots to plot.
@@ -732,7 +732,7 @@ mcubePlotExprCellTypeBinary <- function(
 #' @importFrom plotly plot_ly layout
 #' @importFrom rgl open3d par3d view3d spheres3d decorate3d
 #'
-#' @param object An \code{\link{MCUBE-class}} object with fitted results of the null model.
+#' @param object An {"\link[=MCUBE-class]{MCUBE}"} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.
 #' @param gene A character specifying the gene to plot.
 #' @param spots A character vector specifying the spots to plot.
