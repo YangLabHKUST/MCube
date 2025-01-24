@@ -16,13 +16,26 @@ forks](https://img.shields.io/github/forks/YangLabHKUST/MCube)
 
 ## Installation
 
-You can install the development version of MCube from
+You can install the development version of `MCube` from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("YangLabHKUST/MCube")
 ```
+
+## Real data analysis
+
+The code for reproducing the real data analysis results presented in our
+paper are provided in the tutorial website
+(<https://mcube-tutorial.readthedocs.io/>):
+
+- [Visium human dorsolateral prefrontal cortex
+  dataset](https://mcube-tutorial.readthedocs.io/en/latest/analysis/DLPFC/)
+- [Xenium human breast cancer
+  dataset](https://mcube-tutorial.readthedocs.io/en/latest/analysis/breast_cancer/)
+- [3D *Drosophila* embryo model constructed from Stereo-seq
+  dataset](https://mcube-tutorial.readthedocs.io/en/latest/analysis/Drosophila_embryo/)
 
 ## Reference
 
