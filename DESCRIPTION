@@ -15,6 +15,7 @@ Imports:
     ggplot2,
     iterators,
     methods,
+    pals,
     parallel,
     pheatmap,
     plotly,
