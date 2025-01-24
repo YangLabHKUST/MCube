@@ -10,15 +10,13 @@
 #' It must be one of "linear", "Gaussian", "Cauchy", "periodic", or "Gaussian_transformed". Default is "Gaussian".
 #' @param length_scale A numeric value specifying the length scale of the kernel.
 #' If `NULL`, the length scale will be estimated from the coordinates. Default is `NULL`.
-#' @param sparse A numeric value specifying the threshold for sparsifying the kernel matrix.
-#' If `NULL`, the kernel matrix will not be sparsified. Default is `NULL`.
 #'
 #' @return A kernel matrix.
 #'
 #' @export
 mcubeKernel <- function(
         coordinates, standardize = TRUE,
-        kernel_type = "Gaussian", length_scale = NULL, sparse = NULL) {
+        kernel_type = "Gaussian", length_scale = NULL) {
     if (kernel_type == "linear") {
         if (standardize) {
             coordinates <- scale(coordinates, center = TRUE, scale = TRUE)
@@ -58,10 +56,10 @@ mcubeKernel <- function(
         }
     }
 
-    if (!is.null(sparse)) {
-        kernel_mat[kernel_mat < sparse] <- 0
-        kernel_mat <- as(kernel_mat, "sparseMatrix")
-    }
+    # if (!is.null(sparse)) {
+    #     kernel_mat[kernel_mat < sparse] <- 0
+    #     kernel_mat <- as(kernel_mat, "sparseMatrix")
+    # }
 
     rownames(kernel_mat) <- colnames(kernel_mat) <- rownames(coordinates)
 

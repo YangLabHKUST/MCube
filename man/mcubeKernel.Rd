@@ -8,8 +8,7 @@ mcubeKernel(
   coordinates,
   standardize = TRUE,
   kernel_type = "Gaussian",
-  length_scale = NULL,
-  sparse = NULL
+  length_scale = NULL
 )
 }
 \arguments{
@@ -24,9 +23,6 @@ It must be one of "linear", "Gaussian", "Cauchy", "periodic", or "Gaussian_trans
 
 \item{length_scale}{A numeric value specifying the length scale of the kernel.
 If \code{NULL}, the length scale will be estimated from the coordinates. Default is \code{NULL}.}
-
-\item{sparse}{A numeric value specifying the threshold for sparsifying the kernel matrix.
-If \code{NULL}, the kernel matrix will not be sparsified. Default is \code{NULL}.}
 }
 \value{
 A kernel matrix.
