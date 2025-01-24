@@ -32,6 +32,8 @@ paper are provided in the tutorial website
 
 - [Visium human dorsolateral prefrontal cortex
   dataset](https://mcube-tutorial.readthedocs.io/en/latest/analysis/DLPFC/)
+- [Multiple adult mouse brain datasets from different
+  sources](https://mcube-tutorial.readthedocs.io/en/latest/analysis/mouse_brain/)
 - [Xenium human breast cancer
   dataset](https://mcube-tutorial.readthedocs.io/en/latest/analysis/breast_cancer/)
 - [3D *Drosophila* embryo model constructed from Stereo-seq
