@@ -45,7 +45,7 @@ Each row represents a spot and each column represents a covariate.}
 It's applicable to the case of multiple samples/replicates/slices and specific gene platform effects required.
 If \code{NULL}, all spots will be assumed to come from the same batch and share the same gene platform effects. Default is \code{NULL}.}
 
-\item{reference}{A matrix.
+\item{reference}{A matrix of average gene expression calculated from scRNA-seq reference data.
 Each row represents a cell type and each column represents a gene.}
 
 \item{used_for_deconvolution}{A logical vector indicating whether each gene has been used for cell type deconvolution.

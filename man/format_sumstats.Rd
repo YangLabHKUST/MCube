@@ -7,8 +7,8 @@
 format_sumstats(
   sumstats,
   delim = NULL,
-  snps_merge = w_hm3.snplist,
-  snps_mhc = snps_mhc,
+  snps_merge = NULL,
+  snps_mhc = NULL,
   dbSNP = NULL,
   snp_col = "SNP",
   beta_col = "BETA",

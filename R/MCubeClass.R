@@ -15,13 +15,15 @@
 #' Each row represents a spot and each column represents a covariate.
 #' @slot batch_id A factor indicating which batch each spot comes from.
 #' @slot spots A character vector containing the names of spots to analyze.
-#' @slot reference A matrix.
+#' @slot reference A matrix of average gene expression calculated from scRNA-seq reference data.
 #' Each row represents a cell type and each column represents a gene.
 #' @slot used_for_deconvolution A logical vector indicating whether each gene has been used for cell type deconvolution.
 #' @slot spot_effects A numeric vector containing the spot effects of all spots.
 #' @slot platform_effects A matrix containing the gene-specific platform effects.
 #' Each row represents a batch and each column represents a gene.
 #' @slot config A list recording the configuration of the \code{\linkS4class{MCUBE}} object.
+#' @slot null_models A listing recording the fitted results of the null models with each element corresponding to a celltype-gene pair.
+#' @slot kernels A list recording the kernel matrices used for score testing.
 #' @slot celltype_test A character vector specifying the cell types to test.
 #' @slot gene_test A character vector specifying the genes to test.
 #' @slot celltype_gene_test_pairs A data.frame specifying the celltype-gene pairs to test.
@@ -79,7 +81,7 @@ setClass(
 #' @param batch_id A character/factor vector indicating which batch each spot comes from.
 #' It's applicable to the case of multiple samples/replicates/slices and specific gene platform effects required.
 #' If `NULL`, all spots will be assumed to come from the same batch and share the same gene platform effects. Default is `NULL`.
-#' @param reference A matrix.
+#' @param reference A matrix of average gene expression calculated from scRNA-seq reference data.
 #' Each row represents a cell type and each column represents a gene.
 #' @param used_for_deconvolution A logical vector indicating whether each gene has been used for cell type deconvolution.
 #' If `NULL`, all genes will be assumed have been used for cell type deconvolution. Default is `NULL`.

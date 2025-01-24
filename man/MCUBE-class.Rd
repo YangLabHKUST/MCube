@@ -28,7 +28,7 @@ Each row represents a spot and each column represents a covariate.}
 
 \item{\code{spots}}{A character vector containing the names of spots to analyze.}
 
-\item{\code{reference}}{A matrix.
+\item{\code{reference}}{A matrix of average gene expression calculated from scRNA-seq reference data.
 Each row represents a cell type and each column represents a gene.}
 
 \item{\code{used_for_deconvolution}}{A logical vector indicating whether each gene has been used for cell type deconvolution.}
@@ -39,6 +39,10 @@ Each row represents a cell type and each column represents a gene.}
 Each row represents a batch and each column represents a gene.}
 
 \item{\code{config}}{A list recording the configuration of the \code{\linkS4class{MCUBE}} object.}
+
+\item{\code{null_models}}{A listing recording the fitted results of the null models with each element corresponding to a celltype-gene pair.}
+
+\item{\code{kernels}}{A list recording the kernel matrices used for score testing.}
 
 \item{\code{celltype_test}}{A character vector specifying the cell types to test.}
 

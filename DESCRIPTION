@@ -11,6 +11,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
     doParallel,
+    dplyr,
     foreach,
     ggplot2,
     iterators,
@@ -19,8 +20,10 @@ Imports:
     parallel,
     pheatmap,
     plotly,
+    readr,
     rgl,
-    stats
+    stats,
+    tidyr
 Suggests: 
     Matrix,
     renv,

@@ -80,6 +80,10 @@ rotation_matrix_2d <- function(theta) {
 #' Format the GWAS summary statistics data for linkage disequilibrium score regression (LDSC) (\url{https://doi.org/10.1038/ng.3211}).
 #' Credit goes to `ldsc` (\url{https://github.com/bulik/ldsc}) and the R package `MR-APSS` (\url{https://github.com/YangLabHKUST/MR-APSS}).
 #'
+#' @importFrom readr read_delim
+#' @importFrom dplyr inner_join select filter distinct one_of
+#' @importFrom tidyr drop_na
+#'
 #' @param sumstats Summary statistics data or name of the summary statistics data file.
 #' @param snps_merge A data.frame with SNPs to extract.
 #' @param snps_mhc A set of SNPs that needed to be removed. For example, SNPs in MHC region.
@@ -107,7 +111,7 @@ rotation_matrix_2d <- function(theta) {
 #' @export
 format_sumstats <- function(
     sumstats, delim = NULL,
-    snps_merge = w_hm3.snplist, snps_mhc = snps_mhc, dbSNP = NULL,
+    snps_merge = NULL, snps_mhc = NULL, dbSNP = NULL,
     snp_col = "SNP", beta_col = "BETA", or_col = "OR", se_col = "SE",
     freq_col = "FREQ", a1_col = "A1", a2_col = "A2", p_col = "P",
     n_col = "N", ncase_col = "N_CASE", ncontrol_col = "N_CONTROL", n = NULL,
