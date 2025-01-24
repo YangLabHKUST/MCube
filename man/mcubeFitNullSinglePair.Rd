@@ -39,6 +39,12 @@ Each row represents a spot and each column represents a cell type.}
 It's applicable to the case of multiple samples/replicates/slices and specific gene platform effects required.
 If \code{NULL}, all spots will be assumed to come from the same batch and share the same gene platform effects. Default is \code{NULL}.}
 
+\item{reference}{A vector of average gene expression calculated from scRNA-seq reference data with each element corresponding to a cell type.}
+
+\item{used_for_deconvolution}{A logical value indicating whether the gene has been used for cell type deconvolution in the previous step.}
+
+\item{spot_effects}{A numeric vector of spot effects with each element corresponding to a spot.}
+
 \item{platform_effect}{A numeric value or vector.
 In the single batch case, a numeric value is expected.
 When in the case of multiple batches and specific platform effects required, a vector is expected with each element corresponding to a batch.

@@ -145,6 +145,9 @@ mcubeFitNull <- function(
 #' @param batch_id A character/factor vector indicating which batch each spot comes from.
 #' It's applicable to the case of multiple samples/replicates/slices and specific gene platform effects required.
 #' If `NULL`, all spots will be assumed to come from the same batch and share the same gene platform effects. Default is `NULL`.
+#' @param reference A vector of average gene expression calculated from scRNA-seq reference data with each element corresponding to a cell type.
+#' @param used_for_deconvolution A logical value indicating whether the gene has been used for cell type deconvolution in the previous step.
+#' @param spot_effects A numeric vector of spot effects with each element corresponding to a spot.
 #' @param platform_effect A numeric value or vector.
 #' In the single batch case, a numeric value is expected.
 #' When in the case of multiple batches and specific platform effects required, a vector is expected with each element corresponding to a batch.

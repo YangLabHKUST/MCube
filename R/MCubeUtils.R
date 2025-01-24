@@ -251,7 +251,7 @@ mcubeGetSigGenes <- function(
 #' A p-value combination method using the Cauchy distribution.
 #' Credit goes to the R package `ACAT` (\url{https://github.com/yaowuliu/ACAT}).
 #'
-#' @param weights a numeric vector/matrix of non-negative weights for the combined p-values. When it is NULL, the equal weights are used.
+#' @param Weights a numeric vector/matrix of non-negative weights for the combined p-values. When it is NULL, the equal weights are used.
 #' @param Pvals a numeric vector/matrix of p-values. When it is a matrix, each column of p-values is combined by ACAT.
 #' @param threshold a numeric value of the numerical precision of the Cauchy cumulative density function.
 #'
