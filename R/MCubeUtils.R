@@ -55,6 +55,8 @@ mcubeFilterGenes <- function(
 #' Fuction for data preprocessing.
 #' Credit goes to the R package `spacexr` (\url{https://github.com/dmcable/spacexr}).
 #'
+#' @importFrom stats median
+#'
 #' @param celltype A character specifying the cell type.
 #' @param celltype_all A character vector containing all cell types.
 #' @param gene_test A character vector specifying the genes to test.
