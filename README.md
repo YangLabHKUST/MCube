@@ -55,5 +55,5 @@ Wang](https://sites.google.com/view/statwangz).
 
 ## Contact
 
-Please feel free to contact Zhiwei Wang (<zhiwei.wang@connect.ust.hk>)
-or Prof. Can Yang (<macyang@ust.hk>) if any inquiries.
+Please feel free to contact [Zhiwei Wang](zhiwei.wang@connect.ust.hk) or
+[Prof. Can Yang](macyang@ust.hk) if any inquiries.
