@@ -24,6 +24,7 @@ Imports:
     plotly,
     readr,
     rgl,
+    scales,
     stats,
     tidyr
 Suggests: 
