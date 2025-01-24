@@ -13,6 +13,7 @@ Suggests:
     foreach,
     ggplot2,
     iterators,
+    Matrix,
     plotly,
     renv,
     rgl,
