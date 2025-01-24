@@ -9,12 +9,12 @@ mcubeTestSinglePairMultiKernels(null_model_results, X, kernels_list, celltype)
 \arguments{
 \item{null_model_results}{A list containing the fitted results of the null model.}
 
+\item{X}{A numeric matrix containing covariates of all spots.
+Each row represents a spot and each column represents a covariate.}
+
 \item{kernels_list}{A list containing the kernel matrices for testing.}
 
 \item{celltype}{A character specifying the cell type to test.}
-
-\item{A}{numeric matrix containing covariates of all spots.
-Each row represents a spot and each column represents a covariate.}
 }
 \value{
 A data.frame containing the test results.

@@ -201,6 +201,8 @@ mcubeFilterCellTypes <- function(
 #'
 #' @description Get spatially variable genes specific to a cell type based on the adjusted p-values.
 #'
+#' @importFrom stats p.adjust
+#'
 #' @param pvalues_list A list of data frames. Each data frame contains p-values of genes for a certain cell type.
 #' @param which_pvalue A character specifying the column name of p-values in each data frame.
 #' @param adjust_method A character specifying the method for multiple testing correction.
@@ -231,7 +233,7 @@ mcubeGetSigGenes <- function(
     pvalues_list,
     FUN = function(x) {
       x <- x[order(x[, which_pvalue]), ]
-      adjusted_pvalues <- p.adjust(x[, which_pvalue], method = adjust_method)
+      adjusted_pvalues <- stats::p.adjust(x[, which_pvalue], method = adjust_method)
       sig_genes_idx <- which(adjusted_pvalues <= alpha)
       data.frame(
         pvalue = x[sig_genes_idx, which_pvalue],

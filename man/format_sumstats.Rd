@@ -32,6 +32,8 @@ format_sumstats(
 \arguments{
 \item{sumstats}{Summary statistics data or name of the summary statistics data file.}
 
+\item{delim}{A single character used to separate fields within a record.}
+
 \item{snps_merge}{A data.frame with SNPs to extract.}
 
 \item{snps_mhc}{A set of SNPs that needed to be removed. For example, SNPs in MHC region.}

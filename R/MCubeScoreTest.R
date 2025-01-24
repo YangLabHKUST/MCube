@@ -104,7 +104,8 @@ mcubeTest <- function(
       pvalues_i <- mcubeTestSinglePairMultiKernels(
         null_model_results = null_model_results_i,
         X = object@covariates[object@spots, , drop = FALSE],
-        kernels_list = object@kernels, celltype = celltype_i
+        kernels_list = object@kernels,
+        celltype = celltype_i
       )
       if (!is.null(pvalues_i)) {
         pvalues_i <- data.frame(
@@ -145,7 +146,7 @@ mcubeTest <- function(
 #' The obtained p-values will be combined using the Cauchy distribution.
 #'
 #' @param null_model_results A list containing the fitted results of the null model.
-#' @param A numeric matrix containing covariates of all spots.
+#' @param X A numeric matrix containing covariates of all spots.
 #' Each row represents a spot and each column represents a covariate.
 #' @param kernels_list A list containing the kernel matrices for testing.
 #' @param celltype A character specifying the cell type to test.
@@ -201,6 +202,8 @@ mcubeTestSinglePairMultiKernels <- function(
 #'
 #' @description Examine whether a gene is a spatially variable gene specific to a cell type with a single kernel.
 #'
+#' @importFrom stats pchisq
+#'
 #' @param null_model_results A list containing the fitted results of the null model.
 #' @param P_mat A numeric projection matrix.
 #' @param P_Y_tilde A numeric vector contraining the value of P %*% Y_tilde.
@@ -230,7 +233,7 @@ mcubeTestSinglePairSingleKernel <- function(
   teststat <- 0.5 *
     sum(null_model_results$Y_tilde * P_kernel_P_Y_tilde) # test statistic
 
-  pvalue <- pchisq(q = teststat / scaled_para, df = df_para, lower.tail = FALSE)
+  pvalue <- stats::pchisq(q = teststat / scaled_para, df = df_para, lower.tail = FALSE)
 
   return(pvalue)
 }

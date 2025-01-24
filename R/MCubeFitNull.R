@@ -135,6 +135,8 @@ mcubeFitNull <- function(
 #'
 #' @description Fit the null MMM model for a single celltype-gene pair using a PQL-based approach.
 #'
+#' @importFrom stats model.matrix
+#'
 #' @param Y A numeric vector containing gene expression counts of all spots.
 #' @param library_size A numeric vector containing library sizes of all spots.
 #' @param X A numeric matrix containing covariates of all spots.
@@ -236,7 +238,7 @@ mcubeFitNullSinglePair <- function(
     spot_platform_effects <- spot_effects
   } else if (length(levels(batch_id)) > 1) {
     spot_platform_effects <- spot_effects +
-      as.vector(model.matrix(~ batch_id - 1) %*% platform_effect)
+      as.vector(stats::model.matrix(~ batch_id - 1) %*% platform_effect)
   } else {
     spot_platform_effects <- spot_effects + platform_effect
   }
@@ -446,7 +448,7 @@ mcubeFitNullSinglePair <- function(
 #     spot_platform_effects <- spot_effects
 #   } else if (length(levels(batch_id)) > 1) {
 #     spot_platform_effects <- spot_effects +
-#       as.vector(model.matrix(~ batch_id - 1) %*% platform_effect)
+#       as.vector(stats::model.matrix(~ batch_id - 1) %*% platform_effect)
 #   } else {
 #     spot_platform_effects <- spot_effects + platform_effect
 #   }

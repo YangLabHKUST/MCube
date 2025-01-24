@@ -209,6 +209,7 @@ mcubePlotPropCellType <- function(
 #'
 #' @importFrom plotly plot_ly add_markers layout
 #' @importFrom rgl open3d par3d view3d spheres3d decorate3d
+#' @importFrom grDevices rgb
 #'
 #' @param proportion A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
@@ -276,7 +277,7 @@ mcubePlotPropCellType3D <- function(
         data = target_df,
         x = ~x, y = ~y, z = ~z,
         marker = list(
-          color = rgb(1 - target_color_rgb, 1 - target_color_rgb, 1),
+          color = grDevices::rgb(1 - target_color_rgb, 1 - target_color_rgb, 1),
           size = spot_size,
           opacity = opacity_target
         )
@@ -384,6 +385,7 @@ mcubePlotPropHeatmap <- function(
 #' Plot function for p-values
 #'
 #' @import ggplot2
+#' @importFrom stats ppoints qbeta
 #'
 #' @param pvalues_list A list of data frames containing p-values.
 #' Each data frame corresponds to a cell type. Each row represents a gene and each column represents a kernel matrix/combined p-value.
@@ -418,14 +420,14 @@ mcubePlotPvalues <- function(
         pvalues_order_x <- order(pvalues_list[[x]][, which_pvalue])
         pvalues_x <- pvalues_list[[x]][, which_pvalue][pvalues_order_x]
         n_pvalues <- length(pvalues_x)
-        pvalues_theoretical_x <- ppoints(n_pvalues)
+        pvalues_theoretical_x <- stats::ppoints(n_pvalues)
         minus_log10p_x <- -log10(pvalues_x)
         minus_log10p_x[minus_log10p_x > minus_log10p_max] <- minus_log10p_max
         minus_log10p_theoretical_x <- -log10(pvalues_theoretical_x)
-        lower_bound <- -log10(qbeta(
+        lower_bound <- -log10(stats::qbeta(
           p = (1 - ci) / 2, shape1 = 1:n_pvalues, shape2 = n_pvalues:1
         ))
-        upper_bound <- -log10(qbeta(
+        upper_bound <- -log10(stats::qbeta(
           p = (1 + ci) / 2, shape1 = 1:n_pvalues, shape2 = n_pvalues:1
         ))
 
@@ -506,6 +508,7 @@ mcubePlotPvalues <- function(
 #'
 #' @import ggplot2
 #' @importFrom pals brewer.piyg
+#' @importFrom scales rescale
 #'
 #' @param object An \code{\linkS4class{MCUBE}} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.

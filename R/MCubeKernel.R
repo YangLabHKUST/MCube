@@ -1,6 +1,6 @@
 #' Construct the kernel matrix
 #'
-#' @importFrom stats median
+#' @importFrom stats median dist
 #'
 #' @param coordinates A matrix of spatial coordinates.
 #' Each row represents a spot and each column represents a spatial dimension.
@@ -42,14 +42,14 @@ mcubeKernel <- function(
 
         if (kernel_type == "Gaussian") {
             kernel_mat <- exp(
-                -(as.matrix(dist(coordinates)))^2 / (2 * length_scale^2)
+                -(as.matrix(stats::dist(coordinates)))^2 / (2 * length_scale^2)
             )
         } else if (kernel_type == "Cauchy") {
             kernel_mat <- 1 /
-                (1 + (as.matrix(dist(coordinates)))^2 / (2 * length_scale^2))
+                (1 + (as.matrix(stats::dist(coordinates)))^2 / (2 * length_scale^2))
         } else if (kernel_type == "periodic") {
             kernel_mat <- exp(
-                -sin(pi * (as.matrix(dist(coordinates))))^2 / (2 * length_scale^2)
+                -sin(pi * (as.matrix(stats::dist(coordinates))))^2 / (2 * length_scale^2)
             )
         } else if (kernel_type == "Gaussian_transformed") {
             coordinates <- exp(-coordinates^2 / (2 * length_scale^2))
@@ -70,7 +70,7 @@ mcubeKernel <- function(
 
 #' Estimate the length scale of the kernel
 #'
-#' @importFrom stats median
+#' @importFrom stats dist median
 #'
 #' @param coordinates A matrix of spatial coordinates.
 #' Each row represents a spot and each column represents a spatial dimension.
@@ -85,9 +85,9 @@ mcubeLengthScale <- function(coordinates, standardize = TRUE) {
         coordinates <- scale(coordinates, center = TRUE, scale = FALSE)
         coordinates <- coordinates / sqrt(stats::median(rowSums(coordinates^2)))
     }
-    dist <- as.matrix(dist(coordinates))
+    dist_mat <- as.matrix(stats::dist(coordinates))
     dist_min <- apply(
-        dist,
+        dist_mat,
         MARGIN = 2,
         FUN = function(x) {
             sort(x, decreasing = FALSE)[2]

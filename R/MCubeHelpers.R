@@ -54,11 +54,9 @@ mcubeQQPlotDF <- function(pvalues_df, which_pvalue = "combined_pvalue", minus_lo
 
 #' Rotate a 2D spatial coordinate matrix
 #'
-#' @param coordinates A matrix of spatial coordinates.
-#' Each row represents a spot and each column represents a spatial dimension.
 #' @param theta The angle of rotation in degrees.
 #'
-#' @return A matrix of rotated spatial coordinates.
+#' @return A rotation matrix of the given angle.
 #'
 #' @export
 rotation_matrix_2d <- function(theta) {
@@ -83,8 +81,10 @@ rotation_matrix_2d <- function(theta) {
 #' @importFrom readr read_delim
 #' @importFrom dplyr inner_join select filter distinct one_of
 #' @importFrom tidyr drop_na
+#' @importFrom stats qchisq pchisq sd median
 #'
 #' @param sumstats Summary statistics data or name of the summary statistics data file.
+#' @param delim A single character used to separate fields within a record.
 #' @param snps_merge A data.frame with SNPs to extract.
 #' @param snps_mhc A set of SNPs that needed to be removed. For example, SNPs in MHC region.
 #' @param dbSNP A tibble with two columns `rsID` = (rs) identifiers and `SNP` = chr:location. The data is from the dbSNP153 database (https://genome.ucsc.edu/FAQ/FAQdownloads.html#snp).
@@ -412,7 +412,7 @@ format_sumstats <- function(
   # calculate z-score from p-value
   if ((!"Z" %in% names(sumstats)) & "P" %in% names(sumstats) & "BETA" %in% names(sumstats)) {
     message("Infer z-score from p-value and effect size.")
-    sumstats$CHI2 <- qchisq(sumstats$P, 1, lower.tail = FALSE)
+    sumstats$CHI2 <- stats::qchisq(sumstats$P, 1, lower.tail = FALSE)
     sumstats$Z <- sign(sumstats$BETA) * sqrt(sumstats$CHI2)
   }
 
@@ -431,7 +431,7 @@ format_sumstats <- function(
 
   # calculate p-value if no P
   if (!"P" %in% names(sumstats)) {
-    sumstats$P <- pchisq(sumstats$CHI2, 1, lower.tail = FALSE)
+    sumstats$P <- stats::pchisq(sumstats$CHI2, 1, lower.tail = FALSE)
   }
 
   if (!"Z" %in% names(sumstats)) {
@@ -443,8 +443,8 @@ format_sumstats <- function(
   sumstats <- tidyr::drop_na(sumstats)
   message("Remove missing values..., remaining ", nrow(sumstats), " SNPs.")
 
-  n_min <- mean(sumstats$N) - 5 * sd(sumstats$N)
-  n_max <- mean(sumstats$N) + 5 * sd(sumstats$N)
+  n_min <- mean(sumstats$N) - 5 * stats::sd(sumstats$N)
+  n_max <- mean(sumstats$N) + 5 * stats::sd(sumstats$N)
   sumstats <- dplyr::filter(sumstats, N >= n_min & N <= n_max)
   message(
     "Remove SNPs with sample size 5 standard deviations away from the mean..., remaining ",
@@ -452,7 +452,7 @@ format_sumstats <- function(
   )
 
   if (is.null(chi2_max)) {
-    chi2_max <- max(c(80, median(sumstats$N) / 1000))
+    chi2_max <- max(c(80, stats::median(sumstats$N) / 1000))
   }
   sumstats <- dplyr::filter(sumstats, CHI2 < chi2_max)
   message(

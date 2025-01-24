@@ -8,12 +8,9 @@ rotation_matrix_2d(theta)
 }
 \arguments{
 \item{theta}{The angle of rotation in degrees.}
-
-\item{coordinates}{A matrix of spatial coordinates.
-Each row represents a spot and each column represents a spatial dimension.}
 }
 \value{
-A matrix of rotated spatial coordinates.
+A rotation matrix of the given angle.
 }
 \description{
 Rotate a 2D spatial coordinate matrix
