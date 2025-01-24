@@ -22,7 +22,7 @@ mcubePlotExprCellTypeBinary(
 )
 }
 \arguments{
-\item{object}{An {"\link[=MCUBE-class]{MCUBE}"} object with fitted results of the null model.}
+\item{object}{An \code{\link[=MCUBE-class]{MCUBE}} object with fitted results of the null model.}
 
 \item{celltype}{A character specifying the cell type to plot.}
 
