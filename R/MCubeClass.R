@@ -1,18 +1,8 @@
-#' Define the anyMatrix class as the union of matrix, Matrix::dgCMatrix, and Matrix::dgTMatrix
-#'
-#' @importClassesFrom Matrix Matrix dgCMatrix dgTMatrix
-#'
-setClassUnion(
-  name = "anyMatrix",
-  members = c("matrix", "dgCMatrix", "dgTMatrix")
-)
-
 #' An S4 class to represent spatial transcriptomic and single-cell RNA-sequencing reference data
 #'
 #' @description Each \code{\linkS4class{MCUBE}} object has a number of slots which store information. Key slots to access are listed below.
 #'
 #' @importFrom methods setClass
-#' @importClassesFrom Matrix Matrix dgCMatrix dgTMatrix
 #'
 #' @slot counts A matrix, Matrix::dgCMatrix, or Matrix::dgTMatrix.
 #' Each Row represents a spot and each column represents a gene.
@@ -46,7 +36,7 @@ setClass(
 
   # Define the slots
   slots = c(
-    counts = "anyMatrix",
+    counts = "ANY",
     coordinates = "matrix",
     proportion = "matrix",
     library_size = "numeric",
@@ -76,7 +66,6 @@ setClass(
 #' Create the \code{\linkS4class{MCUBE}} object
 #'
 #' @importFrom methods new
-#' @importClassesFrom Matrix dgCMatrix dgTMatrix
 #'
 #' @param counts A matrix, Matrix::dgCMatrix, or Matrix::dgTMatrix.
 #' Each Row represents a spot and each column represents a gene.
