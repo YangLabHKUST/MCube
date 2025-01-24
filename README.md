@@ -20,8 +20,8 @@ You can install the development version of MCube from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("YangLabHKUST/MCube")
+# install.packages("devtools")
+devtools::install_github("YangLabHKUST/MCube")
 ```
 
 ## Reference
