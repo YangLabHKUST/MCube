@@ -1,5 +1,7 @@
 #' Plot the spatial distribution of gene expression
 #'
+#' @import ggplot2, pals
+#'
 #' @param counts A matrix of gene expression counts.
 #' Each row represents a spot and each column represents a gene.
 #' @param coordinates A matrix of spatial coordinates.
@@ -118,6 +120,8 @@ mcubePlotExpr <- function(
 
 #' Plot the spatial distribution of cell type proportions
 #'
+#' @import ggplot2, pals
+#'
 #' @param proportion A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
 #' @param coordinates A matrix of spatial coordinates.
@@ -201,6 +205,8 @@ mcubePlotPropCellType <- function(
 
 #' Plot the spatial distribution of cell type proportions in 3D
 #'
+#' @import plotly, rgl
+#'
 #' @param proportion A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
 #' @param coordinates A matrix of spatial coordinates.
@@ -261,7 +267,7 @@ mcubePlotPropCellType3D <- function(
   if (plot_method == "plotly") {
     target_color_rgb <- 0.3 +
       (target_df$proportion - min(target_df$proportion)) * (1 - 0.3) /
-        (max(target_df$proportion) - min(target_df$proportion))
+      (max(target_df$proportion) - min(target_df$proportion))
     plotly::plot_ly(type = "scatter3d", mode = "markers") |>
       plotly::add_markers(
         data = target_df,
@@ -320,6 +326,8 @@ mcubePlotPropCellType3D <- function(
 
 #' Plot the heatmap of cell type proportions
 #'
+#' @import heatmap, pals
+#'
 #' @param proportion A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
 #' @param spots A character vector specifying the spots to plot.
@@ -357,19 +365,21 @@ mcubePlotPropHeatmap <- function(
 
   # Heatmap of the proportion matrix
   p <- pheatmap::pheatmap(t(proportion),
-    scale = "none",
-    color = palettes, border_color = NA,
-    clustering_method = "complete", cluster_row = TRUE, cluster_col = TRUE,
-    treeheight_row = 3, treeheight_col = 10,
-    show_rownames = TRUE, show_colnames = FALSE,
-    cellwidth = 0.05, cellheight = 16, fontsize = 12,
-    filename = filename
+                          scale = "none",
+                          color = palettes, border_color = NA,
+                          clustering_method = "complete", cluster_row = TRUE, cluster_col = TRUE,
+                          treeheight_row = 3, treeheight_col = 10,
+                          show_rownames = TRUE, show_colnames = FALSE,
+                          cellwidth = 0.05, cellheight = 16, fontsize = 12,
+                          filename = filename
   )
 
   return(p)
 }
 
 #' Plot function for p-values
+#'
+#' @import ggplot2
 #'
 #' @param pvalues_list A list of data frames containing p-values.
 #' Each data frame corresponds to a cell type. Each row represents a gene and each column represents a kernel matrix/combined p-value.
@@ -490,6 +500,8 @@ mcubePlotPvalues <- function(
 
 #' Plot the spatial distribution of gene expression variations
 #'
+#' @import ggplot2, pals
+#'
 #' @param object An \code{\linkS4class{MCUBE}} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.
 #' @param gene A character specifying the gene to plot.
@@ -589,11 +601,11 @@ mcubePlotExprCellType <- function(
     ggplot2::coord_fixed(ratio = ratio)
 
   title <- ifelse(is.null(title),
-    ifelse(normalize,
-      paste("Normalized expression of", gene, "in", celltype),
-      paste("Expression of", gene, "in", celltype)
-    ),
-    title
+                  ifelse(normalize,
+                         paste("Normalized expression of", gene, "in", celltype),
+                         paste("Expression of", gene, "in", celltype)
+                  ),
+                  title
   )
   p <- p + ggplot2::labs(title = title, x = NULL, y = NULL) +
     ggplot2::theme_classic()
@@ -602,6 +614,8 @@ mcubePlotExprCellType <- function(
 }
 
 #' Plot the spatial distribution of gene expression variations in binary mode
+#'
+#' @import ggplot2
 #'
 #' @param object An \code{\linkS4class{MCUBE}} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.
@@ -706,6 +720,9 @@ mcubePlotExprCellTypeBinary <- function(
 }
 
 #' Plot the spatial distribution of gene expression variations in 3D
+#'
+#' @import plotly
+#' @import rgl
 #'
 #' @param object An \code{\linkS4class{MCUBE}} object with fitted results of the null model.
 #' @param celltype A character specifying the cell type to plot.
