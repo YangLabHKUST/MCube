@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FYangLabHKUST%2FMCube&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 ![GitHub Repo stars](https://img.shields.io/github/stars/YangLabHKUST/MCube)
 ![GitHub forks](https://img.shields.io/github/forks/YangLabHKUST/MCube)
-[![R-CMD-check](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml)
+<!-- [![R-CMD-check](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml) -->
 
 ## Installation
 
@@ -35,7 +35,7 @@ devtools::install_github("YangLabHKUST/MCube")
 
 ## Real data analysis
 
-The code for reproducing the real data analysis results presented in our paper are provided in the tutorial website (<https://mcube-tutorial.readthedocs.io/>):
+The code for reproducing the real data analysis results presented in our paper are available at the tutorial website (<https://mcube-tutorial.readthedocs.io/>):
 
 * [Visium human dorsolateral prefrontal cortex dataset](https://mcube-tutorial.readthedocs.io/en/latest/analysis/DLPFC/)
 * [Multiple adult mouse brain datasets from different sources](https://mcube-tutorial.readthedocs.io/en/latest/analysis/mouse_brain/)

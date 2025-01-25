@@ -12,7 +12,7 @@ size](https://img.shields.io/github/repo-size/YangLabHKUST/MCube)
 ![GitHub Repo
 stars](https://img.shields.io/github/stars/YangLabHKUST/MCube) ![GitHub
 forks](https://img.shields.io/github/forks/YangLabHKUST/MCube)
-[![R-CMD-check](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml)
+<!-- [![R-CMD-check](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml) -->
 
 ## Installation
 
@@ -27,7 +27,7 @@ devtools::install_github("YangLabHKUST/MCube")
 ## Real data analysis
 
 The code for reproducing the real data analysis results presented in our
-paper are provided in the tutorial website
+paper are available at the tutorial website
 (<https://mcube-tutorial.readthedocs.io/>):
 
 - [Visium human dorsolateral prefrontal cortex
