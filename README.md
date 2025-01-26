@@ -4,7 +4,6 @@
 # MCube: Identifying cell-type-specific spatially variable genes with the Mixture of Mixed Models
 
 <!-- badges: start -->
-<!-- badges: end -->
 
 ![GitHub repo
 size](https://img.shields.io/github/repo-size/YangLabHKUST/MCube)
@@ -17,6 +16,8 @@ License](https://img.shields.io/github/license/YangLabHKUST/MCube)
 stars](https://img.shields.io/github/stars/YangLabHKUST/MCube) ![GitHub
 forks](https://img.shields.io/github/forks/YangLabHKUST/MCube)
 <!-- [![R-CMD-check](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml) -->
+
+<!-- badges: end -->
 
 ## Installation
 
