@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MCube: Identifying cell-type-specific spatially variable genes with the Mixture of Mixed Models
+# MCube: Identifying cell-type-specific spatially variable genes with the Mixture of Mixed Models <a href="https://mcube-tutorial.readthedocs.io/"><img src="inst/figures/logo.png" height="128" align="right" /></a>
 
 <!-- badges: start -->
 
