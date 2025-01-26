@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MCube: Identifying cell-type-specific spatially variable genes with the Mixture of Mixed Models <a href="https://mcube-tutorial.readthedocs.io/"><img src="inst/figures/logo.png" height="128" align="right" /></a>
+# MCube: Identifying cell-type-specific spatially variable genes with the Mixture of Mixed Models <a href="https://mcube-tutorial.readthedocs.io/"><img src="inst/figures/sticker.png" height="128" align="right" alt="Sticker" /></a>
 
 <!-- badges: start -->
 
@@ -18,6 +18,16 @@ forks](https://img.shields.io/github/forks/YangLabHKUST/MCube)
 <!-- [![R-CMD-check](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/YangLabHKUST/MCube/actions/workflows/R-CMD-check.yaml) -->
 
 <!-- badges: end -->
+
+## Introduction
+
+The R package `MCube` implements the methods in the **MMM** paper.
+**MMM** is a unified framework for identification of cell-type-specific
+spatially variable genes in spatial transcriptomic studies.
+
+<p>
+<img src="inst/figures/overview.png" height="320" align="middle" alt="Overview" />
+</p>
 
 ## Installation
 
