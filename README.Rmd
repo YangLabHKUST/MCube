@@ -32,8 +32,10 @@ knitr::opts_chunk$set(
 The R package `MCube` implements the methods in the **MMM** paper.
 **MMM** is a unified framework for identification of cell-type-specific spatially variable genes in spatial transcriptomic studies.
 
-<!-- <p><img src="inst/figures/overview.png" height="320" align="middle" alt="Overview" /></p> -->
-![Overview](inst/figures/overview.png){width=95%}
+<figure>
+<img src="inst/figures/pipeline.png" style="width:95.0%"
+alt="Pipeline" />
+</figure>
 
 ## Installation
 
