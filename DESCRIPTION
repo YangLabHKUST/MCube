@@ -33,3 +33,5 @@ Suggests:
     rmarkdown,
     tiff,
     usethis
+URL: https://github.com/YangLabHKUST/MCube
+BugReports: https://github.com/YangLabHKUST/MCube/issues
