@@ -1,0 +1,2 @@
+[`STitch3D`](https://github.com/YangLabHKUST/STitch3D) is a deep learning-based method that can infer 3D spatial distributions of fine-grained cell types in tissues.
+Here, we provide a modified version with new features for sparsifying the estimated cell type proportions and writing the full deconvolution results to disk.
