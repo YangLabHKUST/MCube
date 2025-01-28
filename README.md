@@ -22,8 +22,12 @@ forks](https://img.shields.io/github/forks/YangLabHKUST/MCube)
 ## Introduction
 
 The R package `MCube` implements the methods in the **MMM** paper.
-**MMM** is a unified framework for identification of cell-type-specific
-spatially variable genes in spatial transcriptomic studies.
+**MMM**, standing for the **Mixture of Mixed Models**, is a unified
+framework for statistical identification of cell-type-specific spatially
+variable genes in spatial transcriptomic (ST) studies.
+<!-- Beginning with the raw count data, **MMM** uses a log-mixture structure to account for cell type composition while simultaneously correcting for the spot and platform effects between ST and scRNA-seq data. -->
+<!-- Then,  the mixed-effects model decomposes the cell-type-specific gene expression in ST data into three components: the average gene expression of the same cell type obtained from scRNA-seq data, spatial variations, and non-spatial variations, enabling a statistically rigorous way to examine the significance of the spatial variations. -->
+<!-- The statistical significance of spatial variations is examined using a powerful non-parametric test capable of detecting diverse spatial patterns. -->
 
 <figure>
 <img src="inst/figures/pipeline.png" style="width:95.0%"
