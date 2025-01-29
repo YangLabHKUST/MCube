@@ -146,7 +146,7 @@ createMCUBE <- function(
   } else {
     message(
       "The batch_id is not provided!\n",
-      "All spots are assumed to come from the same batch ",
+      "All spots are assumed to be from the same batch ",
       "and share the same gene platform effects."
     )
     batch_id <- factor(rep("batch_1", nrow(counts)))
