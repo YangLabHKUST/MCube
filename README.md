@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MCube: Identifying cell-type-specific spatially variable genes with the Mixture of Mixed Models <a href="https://mcube-tutorial.readthedocs.io/"><img src="inst/figures/sticker.png" height="128" align="right" alt="Sticker" /></a>
+# MCube: Identifying cell-type-specific spatially variable genes with the Mixture of Mixed Models <a href="https://github.com/YangLabHKUST/MCube"><img src="inst/figures/sticker.png" height="128" align="right" alt="Sticker" /></a>
 
 <!-- badges: start -->
 
@@ -26,8 +26,8 @@ The R package `MCube` implements the methods in the **MMM** paper.
 framework for statistical identification of cell-type-specific spatially
 variable genes in spatial transcriptomic (ST) studies.
 <!-- Beginning with the raw count data, **MMM** uses a log-mixture structure to account for cell type composition while simultaneously correcting for the spot and platform effects between ST and scRNA-seq data. -->
-<!-- Then,  the mixed-effects model decomposes the cell-type-specific gene expression in ST data into three components: the average gene expression of the same cell type obtained from scRNA-seq data, spatial variations, and non-spatial variations, enabling a statistically rigorous way to examine the significance of the spatial variations. -->
-<!-- The statistical significance of spatial variations is examined using a powerful non-parametric test capable of detecting diverse spatial patterns. -->
+<!-- The mixed-effects model decomposes the cell-type-specific gene expression in ST data into three components: the average gene expression of the same cell type obtained from scRNA-seq data, spatial variations, and non-spatial variations, enabling a statistically rigorous way to examine the significance of the spatial variations. -->
+<!-- The statistical significance of spatial variations is then examined using a powerful non-parametric test capable of detecting diverse spatial patterns. -->
 
 <figure>
 <img src="inst/figures/pipeline.png" style="width:95.0%"
