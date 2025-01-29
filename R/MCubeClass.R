@@ -131,7 +131,7 @@ createMCUBE <- function(
       !identical(rownames(counts), names(library_size))) {
     stop("Spot names of counts and library_size do not match!") # End
   } else if (is.null(library_size)) {
-    library_size <- rowSums(counts)
+    library_size <- rowSums(as.matrix(counts))
     names(library_size) <- rownames(counts)
   }
   if (!is.null(covariates) &&
@@ -149,7 +149,7 @@ createMCUBE <- function(
       "All spots are assumed to come from the same batch ",
       "and share the same gene platform effects."
     )
-    batch_id <- factor(rep("sample_1", nrow(counts)))
+    batch_id <- factor(rep("batch_1", nrow(counts)))
     names(batch_id) <- rownames(counts)
   }
   if (!is.null(spot_effects) &&
@@ -226,7 +226,8 @@ createMCUBE <- function(
 
   # Filter out lowly expressed genes
   gene_test <- mcubeFilterGenes(
-    counts[spots, , drop = FALSE], library_size[spots], gene_threshold
+    as.matrix(counts[spots, , drop = FALSE]),
+    library_size[spots], gene_threshold
   )
   if (length(gene_test) == 0) {
     stop("No genes remain after filtering based on expression level!") # End
@@ -247,7 +248,7 @@ createMCUBE <- function(
           return(rep(0, length(gene_test)))
         } else {
           mcubeGetPlatformEffects(
-            counts = counts[spots_used, , drop = FALSE],
+            counts = as.matrix(counts[spots_used, , drop = FALSE]),
             library_size = library_size[spots_used],
             proportion = proportion[spots_used, , drop = FALSE],
             reference = reference,
@@ -283,7 +284,7 @@ createMCUBE <- function(
 
   # Get the platform effects by considering all spots together
   platform_effects_all <- mcubeGetPlatformEffects(
-    counts = counts[spots, , drop = FALSE],
+    counts = as.matrix(counts[spots, , drop = FALSE]),
     library_size = library_size[spots],
     proportion = proportion[spots, , drop = FALSE],
     reference = reference,
