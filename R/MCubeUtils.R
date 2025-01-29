@@ -22,7 +22,7 @@ mcubeFilterGenes <- function(
   )
 
   if (is.null(library_size)) {
-    library_size <- rowSums(counts)
+    library_size <- rowSums(as.matrix(counts))
   }
 
   n_genes <- ncol(counts)
@@ -133,7 +133,7 @@ mcubeFilterGenesCellType <- function(
 mcubeGetPlatformEffects <- function(
     counts, library_size, proportion,
     reference, spot_effects) {
-  bulk_vec <- colSums(counts)
+  bulk_vec <- colSums(as.matrix(counts))
   weight_celltype <- colSums(
     library_size * exp(spot_effects) * proportion
   ) / sum(library_size)
