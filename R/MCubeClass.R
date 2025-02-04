@@ -128,7 +128,7 @@ createMCUBE <- function(
     stop("Spot names of counts and proportions do not match!") # End
   }
   if (!is.null(library_sizes) &&
-      !identical(rownames(counts), names(library_size))) {
+      !identical(rownames(counts), names(library_sizes))) {
     stop("Spot names of counts and library_sizes do not match!") # End
   } else if (is.null(library_sizes)) {
     library_sizes <- rowSums(as.matrix(counts))
