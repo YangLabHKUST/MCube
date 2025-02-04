@@ -6,9 +6,9 @@
 \usage{
 mcubeFitNullSinglePair(
   Y,
-  library_size,
+  library_sizes,
   X = NULL,
-  proportion,
+  proportions,
   batch_id = NULL,
   reference,
   used_for_deconvolution = TRUE,
@@ -26,13 +26,13 @@ mcubeFitNullSinglePair(
 \arguments{
 \item{Y}{A numeric vector containing gene expression counts of all spots.}
 
-\item{library_size}{A numeric vector containing library sizes of all spots.}
+\item{library_sizes}{A numeric vector containing library sizes of all spots.}
 
 \item{X}{A numeric matrix containing covariates of all spots.
 Each row represents a spot and each column represents a covariate.
 If \code{NULL}, a matrix with one column of all 1s will be used as the covariate matrix. Default is \code{NULL}.}
 
-\item{proportion}{A numeric matrix containing cell type proportions of all spots.
+\item{proportions}{A numeric matrix containing cell type proportions of all spots.
 Each row represents a spot and each column represents a cell type.}
 
 \item{batch_id}{A character/factor vector indicating which batch each spot comes from.

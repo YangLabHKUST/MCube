@@ -5,7 +5,7 @@
 \title{Plot the spatial distribution of cell type proportions in 3D}
 \usage{
 mcubePlotPropCellType3D(
-  proportion,
+  proportions,
   coordinates,
   celltype,
   proportion_threshold = 0.1,
@@ -24,7 +24,7 @@ mcubePlotPropCellType3D(
 )
 }
 \arguments{
-\item{proportion}{A matrix of cell type proportions.
+\item{proportions}{A matrix of cell type proportions.
 Each row represents a spot and each column represents a cell type.}
 
 \item{coordinates}{A matrix of spatial coordinates.

@@ -7,8 +7,8 @@
 createMCUBE(
   counts,
   coordinates,
-  proportion,
-  library_size = NULL,
+  proportions,
+  library_sizes = NULL,
   covariates = NULL,
   batch_id = NULL,
   reference,
@@ -33,10 +33,10 @@ Each Row represents a spot and each column represents a gene.}
 \item{coordinates}{A matrix.
 Each row represents a spot and each column represents a spatial dimension.}
 
-\item{proportion}{A cell type proportion matrix.
+\item{proportions}{A cell type proportion matrix.
 Each row represents a spot and each column represents a cell type.}
 
-\item{library_size}{A numeric vector containing the library sizes of all spots.}
+\item{library_sizes}{A numeric vector containing the library sizes of all spots.}
 
 \item{covariates}{A matrix.
 Each row represents a spot and each column represents a covariate.}

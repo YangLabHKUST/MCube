@@ -38,10 +38,10 @@ mcubeFitNull <- function(
     for (i in 1:nrow(object@celltype_gene_test_pairs)) {
       null_model_results_i <- try(mcubeFitNullSinglePair(
         Y = object@counts[object@spots, object@celltype_gene_test_pairs[i, "gene"]],
-        library_size = object@library_size[object@spots],
+        library_sizes = object@library_sizes[object@spots],
         X = object@covariates[object@spots, , drop = FALSE],
         batch_id = object@batch_id[object@spots],
-        proportion = object@proportion[object@spots, , drop = FALSE],
+        proportions = object@proportions[object@spots, , drop = FALSE],
         reference = object@reference[, object@celltype_gene_test_pairs[i, "gene"]],
         used_for_deconvolution = object@used_for_deconvolution[object@celltype_gene_test_pairs[i, "gene"]],
         spot_effects = object@spot_effects[object@spots],
@@ -87,10 +87,10 @@ mcubeFitNull <- function(
     ) %dopar% {
       null_model_results_i <- try(mcubeFitNullSinglePair(
         Y = as.vector(Y_i),
-        library_size = object@library_size[object@spots],
+        library_sizes = object@library_sizes[object@spots],
         X = object@covariates[object@spots, , drop = FALSE],
         batch_id = object@batch_id[object@spots],
-        proportion = object@proportion[object@spots, , drop = FALSE],
+        proportions = object@proportions[object@spots, , drop = FALSE],
         reference = as.vector(reference_i),
         used_for_deconvolution = used_for_deconvolution_i,
         spot_effects = object@spot_effects[object@spots],
@@ -138,11 +138,11 @@ mcubeFitNull <- function(
 #' @importFrom stats model.matrix
 #'
 #' @param Y A numeric vector containing gene expression counts of all spots.
-#' @param library_size A numeric vector containing library sizes of all spots.
+#' @param library_sizes A numeric vector containing library sizes of all spots.
 #' @param X A numeric matrix containing covariates of all spots.
 #' Each row represents a spot and each column represents a covariate.
 #' If `NULL`, a matrix with one column of all 1s will be used as the covariate matrix. Default is `NULL`.
-#' @param proportion A numeric matrix containing cell type proportions of all spots.
+#' @param proportions A numeric matrix containing cell type proportions of all spots.
 #' Each row represents a spot and each column represents a cell type.
 #' @param batch_id A character/factor vector indicating which batch each spot comes from.
 #' It's applicable to the case of multiple samples/replicates/slices and specific gene platform effects required.
@@ -172,15 +172,15 @@ mcubeFitNull <- function(
 #'
 #' @export
 mcubeFitNullSinglePair <- function(
-    Y, library_size, X = NULL, proportion, batch_id = NULL,
+    Y, library_sizes, X = NULL, proportions, batch_id = NULL,
     reference, used_for_deconvolution = TRUE,
     spot_effects = NULL, platform_effect = NULL,
     celltype_test, proportion_threshold = 0.1, reference_threshold = 0.25,
     safeguard = 1e-6, iter_max = 100, tol = 1e-6, verbose = TRUE) {
-  spot_names <- rownames(proportion)
-  celltype_names <- colnames(proportion)
+  spot_names <- rownames(proportions)
+  celltype_names <- colnames(proportions)
 
-  spots_filter <- which(proportion[, celltype_test] >= proportion_threshold)
+  spots_filter <- which(proportions[, celltype_test] >= proportion_threshold)
   if (length(spots_filter) == 0) {
     stop(
       "mcubeFitNullSinglePair: No spot has proportion >= ",
@@ -188,9 +188,9 @@ mcubeFitNullSinglePair <- function(
     ) # End
   } else if (length(spots_filter) < length(spot_names)) {
     Y <- Y[spots_filter]
-    library_size <- library_size[spots_filter]
+    library_sizes <- library_sizes[spots_filter]
     X <- X[spots_filter, , drop = FALSE]
-    proportion <- proportion[spots_filter, , drop = FALSE]
+    proportions <- proportions[spots_filter, , drop = FALSE]
     if (!is.null(batch_id)) {
       batch_id <- batch_id[spots_filter]
     }
@@ -210,20 +210,20 @@ mcubeFitNullSinglePair <- function(
       ) # End
     }
     reference_minor <- reference[celltype_minor]
-    proportion_minor <- proportion[, celltype_minor, drop = FALSE]
-    Y_mean_minor_vec <- library_size *
-      as.vector(proportion_minor %*% reference_minor)
+    proportions_minor <- proportions[, celltype_minor, drop = FALSE]
+    Y_mean_minor_vec <- library_sizes *
+      as.vector(proportions_minor %*% reference_minor)
 
     celltype_names <- celltype_names[-celltype_minor]
     reference <- reference[-celltype_minor]
-    proportion <- proportion[, -celltype_minor, drop = FALSE]
+    proportions <- proportions[, -celltype_minor, drop = FALSE]
   } else {
     Y_mean_minor_vec <- rep(0, num_spots)
   }
   num_celltypes <- length(celltype_names)
 
   membership_mat <- sweep(
-    proportion,
+    proportions,
     MARGIN = 2,
     STATS = reference,
     FUN = "*"
@@ -261,9 +261,9 @@ mcubeFitNullSinglePair <- function(
 
     # Matrix of spot * cell type
     eta_mat <- log_reference + u_mat
-    Y_mean_derivative_mat <- library_size *
+    Y_mean_derivative_mat <- library_sizes *
       exp(as.vector(X %*% xi) + spot_platform_effects) *
-      (proportion * exp(eta_mat))
+      (proportions * exp(eta_mat))
     Y_mean_vec <- rowSums(Y_mean_derivative_mat) +
       exp(as.vector(X %*% xi)) * Y_mean_minor_vec
 
@@ -373,15 +373,15 @@ mcubeFitNullSinglePair <- function(
 # # A sparse version of the `mcubeFitNullSinglePair` function.
 # # Suitable for the case of a sparse cell type proportion matrix.
 # mcubeFitNullSinglePair <- function(
-    #     Y, library_size, X = NULL, proportion, batch_id = NULL,
+    #     Y, library_sizes, X = NULL, proportions, batch_id = NULL,
 #     reference, used_for_deconvolution = TRUE,
 #     spot_effects = NULL, platform_effect = NULL,
 #     celltype_test, proportion_threshold = 0.1, reference_threshold = 0.25,
 #     safeguard = 1e-6, iter_max = 100, tol = 1e-6, verbose = TRUE) {
-#   spot_names <- rownames(proportion)
-#   celltype_names <- colnames(proportion)
+#   spot_names <- rownames(proportions)
+#   celltype_names <- colnames(proportions)
 
-#   spots_filter <- which(proportion[, celltype_test] >= proportion_threshold)
+#   spots_filter <- which(proportions[, celltype_test] >= proportion_threshold)
 #   if (length(spots_filter) == 0) {
 #     stop(
 #       "mcubeFitNullSinglePair: No spot has proportion >= ",
@@ -389,9 +389,9 @@ mcubeFitNullSinglePair <- function(
 #     ) # End
 #   } else if (length(spots_filter) < length(spot_names)) {
 #     Y <- Y[spots_filter]
-#     library_size <- library_size[spots_filter]
+#     library_sizes <- library_sizes[spots_filter]
 #     X <- X[spots_filter, , drop = FALSE]
-#     proportion <- proportion[spots_filter, , drop = FALSE]
+#     proportions <- proportions[spots_filter, , drop = FALSE]
 #     if (!is.null(batch_id)) {
 #       batch_id <- batch_id[spots_filter]
 #     }
@@ -411,32 +411,32 @@ mcubeFitNullSinglePair <- function(
 #       ) # End
 #     }
 #     reference_minor <- reference[celltype_minor]
-#     proportion_minor <- proportion[, celltype_minor, drop = FALSE]
-#     Y_mean_minor_vec <- library_size *
-#       as.vector(proportion_minor %*% reference_minor)
+#     proportions_minor <- proportions[, celltype_minor, drop = FALSE]
+#     Y_mean_minor_vec <- library_sizes *
+#       as.vector(proportions_minor %*% reference_minor)
 
 #     celltype_names <- celltype_names[-celltype_minor]
 #     reference <- reference[-celltype_minor]
-#     proportion <- proportion[, -celltype_minor, drop = FALSE]
+#     proportions <- proportions[, -celltype_minor, drop = FALSE]
 #   } else {
 #     Y_mean_minor_vec <- rep(0, num_spots)
 #   }
 #   num_celltypes <- length(celltype_names)
 
 #   # "row" means the spot, "col" means the cell-type
-#   not_zero_proportion <- which(proportion != 0, arr.ind = TRUE)
+#   not_zero_proportions <- which(proportions != 0, arr.ind = TRUE)
 
 #   membership_mat <- sweep(
-#     proportion,
+#     proportions,
 #     MARGIN = 2,
 #     STATS = reference,
 #     FUN = "*"
 #   )
 #   membership_mat <- membership_mat / rowSums(membership_mat)
 #   membership_mat <- Matrix::sparseMatrix(
-#     i = not_zero_proportion[, "row"],
-#     j = not_zero_proportion[, "col"],
-#     x = membership_mat[not_zero_proportion],
+#     i = not_zero_proportions[, "row"],
+#     j = not_zero_proportions[, "col"],
+#     x = membership_mat[not_zero_proportions],
 #     dims = c(num_spots, num_celltypes)
 #   )
 #   MMT_vec <- rowSums(membership_mat^2) # M * M^T, diagnoal martix
@@ -456,13 +456,13 @@ mcubeFitNullSinglePair <- function(
 
 #   # Cell type level intercept: log reference
 #   log_reference <- Matrix::sparseMatrix(
-#     i = not_zero_proportion[, "row"],
-#     j = not_zero_proportion[, "col"],
+#     i = not_zero_proportions[, "row"],
+#     j = not_zero_proportions[, "col"],
 #     x = (matrix(
 #       log(reference),
 #       nrow = num_spots, ncol = num_celltypes,
 #       byrow = TRUE
-#     ))[not_zero_proportion],
+#     ))[not_zero_proportions],
 #     dims = c(num_spots, num_celltypes)
 #   )
 
@@ -470,8 +470,8 @@ mcubeFitNullSinglePair <- function(
 #   tau <- 1e-5 # all cell types share same tau
 #   xi <- rep(0, num_covariates) # P * K
 #   u <- Matrix::sparseMatrix(
-#     i = not_zero_proportion[, "row"],
-#     j = not_zero_proportion[, "col"],
+#     i = not_zero_proportions[, "row"],
+#     j = not_zero_proportions[, "col"],
 #     x = 0,
 #     dims = c(num_spots, num_celltypes)
 #   ) # I * K
@@ -481,9 +481,9 @@ mcubeFitNullSinglePair <- function(
 
 #     # Matrix of spot * cell type
 #     eta_mat <- log_reference + u
-#     Y_mean_derivative_mat <- library_size *
+#     Y_mean_derivative_mat <- library_sizes *
 #       exp(as.vector(X %*% xi) + spot_platform_effects) *
-#       (proportion * exp(eta_mat))
+#       (proportions * exp(eta_mat))
 #     Y_mean_vec <- rowSums(Y_mean_derivative_mat) +
 #       exp(as.vector(X %*% xi)) * Y_mean_minor_vec
 
@@ -548,9 +548,9 @@ mcubeFitNullSinglePair <- function(
 #     u_new <- tau_new * Sigma_inv_vec * membership_mat *
 #       as.vector(Y_tilde - X %*% xi_new)
 #     u_new <- Matrix::sparseMatrix(
-#       i = not_zero_proportion[, "row"],
-#       j = not_zero_proportion[, "col"],
-#       x = u_new[not_zero_proportion],
+#       i = not_zero_proportions[, "row"],
+#       j = not_zero_proportions[, "col"],
+#       x = u_new[not_zero_proportions],
 #       dims = c(num_spots, num_celltypes)
 #     )
 

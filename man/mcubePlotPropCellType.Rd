@@ -5,7 +5,7 @@
 \title{Plot the spatial distribution of cell type proportions}
 \usage{
 mcubePlotPropCellType(
-  proportion,
+  proportions,
   coordinates,
   celltype,
   spots = NULL,
@@ -21,7 +21,7 @@ mcubePlotPropCellType(
 )
 }
 \arguments{
-\item{proportion}{A matrix of cell type proportions.
+\item{proportions}{A matrix of cell type proportions.
 Each row represents a spot and each column represents a cell type.}
 
 \item{coordinates}{A matrix of spatial coordinates.

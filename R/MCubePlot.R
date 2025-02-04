@@ -124,7 +124,7 @@ mcubePlotExpr <- function(
 #' @import ggplot2
 #' @importFrom pals brewer.orrd
 #'
-#' @param proportion A matrix of cell type proportions.
+#' @param proportions A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
 #' @param coordinates A matrix of spatial coordinates.
 #' Each row represents a spot and each column represents a spatial dimension.
@@ -148,23 +148,23 @@ mcubePlotExpr <- function(
 #'
 #' @export
 mcubePlotPropCellType <- function(
-    proportion, coordinates, celltype, spots = NULL,
+    proportions, coordinates, celltype, spots = NULL,
     he_image = NULL, background = TRUE, proportion_threshold = 0.01,
     spot_size = 1, palettes = pals::brewer.orrd(22)[3:22],
     xlim = NULL, ylim = NULL, ratio = 1, title = NULL) {
   # Check sample names
-  if (!all.equal(rownames(proportion), rownames(coordinates))) {
+  if (!all.equal(rownames(proportions), rownames(coordinates))) {
     stop("mcubePlotPropCellType: rownames of proportion and coordinates do not match!")
   }
   if (is.null(spots)) {
-    spots <- rownames(proportion)
+    spots <- rownames(proportions)
   } else {
-    spots <- intersect(spots, rownames(proportion))
+    spots <- intersect(spots, rownames(proportions))
   }
   plot_df <- data.frame(
     x = coordinates[spots, 1],
     y = coordinates[spots, 2],
-    prop = proportion[spots, celltype]
+    prop = proportions[spots, celltype]
   )
   if (!background) {
     # Remove spots with low proportion
@@ -211,7 +211,7 @@ mcubePlotPropCellType <- function(
 #' @importFrom rgl open3d par3d view3d spheres3d decorate3d
 #' @importFrom grDevices rgb
 #'
-#' @param proportion A matrix of cell type proportions.
+#' @param proportions A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
 #' @param coordinates A matrix of spatial coordinates.
 #' Each row represents a spot and each column represents a spatial dimension.
@@ -237,7 +237,7 @@ mcubePlotPropCellType <- function(
 #'
 #' @export
 mcubePlotPropCellType3D <- function(
-    proportion, coordinates, celltype,
+    proportions, coordinates, celltype,
     proportion_threshold = 0.1, spots = NULL,
     plot_method = "plotly", # "plotly" or "rgl"
     color_target = "blue", color_background = "gray",
@@ -246,9 +246,9 @@ mcubePlotPropCellType3D <- function(
     plotly_center = list(x = 0, y = 0, z = 0),
     plotly_eye = list(x = 1.25, y = 1.25, z = 1.25),
     rgl_um = c(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)) {
-  spots_all <- rownames(proportion)
-  spots_target <- rownames(proportion)[
-    proportion[, celltype] >= proportion_threshold
+  spots_all <- rownames(proportions)
+  spots_target <- rownames(proportions)[
+    proportions[, celltype] >= proportion_threshold
   ]
   if (!is.null(spots)) {
     spots_target <- intersect(spots_target, spots)
@@ -259,7 +259,7 @@ mcubePlotPropCellType3D <- function(
     x = coordinates[spots_target, 1] * axis_rescale[1],
     y = coordinates[spots_target, 2] * axis_rescale[2],
     z = coordinates[spots_target, 3] * axis_rescale[3],
-    proportion = proportion[spots_target, celltype]
+    proportions = proportions[spots_target, celltype]
   )
   background_df <- data.frame(
     x = coordinates[spots_background, 1] * axis_rescale[1],
@@ -270,8 +270,8 @@ mcubePlotPropCellType3D <- function(
   # 3D plot
   if (plot_method == "plotly") {
     target_color_rgb <- 0.3 +
-      (target_df$proportion - min(target_df$proportion)) * (1 - 0.3) /
-      (max(target_df$proportion) - min(target_df$proportion))
+      (target_df$proportions - min(target_df$proportions)) * (1 - 0.3) /
+      (max(target_df$proportions) - min(target_df$proportions))
     plotly::plot_ly(type = "scatter3d", mode = "markers") |>
       plotly::add_markers(
         data = target_df,
@@ -317,7 +317,7 @@ mcubePlotPropCellType3D <- function(
     # Target spots
     rgl::spheres3d(
       target_df$x, target_df$y, target_df$z,
-      col = color_target, radius = spot_radius, alpha = target_df$proportion
+      col = color_target, radius = spot_radius, alpha = target_df$proportions
     )
     # Background in grey
     rgl::spheres3d(
@@ -333,7 +333,7 @@ mcubePlotPropCellType3D <- function(
 #' @importFrom pheatmap pheatmap
 #' @importFrom pals brewer.purd
 #'
-#' @param proportion A matrix of cell type proportions.
+#' @param proportions A matrix of cell type proportions.
 #' Each row represents a spot and each column represents a cell type.
 #' @param spots A character vector specifying the spots to plot.
 #' If `NULL`, all spots will be plotted. Default is `NULL`.
@@ -348,28 +348,28 @@ mcubePlotPropCellType3D <- function(
 #'
 #' @export
 mcubePlotPropHeatmap <- function(
-    proportion, spots = NULL, celltypes = NULL,
+    proportions, spots = NULL, celltypes = NULL,
     palettes = pals::brewer.purd(20), title = NULL, filename = NA) {
   # Check sample names
   if (!is.null(spots)) {
-    spots <- intersect(spots, rownames(proportion))
+    spots <- intersect(spots, rownames(proportions))
     if (length(spots) == 0) {
-      stop("mcubePlotProp: No samples shared between proportion and spots!")
+      stop("mcubePlotProp: No samples shared between proportions and spots!")
     }
-    proportion <- proportion[spots, , drop = FALSE]
+    proportions <- proportions[spots, , drop = FALSE]
   }
 
   # Check cell-type names
   if (!is.null(celltypes)) {
-    celltypes <- intersect(celltypes, colnames(proportion))
+    celltypes <- intersect(celltypes, colnames(proportions))
     if (length(celltypes) == 0) {
       stop("mcubePlotProp: No cell-types shared between proportion and celltypes!")
     }
-    proportion <- proportion[, celltypes, drop = FALSE]
+    proportions <- proportions[, celltypes, drop = FALSE]
   }
 
-  # Heatmap of the proportion matrix
-  p <- pheatmap::pheatmap(t(proportion),
+  # Heatmap of the proportions matrix
+  p <- pheatmap::pheatmap(t(proportions),
                           scale = "none",
                           color = palettes, border_color = NA,
                           clustering_method = "complete", cluster_row = TRUE, cluster_col = TRUE,
@@ -767,7 +767,7 @@ mcubePlotExprCellType3D <- function(
   pair_name <- paste(celltype, gene, sep = "_")
   null_model_results <- object@null_models[[pair_name]]
 
-  spots_all <- rownames(object@proportion)
+  spots_all <- rownames(object@proportions)
   if (is.null(spots)) {
     spots_target <- null_model_results$spots
   } else {
@@ -775,7 +775,7 @@ mcubePlotExprCellType3D <- function(
   }
   spots_target <- intersect(
     spots_target,
-    spots_all[object@proportion[, celltype] >= proportion_threshold]
+    spots_all[object@proportions[, celltype] >= proportion_threshold]
   )
   spots_background <- setdiff(spots_all, spots_target)
 

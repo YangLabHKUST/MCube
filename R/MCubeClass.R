@@ -5,12 +5,12 @@
 #' @importFrom methods setClass
 #'
 #' @slot counts A matrix, Matrix::dgCMatrix, or Matrix::dgTMatrix.
-#' Each Row represents a spot and each column represents a gene.
+#' Each row represents a spot and each column represents a gene.
 #' @slot coordinates A matrix.
 #' Each row represents a spot and each column represents a spatial dimension.
-#' @slot proportion A cell type proportion matrix.
+#' @slot proportions A cell type proportion matrix.
 #' Each row represents a spot and each column represents a cell type.
-#' @slot library_size A numeric vector containing the library sizes of all spots.
+#' @slot library_sizes A numeric vector containing the library sizes of all spots.
 #' @slot covariates A matrix.
 #' Each row represents a spot and each column represents a covariate.
 #' @slot batch_id A factor indicating which batch each spot comes from.
@@ -40,8 +40,8 @@ setClass(
   slots = c(
     counts = "ANY",
     coordinates = "matrix",
-    proportion = "matrix",
-    library_size = "numeric",
+    proportions = "matrix",
+    library_sizes = "numeric",
     covariates = "matrix",
     batch_id = "factor",
     spots = "character",
@@ -73,9 +73,9 @@ setClass(
 #' Each Row represents a spot and each column represents a gene.
 #' @param coordinates A matrix.
 #' Each row represents a spot and each column represents a spatial dimension.
-#' @param proportion A cell type proportion matrix.
+#' @param proportions A cell type proportion matrix.
 #' Each row represents a spot and each column represents a cell type.
-#' @param library_size A numeric vector containing the library sizes of all spots.
+#' @param library_sizes A numeric vector containing the library sizes of all spots.
 #' @param covariates A matrix.
 #' Each row represents a spot and each column represents a covariate.
 #' @param batch_id A character/factor vector indicating which batch each spot comes from.
@@ -111,8 +111,8 @@ setClass(
 #'
 #' @export
 createMCUBE <- function(
-    counts, coordinates, proportion,
-    library_size = NULL, covariates = NULL, batch_id = NULL,
+    counts, coordinates, proportions,
+    library_sizes = NULL, covariates = NULL, batch_id = NULL,
     reference, used_for_deconvolution = NULL,
     spots = NULL, library_size_min = 10,
     spot_effects = NULL, platform_effects = NULL,
@@ -124,15 +124,15 @@ createMCUBE <- function(
   if (!identical(rownames(counts), rownames(coordinates))) {
     stop("Spot names of counts and coordinates do not match!") # End
   }
-  if (!identical(rownames(counts), rownames(proportion))) {
-    stop("Spot names of counts and proportion do not match!") # End
+  if (!identical(rownames(counts), rownames(proportions))) {
+    stop("Spot names of counts and proportions do not match!") # End
   }
-  if (!is.null(library_size) &&
+  if (!is.null(library_sizes) &&
       !identical(rownames(counts), names(library_size))) {
-    stop("Spot names of counts and library_size do not match!") # End
-  } else if (is.null(library_size)) {
-    library_size <- rowSums(as.matrix(counts))
-    names(library_size) <- rownames(counts)
+    stop("Spot names of counts and library_sizes do not match!") # End
+  } else if (is.null(library_sizes)) {
+    library_sizes <- rowSums(as.matrix(counts))
+    names(library_sizes) <- rownames(counts)
   }
   if (!is.null(covariates) &&
       !identical(rownames(counts), rownames(covariates))) {
@@ -179,10 +179,10 @@ createMCUBE <- function(
   # Check spots to analyze
   if (is.null(spots)) {
     # Filter out spots with low library size
-    spots <- rownames(counts)[library_size > library_size_min]
+    spots <- rownames(counts)[library_sizes > library_size_min]
   } else {
     spots <- intersect(
-      rownames(counts)[library_size > library_size_min], spots
+      rownames(counts)[library_sizes > library_size_min], spots
     )
     if (length(spots) == 0) {
       stop("The spots to analyze do not match the input data!") # End
@@ -190,8 +190,8 @@ createMCUBE <- function(
   }
 
   # Check cell type names
-  if (!identical(colnames(proportion), rownames(reference))) {
-    stop("Cell type names of proportion and reference do not match!")
+  if (!identical(colnames(proportions), rownames(reference))) {
+    stop("Cell type names of proportions and reference do not match!")
   } # End
 
   # Check/assign celltype_test
@@ -204,7 +204,7 @@ createMCUBE <- function(
     }
   }
   celltype_test <- mcubeFilterCellTypes(
-    proportion = proportion[spots, , drop = FALSE],
+    proportions = proportions[spots, , drop = FALSE],
     celltype_test = celltype_test,
     proportion_threshold = proportion_threshold,
     celltype_threshold = celltype_threshold
@@ -227,7 +227,7 @@ createMCUBE <- function(
   # Filter out lowly expressed genes
   gene_test <- mcubeFilterGenes(
     as.matrix(counts[spots, , drop = FALSE]),
-    library_size[spots], gene_threshold
+    library_sizes[spots], gene_threshold
   )
   if (length(gene_test) == 0) {
     stop("No genes remain after filtering based on expression level!") # End
@@ -249,8 +249,8 @@ createMCUBE <- function(
         } else {
           mcubeGetPlatformEffects(
             counts = as.matrix(counts[spots_used, , drop = FALSE]),
-            library_size = library_size[spots_used],
-            proportion = proportion[spots_used, , drop = FALSE],
+            library_sizes = library_sizes[spots_used],
+            proportions = proportions[spots_used, , drop = FALSE],
             reference = reference,
             spot_effects = spot_effects[spots_used]
           )
@@ -285,8 +285,8 @@ createMCUBE <- function(
   # Get the platform effects by considering all spots together
   platform_effects_all <- mcubeGetPlatformEffects(
     counts = as.matrix(counts[spots, , drop = FALSE]),
-    library_size = library_size[spots],
-    proportion = proportion[spots, , drop = FALSE],
+    library_sizes = library_sizes[spots],
+    proportions = proportions[spots, , drop = FALSE],
     reference = reference,
     spot_effects = spot_effects[spots]
   )
@@ -298,8 +298,8 @@ createMCUBE <- function(
       mcubeFilterGenesCellType(
         celltype = celltype, celltype_all = celltype_test,
         gene_test = gene_test,
-        library_size = library_size[spots],
-        proportion = proportion[spots, , drop = FALSE],
+        library_sizes = library_sizes[spots],
+        proportions = proportions[spots, , drop = FALSE],
         reference = reference, reference_threshold = reference_threshold,
         platform_effects = platform_effects_all
       )
@@ -345,7 +345,7 @@ createMCUBE <- function(
   message(
     "Preprocessed data description: ",
     nrow(counts), " spots, ", ncol(counts), " genes, and ",
-    ncol(proportion), " cell types in total. ",
+    ncol(proportions), " cell types in total. ",
     length(spots), " spots and ",
     length(celltype_test), " cell types to analyze."
   )
@@ -355,8 +355,8 @@ createMCUBE <- function(
     Class = "MCUBE",
     counts = counts,
     coordinates = coordinates,
-    proportion = proportion,
-    library_size = library_size,
+    proportions = proportions,
+    library_sizes = library_sizes,
     covariates = covariates,
     batch_id = batch_id,
     spots = spots,

@@ -5,7 +5,7 @@
 #' Credit goes to the R package `spacexr` (\url{https://github.com/dmcable/spacexr}).
 #'
 #' @param counts A matrix. Each row represents a spot and each column represents a gene.
-#' @param library_size A numeric vector containing library sizes of all spots.
+#' @param library_sizes A numeric vector containing library sizes of all spots.
 #' @param threshold A numeric value. Genes with average relative expression below this threshold are filtered out.
 #' @param batch_size An integer.
 #' The number of genes to process in each batch.
@@ -14,15 +14,15 @@
 #'
 #' @export
 mcubeFilterGenes <- function(
-    counts, library_size = NULL,
+    counts, library_sizes = NULL,
     threshold = 5e-5, batch_size = 1000) {
   message(
     "mcubeFilterGenes: Filter genes based on relative expression",
     " with threshold = ", threshold, "."
   )
 
-  if (is.null(library_size)) {
-    library_size <- rowSums(as.matrix(counts))
+  if (is.null(library_sizes)) {
+    library_sizes <- rowSums(as.matrix(counts))
   }
 
   n_genes <- ncol(counts)
@@ -35,7 +35,7 @@ mcubeFilterGenes <- function(
     } else {
       index_range <- (1 + (n_batches - 1) * batch_size):n_genes
     }
-    norm_counts <- as.matrix(counts[, index_range, drop = FALSE]) / library_size
+    norm_counts <- as.matrix(counts[, index_range, drop = FALSE]) / library_sizes
     gene_means[index_range] <- colMeans(norm_counts)
   }
   gene_list_total <- names(which(gene_means > threshold))
@@ -60,8 +60,8 @@ mcubeFilterGenes <- function(
 #' @param celltype A character specifying the cell type.
 #' @param celltype_all A character vector containing all cell types.
 #' @param gene_test A character vector specifying the genes to test.
-#' @param library_size A numeric vector containing library sizes of all spots.
-#' @param proportion A numeric matrix containing the proportion of each cell type at each spot.
+#' @param library_sizes A numeric vector containing library sizes of all spots.
+#' @param proportions A numeric matrix containing the proportion of each cell type at each spot.
 #' @param reference A numeric matrix containing the reference expression of genes for each cell type.
 #' @param reference_threshold A numeric value. Genes with relative expression below this threshold will be filtered out.
 #' @param platform_effects A numeric vector containing the platform effects for each gene.
@@ -71,30 +71,30 @@ mcubeFilterGenes <- function(
 #' @export
 mcubeFilterGenesCellType <- function(
     celltype, celltype_all, gene_test,
-    library_size, proportion, reference,
+    library_sizes, proportions, reference,
     reference_threshold = 0.5, platform_effects) {
   C <- 15
-  N_cells <- colSums(proportion)[celltype]
-  library_size_list <- library_size[
-    which(proportion[, celltype] >= .99)
+  N_cells <- colSums(proportions)[celltype]
+  library_sizes_list <- library_sizes[
+    which(proportions[, celltype] >= .99)
   ]
-  if (length(library_size_list) < 10) {
-    library_size_list <- library_size[
-      which(proportion[, celltype] >= .80)
+  if (length(library_sizes_list) < 10) {
+    library_sizes_list <- library_sizes[
+      which(proportions[, celltype] >= .80)
     ]
   }
-  if (length(library_size_list) < 10) {
-    library_size_list <- library_size[
-      which(proportion[, celltype] >= .50)
+  if (length(library_sizes_list) < 10) {
+    library_sizes_list <- library_sizes[
+      which(proportions[, celltype] >= .50)
     ]
   }
-  if (length(library_size_list) < 10) {
-    library_size_list <- library_size[
-      which(proportion[, celltype] >= .01)
+  if (length(library_sizes_list) < 10) {
+    library_sizes_list <- library_sizes[
+      which(proportions[, celltype] >= .01)
     ]
   }
-  library_size_median <- median(library_size_list)
-  expr_thresh <- C / (N_cells * library_size_median)
+  library_sizes_median <- median(library_sizes_list)
+  expr_thresh <- C / (N_cells * library_sizes_median)
   reference_renorm <- sweep(
     reference[celltype_all, gene_test, drop = FALSE],
     MARGIN = 2,
@@ -107,7 +107,7 @@ mcubeFilterGenesCellType <- function(
   )
   # Compare with the reference of other cell types
   celltype_means <- reference_renorm[celltype_all, gene_list_type, drop = FALSE]
-  if (ncol(proportion) > 1) {
+  if (ncol(proportions) > 1) {
     celltype_mean_ratio <- celltype_means[celltype, ] / apply(celltype_means, 2, max)
     gene_list_type <- gene_list_type[which(celltype_mean_ratio >= reference_threshold)]
   }
@@ -122,8 +122,8 @@ mcubeFilterGenesCellType <- function(
 #' Credit goes to the R package `spacexr` (\url{https://github.com/dmcable/spacexr}).
 #'
 #' @param counts A matrix. Each row represents a spot and each column represents a gene.
-#' @param library_size A numeric vector containing library sizes of all spots.
-#' @param proportion A numeric matrix containing the proportion of each cell type at each spot.
+#' @param library_sizes A numeric vector containing library sizes of all spots.
+#' @param proportions A numeric matrix containing the proportion of each cell type at each spot.
 #' @param reference A numeric matrix containing the reference expression of genes for each cell type.
 #' @param spot_effects A numeric vector containing the spot effects for each spot.
 #'
@@ -131,16 +131,16 @@ mcubeFilterGenesCellType <- function(
 #'
 #' @export
 mcubeGetPlatformEffects <- function(
-    counts, library_size, proportion,
+    counts, library_sizes, proportions,
     reference, spot_effects) {
   bulk_vec <- colSums(as.matrix(counts))
   weight_celltype <- colSums(
-    library_size * exp(spot_effects) * proportion
-  ) / sum(library_size)
+    library_sizes * exp(spot_effects) * proportions
+  ) / sum(library_sizes)
   weight_avg <- colSums(
     reference * weight_celltype / sum(weight_celltype),
   )
-  target_means <- bulk_vec / sum(library_size)
+  target_means <- bulk_vec / sum(library_sizes)
   platform_effects <- log(target_means / weight_avg)
   platform_effects[!is.finite(platform_effects)] <- 0
   names(platform_effects) <- colnames(reference)
@@ -153,7 +153,7 @@ mcubeGetPlatformEffects <- function(
 #' Fuction for data preprocessing.
 #' Credit goes to the R package `spacexr` (\url{https://github.com/dmcable/spacexr}).
 #'
-#' @param proportion A numeric matrix containing the proportion of each cell type at each spot.
+#' @param proportions A numeric matrix containing the proportion of each cell type at each spot.
 #' @param celltype_test A character vector specifying the cell types to test.
 #' @param proportion_threshold A numeric value. The proportions below this threshold will be ignored.
 #' @param celltype_threshold A numeric value. Cell types with column sums less than this number will be filtered out.
@@ -162,10 +162,10 @@ mcubeGetPlatformEffects <- function(
 #'
 #' @export
 mcubeFilterCellTypes <- function(
-    proportion, celltype_test = NULL,
+    proportions, celltype_test = NULL,
     proportion_threshold = 0.1, celltype_threshold = 100) {
-  proportion[proportion < proportion_threshold] <- 0
-  celltype_default <- names(which(colSums(proportion) >= celltype_threshold))
+  proportions[proportions < proportion_threshold] <- 0
+  celltype_default <- names(which(colSums(proportions) >= celltype_threshold))
 
   if (!is.null(celltype_test)) {
     diff_celltypes <- setdiff(celltype_test, celltype_default)

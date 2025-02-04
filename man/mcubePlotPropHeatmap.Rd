@@ -5,7 +5,7 @@
 \title{Plot the heatmap of cell type proportions}
 \usage{
 mcubePlotPropHeatmap(
-  proportion,
+  proportions,
   spots = NULL,
   celltypes = NULL,
   palettes = pals::brewer.purd(20),
@@ -14,7 +14,7 @@ mcubePlotPropHeatmap(
 )
 }
 \arguments{
-\item{proportion}{A matrix of cell type proportions.
+\item{proportions}{A matrix of cell type proportions.
 Each row represents a spot and each column represents a cell type.}
 
 \item{spots}{A character vector specifying the spots to plot.

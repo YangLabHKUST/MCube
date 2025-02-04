@@ -11,15 +11,15 @@ Each \code{\linkS4class{MCUBE}} object has a number of slots which store informa
 
 \describe{
 \item{\code{counts}}{A matrix, Matrix::dgCMatrix, or Matrix::dgTMatrix.
-Each Row represents a spot and each column represents a gene.}
+Each row represents a spot and each column represents a gene.}
 
 \item{\code{coordinates}}{A matrix.
 Each row represents a spot and each column represents a spatial dimension.}
 
-\item{\code{proportion}}{A cell type proportion matrix.
+\item{\code{proportions}}{A cell type proportion matrix.
 Each row represents a spot and each column represents a cell type.}
 
-\item{\code{library_size}}{A numeric vector containing the library sizes of all spots.}
+\item{\code{library_sizes}}{A numeric vector containing the library sizes of all spots.}
 
 \item{\code{covariates}}{A matrix.
 Each row represents a spot and each column represents a covariate.}

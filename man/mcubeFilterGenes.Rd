@@ -6,7 +6,7 @@
 \usage{
 mcubeFilterGenes(
   counts,
-  library_size = NULL,
+  library_sizes = NULL,
   threshold = 5e-05,
   batch_size = 1000
 )
@@ -14,7 +14,7 @@ mcubeFilterGenes(
 \arguments{
 \item{counts}{A matrix. Each row represents a spot and each column represents a gene.}
 
-\item{library_size}{A numeric vector containing library sizes of all spots.}
+\item{library_sizes}{A numeric vector containing library sizes of all spots.}
 
 \item{threshold}{A numeric value. Genes with average relative expression below this threshold are filtered out.}
 

@@ -5,14 +5,14 @@
 \title{Get main cell types}
 \usage{
 mcubeFilterCellTypes(
-  proportion,
+  proportions,
   celltype_test = NULL,
   proportion_threshold = 0.1,
   celltype_threshold = 100
 )
 }
 \arguments{
-\item{proportion}{A numeric matrix containing the proportion of each cell type at each spot.}
+\item{proportions}{A numeric matrix containing the proportion of each cell type at each spot.}
 
 \item{celltype_test}{A character vector specifying the cell types to test.}
 

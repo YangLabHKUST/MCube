@@ -8,8 +8,8 @@ mcubeFilterGenesCellType(
   celltype,
   celltype_all,
   gene_test,
-  library_size,
-  proportion,
+  library_sizes,
+  proportions,
   reference,
   reference_threshold = 0.5,
   platform_effects
@@ -22,9 +22,9 @@ mcubeFilterGenesCellType(
 
 \item{gene_test}{A character vector specifying the genes to test.}
 
-\item{library_size}{A numeric vector containing library sizes of all spots.}
+\item{library_sizes}{A numeric vector containing library sizes of all spots.}
 
-\item{proportion}{A numeric matrix containing the proportion of each cell type at each spot.}
+\item{proportions}{A numeric matrix containing the proportion of each cell type at each spot.}
 
 \item{reference}{A numeric matrix containing the reference expression of genes for each cell type.}
 
