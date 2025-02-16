@@ -22,6 +22,25 @@ mcubePlotExpr(
   ratio = 1,
   title = NULL
 )
+
+mcubePlotExpr(
+  counts,
+  coordinates,
+  gene,
+  spots = NULL,
+  normalize = TRUE,
+  he_image = NULL,
+  background = TRUE,
+  expr_threshold = 1,
+  spot_size = 1,
+  palettes = pals::brewer.bugn(20)[11:20],
+  opacity_target = 1,
+  opacity_background = 0.2,
+  xlim = NULL,
+  ylim = NULL,
+  ratio = 1,
+  title = NULL
+)
 }
 \arguments{
 \item{counts}{A matrix of gene expression counts.
@@ -66,7 +85,11 @@ Other spots will be used as background if \code{background} is \code{TRUE}. Defa
 }
 \value{
 A ggplot object.
+
+A ggplot object.
 }
 \description{
+Plot the spatial distribution of gene expression
+
 Plot the spatial distribution of gene expression
 }

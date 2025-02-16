@@ -20,9 +20,26 @@ mcubePlotExprCellTypeBinary(
   ratio = 1,
   title = NULL
 )
+
+mcubePlotExprCellTypeBinary(
+  object,
+  celltype,
+  gene,
+  spots = NULL,
+  he_image = NULL,
+  background = FALSE,
+  spot_size = 1,
+  palettes = c("#32CD32", "#FF69B4"),
+  opacity_target = 1,
+  opacity_background = 0.3,
+  xlim = NULL,
+  ylim = NULL,
+  ratio = 1,
+  title = NULL
+)
 }
 \arguments{
-\item{object}{An \code{\link[=MCUBE-class]{MCUBE}} object with fitted results of the null model.}
+\item{object}{An \code{\link[=mcube-class]{mcube}} object with fitted results of the null model.}
 
 \item{celltype}{A character specifying the cell type to plot.}
 
@@ -55,7 +72,11 @@ If \code{TRUE}, the spots not pass the expression threshold will be plotted in g
 }
 \value{
 A ggplot object.
+
+A ggplot object.
 }
 \description{
+Plot the spatial distribution of gene expression variations in binary mode
+
 Plot the spatial distribution of gene expression variations in binary mode
 }

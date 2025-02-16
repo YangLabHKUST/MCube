@@ -7,7 +7,7 @@
 #' @importFrom foreach foreach %dopar%
 #' @importFrom iterators iter
 #'
-#' @param object An \code{\link[=MCUBE-class]{MCUBE}} object.
+#' @param object An \code{\link[=mcube-class]{mcube}} object.
 #' @param reference_threshold A numeric value between 0 and 1.
 #' The minimum relative expression level of a gene to be considered for a cell type when fitting the null model.
 #' @param safeguard A numeric value.
@@ -21,7 +21,7 @@
 #' @param max_cores A positive integer.
 #' The maximum number of cores to use for parallel computing. Default is 1.
 #'
-#' @return An \code{\link[=MCUBE-class]{MCUBE}} object with fitted null models for all celltype-gene pairs.
+#' @return An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.
 #'
 #' @export
 mcubeFitNull <- function(

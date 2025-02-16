@@ -21,9 +21,27 @@ mcubePlotExprCellType(
   ratio = 1,
   title = NULL
 )
+
+mcubePlotExprCellType(
+  object,
+  celltype,
+  gene,
+  spots = NULL,
+  normalize = TRUE,
+  he_image = NULL,
+  background = FALSE,
+  spot_size = 1,
+  palettes = rev(pals::brewer.piyg(10)),
+  opacity_target = 1,
+  opacity_background = 0.2,
+  xlim = NULL,
+  ylim = NULL,
+  ratio = 1,
+  title = NULL
+)
 }
 \arguments{
-\item{object}{An \code{\link[=MCUBE-class]{MCUBE}} object with fitted results of the null model.}
+\item{object}{An \code{\link[=mcube-class]{mcube}} object with fitted results of the null model.}
 
 \item{celltype}{A character specifying the cell type to plot.}
 
@@ -59,7 +77,11 @@ If \code{TRUE}, the spots not pass the expression threshold will be plotted in g
 }
 \value{
 A ggplot object.
+
+A ggplot object.
 }
 \description{
+Plot the spatial distribution of gene expression variations
+
 Plot the spatial distribution of gene expression variations
 }

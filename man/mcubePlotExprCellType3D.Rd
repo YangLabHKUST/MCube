@@ -21,9 +21,27 @@ mcubePlotExprCellType3D(
   plotly_eye = list(x = 1.25, y = 1.25, z = 1.25),
   rgl_um = c(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 )
+
+mcubePlotExprCellType3D(
+  object,
+  celltype,
+  gene,
+  spots = NULL,
+  proportion_threshold = 0.1,
+  plot_method = "plotly",
+  palettes = c("#32CD32", "#FF69B4"),
+  opacity_target = 0.8,
+  opacity_background = 0.05,
+  axis_rescale = c(1, 1, 1),
+  spot_size = 3,
+  spot_radius = 0.5,
+  plotly_center = list(x = 0, y = 0, z = 0),
+  plotly_eye = list(x = 1.25, y = 1.25, z = 1.25),
+  rgl_um = c(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+)
 }
 \arguments{
-\item{object}{An \code{\link[=MCUBE-class]{MCUBE}} object with fitted results of the null model.}
+\item{object}{An \code{\link[=mcube-class]{mcube}} object with fitted results of the null model.}
 
 \item{celltype}{A character specifying the cell type to plot.}
 
@@ -58,7 +76,11 @@ Either "plotly" or "rgl". Default is "plotly".}
 }
 \value{
 A plotly or rgl object.
+
+A plotly or rgl object.
 }
 \description{
+Plot the spatial distribution of gene expression variations in 3D
+
 Plot the spatial distribution of gene expression variations in 3D
 }

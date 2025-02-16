@@ -19,6 +19,22 @@ mcubePlotPropCellType(
   ratio = 1,
   title = NULL
 )
+
+mcubePlotPropCellType(
+  proportions,
+  coordinates,
+  celltype,
+  spots = NULL,
+  he_image = NULL,
+  background = TRUE,
+  proportion_threshold = 0.01,
+  spot_size = 1,
+  palettes = pals::brewer.orrd(22)[3:22],
+  xlim = NULL,
+  ylim = NULL,
+  ratio = 1,
+  title = NULL
+)
 }
 \arguments{
 \item{proportions}{A matrix of cell type proportions.
@@ -55,7 +71,11 @@ Spots with proportions greater than or equal to the threshold will be plotted. D
 }
 \value{
 A ggplot object.
+
+A ggplot object.
 }
 \description{
+Plot the spatial distribution of cell type proportions
+
 Plot the spatial distribution of cell type proportions
 }

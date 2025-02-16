@@ -1,6 +1,6 @@
 #' An S4 class to represent spatial transcriptomic and single-cell RNA-sequencing reference data
 #'
-#' @description Each \code{\linkS4class{MCUBE}} object has a number of slots which store information. Key slots to access are listed below.
+#' @description Each \code{\linkS4class{mcube}} object has a number of slots which store information. Key slots to access are listed below.
 #'
 #' @importFrom methods setClass
 #'
@@ -21,7 +21,7 @@
 #' @slot spot_effects A numeric vector containing the spot effects of all spots.
 #' @slot platform_effects A matrix containing the gene-specific platform effects.
 #' Each row represents a batch and each column represents a gene.
-#' @slot config A list recording the configuration of the \code{\linkS4class{MCUBE}} object.
+#' @slot config A list recording the configuration of the \code{\linkS4class{mcube}} object.
 #' @slot null_models A listing recording the fitted results of the null models with each element corresponding to a celltype-gene pair.
 #' @slot kernels A list recording the kernel matrices used for score testing.
 #' @slot celltype_test A character vector specifying the cell types to test.
@@ -34,7 +34,7 @@
 #' @export
 setClass(
   # Set the name for the class
-  "MCUBE",
+  "mcube",
 
   # Define the slots
   slots = c(
@@ -61,11 +61,11 @@ setClass(
 
   # Assign the default prototypes
   prototype = list(
-    project = "MCUBE"
+    project = "MCube"
   )
 )
 
-#' Create the \code{\linkS4class{MCUBE}} object
+#' Create the \code{\linkS4class{mcube}} object
 #'
 #' @importFrom methods new
 #'
@@ -107,10 +107,10 @@ setClass(
 #' The minimum relative expression level of a gene to be considered for a cell type in testing.
 #' @param project A character recording the name of the project.
 #'
-#' @return An \code{\linkS4class{MCUBE}} object.
+#' @return An \code{\linkS4class{mcube}} object.
 #'
 #' @export
-createMCUBE <- function(
+createMCube <- function(
     counts, coordinates, proportions,
     library_sizes = NULL, covariates = NULL, batch_id = NULL,
     reference, used_for_deconvolution = NULL,
@@ -119,7 +119,7 @@ createMCUBE <- function(
     celltype_test = NULL, gene_test = NULL,
     celltype_threshold = 100, gene_threshold = 5e-5,
     proportion_threshold = 0.1, reference_threshold = 0.5,
-    project = "MCUBE") {
+    project = "MCube") {
   # Check spot names
   if (!identical(rownames(counts), rownames(coordinates))) {
     stop("Spot names of counts and coordinates do not match!") # End
@@ -352,7 +352,7 @@ createMCUBE <- function(
 
   # Inheriting
   object <- methods::new(
-    Class = "MCUBE",
+    Class = "mcube",
     counts = counts,
     coordinates = coordinates,
     proportions = proportions,

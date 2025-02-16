@@ -15,7 +15,7 @@ mcubeFitNull(
 )
 }
 \arguments{
-\item{object}{An \code{\link[=MCUBE-class]{MCUBE}} object.}
+\item{object}{An \code{\link[=mcube-class]{mcube}} object.}
 
 \item{reference_threshold}{A numeric value between 0 and 1.
 The minimum relative expression level of a gene to be considered for a cell type when fitting the null model.}
@@ -36,7 +36,7 @@ Whether to print the progress of the optimization algorithm. Default is FALSE.}
 The maximum number of cores to use for parallel computing. Default is 1.}
 }
 \value{
-An \code{\link[=MCUBE-class]{MCUBE}} object with fitted null models for all celltype-gene pairs.
+An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.
 }
 \description{
 Fit the null MMM models for all celltype-gene pairs using a PQL-based approach.
