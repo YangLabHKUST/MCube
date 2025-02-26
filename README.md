@@ -7,8 +7,8 @@
 
 ![GitHub repo
 size](https://img.shields.io/github/repo-size/YangLabHKUST/MCube)
-![GitHub commit
-activity](https://img.shields.io/github/commit-activity/t/YangLabHKUST/MCube)
+![GitHub last
+commit](https://img.shields.io/github/last-commit/YangLabHKUST/MCube)
 ![GitHub
 License](https://img.shields.io/github/license/YangLabHKUST/MCube)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FYangLabHKUST%2FMCube&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
@@ -72,11 +72,13 @@ repository useful for your work, please cite:
 
 ## Development
 
-The R package `MCube` is developed by [Zhiwei
+The R package `MCube` is developed and maintained by [Zhiwei
 Wang](https://sites.google.com/view/statwangz).
 
 ## Contact
 
 Please feel free to contact [Zhiwei
-Wang](mailto:zhiwei.wang@connect.ust.hk) or [Prof. Can
+Wang](mailto:zhiwei.wang@connect.ust.hk), [Prof. Hongyu
+Zhao](mailto:hongyu.zhao@yale.edu), [Prof. Zhixiang
+Lin](mailto:zhixianglin@cuhk.edu.hk), or [Prof. Can
 Yang](mailto:macyang@ust.hk) if any inquiries.
