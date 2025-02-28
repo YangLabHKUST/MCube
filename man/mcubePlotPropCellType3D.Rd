@@ -2,27 +2,8 @@
 % Please edit documentation in R/MCubePlot.R
 \name{mcubePlotPropCellType3D}
 \alias{mcubePlotPropCellType3D}
-\title{Plot the spatial distribution of cell type proportions in 3D}
+\title{Plot the spatial distribution of cell type proportions for 3D model}
 \usage{
-mcubePlotPropCellType3D(
-  proportions,
-  coordinates,
-  celltype,
-  proportion_threshold = 0.1,
-  spots = NULL,
-  plot_method = "plotly",
-  color_target = "blue",
-  color_background = "gray",
-  opacity_target = 0.5,
-  opacity_background = 0.05,
-  axis_rescale = c(1, 1, 1),
-  spot_size = 3,
-  spot_radius = 0.5,
-  plotly_center = list(x = 0, y = 0, z = 0),
-  plotly_eye = list(x = 1.25, y = 1.25, z = 1.25),
-  rgl_um = c(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
-)
-
 mcubePlotPropCellType3D(
   proportions,
   coordinates,
@@ -82,11 +63,7 @@ Either "plotly" or "rgl". Default is "plotly".}
 }
 \value{
 A plotly or rgl object.
-
-A plotly or rgl object.
 }
 \description{
-Plot the spatial distribution of cell type proportions in 3D
-
-Plot the spatial distribution of cell type proportions in 3D
+Plot the spatial distribution of cell type proportions for 3D model
 }

@@ -12,15 +12,6 @@ mcubePlotPropHeatmap(
   title = NULL,
   filename = NA
 )
-
-mcubePlotPropHeatmap(
-  proportions,
-  spots = NULL,
-  celltypes = NULL,
-  palettes = pals::brewer.purd(20),
-  title = NULL,
-  filename = NA
-)
 }
 \arguments{
 \item{proportions}{A matrix of cell type proportions.
@@ -41,11 +32,7 @@ If \code{NA}, the plot will not be saved. Default is \code{NA}.}
 }
 \value{
 A pheatmap object.
-
-A pheatmap object.
 }
 \description{
-Plot the heatmap of cell type proportions
-
 Plot the heatmap of cell type proportions
 }

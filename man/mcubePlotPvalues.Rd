@@ -13,16 +13,6 @@ mcubePlotPvalues(
   ci = 0.95,
   nrow = 1
 )
-
-mcubePlotPvalues(
-  pvalues_list,
-  which_pvalue = "combined_pvalue",
-  type = "qqplot",
-  minus_log10p_max = NULL,
-  under_null = FALSE,
-  ci = 0.95,
-  nrow = 1
-)
 }
 \arguments{
 \item{pvalues_list}{A list of data frames containing p-values.
@@ -44,11 +34,7 @@ If \code{TRUE}, the confidence interval under the null hypothesis will be plotte
 }
 \value{
 A ggplot object.
-
-A ggplot object.
 }
 \description{
-Plot function for p-values
-
 Plot function for p-values
 }

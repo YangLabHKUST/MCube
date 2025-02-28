@@ -2,26 +2,8 @@
 % Please edit documentation in R/MCubePlot.R
 \name{mcubePlotExprCellType}
 \alias{mcubePlotExprCellType}
-\title{Plot the spatial distribution of gene expression variations}
+\title{Plot the spatial distribution of gene expression variations within a certain cell type}
 \usage{
-mcubePlotExprCellType(
-  object,
-  celltype,
-  gene,
-  spots = NULL,
-  normalize = TRUE,
-  he_image = NULL,
-  background = FALSE,
-  spot_size = 1,
-  palettes = rev(pals::brewer.piyg(10)),
-  opacity_target = 1,
-  opacity_background = 0.2,
-  xlim = NULL,
-  ylim = NULL,
-  ratio = 1,
-  title = NULL
-)
-
 mcubePlotExprCellType(
   object,
   celltype,
@@ -77,11 +59,7 @@ If \code{TRUE}, the spots not pass the expression threshold will be plotted in g
 }
 \value{
 A ggplot object.
-
-A ggplot object.
 }
 \description{
-Plot the spatial distribution of gene expression variations
-
-Plot the spatial distribution of gene expression variations
+Plot the spatial distribution of gene expression variations within a certain cell type
 }

@@ -2,25 +2,8 @@
 % Please edit documentation in R/MCubePlot.R
 \name{mcubePlotExprCellTypeBinary}
 \alias{mcubePlotExprCellTypeBinary}
-\title{Plot the spatial distribution of gene expression variations in binary mode}
+\title{Plot the spatial distribution of gene expression variations within a certain cell type in binary mode}
 \usage{
-mcubePlotExprCellTypeBinary(
-  object,
-  celltype,
-  gene,
-  spots = NULL,
-  he_image = NULL,
-  background = FALSE,
-  spot_size = 1,
-  palettes = c("#32CD32", "#FF69B4"),
-  opacity_target = 1,
-  opacity_background = 0.3,
-  xlim = NULL,
-  ylim = NULL,
-  ratio = 1,
-  title = NULL
-)
-
 mcubePlotExprCellTypeBinary(
   object,
   celltype,
@@ -72,11 +55,7 @@ If \code{TRUE}, the spots not pass the expression threshold will be plotted in g
 }
 \value{
 A ggplot object.
-
-A ggplot object.
 }
 \description{
-Plot the spatial distribution of gene expression variations in binary mode
-
-Plot the spatial distribution of gene expression variations in binary mode
+Plot the spatial distribution of gene expression variations within a certain cell type in binary mode
 }
