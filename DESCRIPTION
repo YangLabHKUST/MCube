@@ -4,7 +4,9 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Zhiwei", "Wang", , "zhiwei.wang@connect.ust.hk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7682-0070"))
-Description: The R package `MCube` implements the methods based on the paper A unified framework for identification of cell-type-specific spatially variable genes in spatial transcriptomic studies.
+Description:
+    The R package MCube implements the methods in the MMM paper.
+    MMM, standing for the Mixture of Mixed Models, is a unified framework for statistical identification of cell-type-specific spatially variable genes in spatial transcriptomic (ST) studies.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
