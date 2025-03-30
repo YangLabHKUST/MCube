@@ -278,27 +278,26 @@ mcubeFitNullSinglePair <- function(
 
     ### Step 2: Variance components estimation, update tau using AI algorithm
 
-    # Compute noise matrix of IK * IK
+    # Compute noise matrix of I * I
     # all cell types share the same tau
     # MMT_vec <- rowSums(membership_mat^2)
-    Sigma_vec <- W_inv_vec + tau * MMT_vec
-    Sigma_inv_vec <- 1 / (Sigma_vec + safeguard)
-    Sigma_inv_X_mat <- Sigma_inv_vec * X
-    X_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
+    Sigma_inv_vec <- 1 / (W_inv_vec + tau * MMT_vec + safeguard) # I
+    Sigma_inv_X_mat <- Sigma_inv_vec * X # I * C
+    X_t_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat) # C * C
 
     P_mat <- diag(Sigma_inv_vec) -
       tcrossprod(
-        Sigma_inv_X_mat %*% chol2inv(chol(X_Sigma_inv_X_mat)),
+        Sigma_inv_X_mat %*% chol2inv(chol(X_t_Sigma_inv_X_mat)),
         Sigma_inv_X_mat
-      )
-    P_Y_tilde <- as.vector(P_mat %*% Y_tilde)
+      ) # I * I
+    P_Y_tilde <- as.vector(P_mat %*% Y_tilde) # I
 
     # partial Sigma / partial tau = M * M^T, diagnoal matrix
     deriv_first_vec <- sum(MMT_vec * P_Y_tilde^2) / 2 -
       sum(diag(P_mat * MMT_vec)) / 2
 
     # Compute second order derivative
-    par_Sigma_par_tau_P_Y_tilde <- MMT_vec * P_Y_tilde
+    par_Sigma_par_tau_P_Y_tilde <- MMT_vec * P_Y_tilde # I
     deriv_sec <- as.vector(t(par_Sigma_par_tau_P_Y_tilde) %*% P_mat %*%
                              par_Sigma_par_tau_P_Y_tilde) / 2
 
@@ -311,22 +310,36 @@ mcubeFitNullSinglePair <- function(
         step_size * deriv_first_vec / deriv_sec
     }
 
+    # Free memory
+    rm(
+      Sigma_inv_X_mat, X_t_Sigma_inv_X_mat,
+      P_mat, P_Y_tilde,
+      par_Sigma_par_tau_P_Y_tilde, deriv_first_vec, deriv_sec
+    )
+    gc()
+
     ### Step 3: Update xi and u using current Y_tilde and new tau
 
-    Sigma_vec <- W_inv_vec + tau_new * MMT_vec
-    Sigma_inv_vec <- 1 / (Sigma_vec + safeguard)
+    Sigma_inv_vec <- 1 / (W_inv_vec + tau_new * MMT_vec + safeguard) # I
 
     # Boost computation through matrix multiplication tricks
-    Sigma_inv_X_mat <- Sigma_inv_vec * X
-    X_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
-    Sigma_inv_Y_vec <- Sigma_inv_vec * Y_tilde
-    X_Sigma_inv_Y_mat <- crossprod(X, Sigma_inv_Y_vec)
+    Sigma_inv_X_mat <- Sigma_inv_vec * X # I * C
+    X_t_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat) # C * C
+    Sigma_inv_Y_vec <- Sigma_inv_vec * Y_tilde # I
+    X_t_Sigma_inv_Y_mat <- crossprod(X, Sigma_inv_Y_vec) # C
 
     xi_new <- as.vector(
-      chol2inv(chol(X_Sigma_inv_X_mat)) %*% X_Sigma_inv_Y_mat
+      chol2inv(chol(X_t_Sigma_inv_X_mat)) %*% X_t_Sigma_inv_Y_mat
     )
     u_mat_new <- tau_new * Sigma_inv_vec * membership_mat *
       as.vector(Y_tilde - X %*% xi_new)
+
+    # Free memory
+    rm(
+      Sigma_inv_X_mat, X_t_Sigma_inv_X_mat,
+      Sigma_inv_Y_vec, X_t_Sigma_inv_Y_mat
+    )
+    gc()
 
     gap <- max(
       c(
@@ -504,11 +517,11 @@ mcubeFitNullSinglePair <- function(
 #     Sigma_vec <- W_inv_vec + tau * MMT_vec
 #     Sigma_inv_vec <- 1 / (Sigma_vec + safeguard)
 #     Sigma_inv_X_mat <- Sigma_inv_vec * X
-#     X_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
+#     X_t_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
 
 #     P_mat <- diag(Sigma_inv_vec) -
 #       tcrossprod(
-#         Sigma_inv_X_mat %*% chol2inv(chol(X_Sigma_inv_X_mat)),
+#         Sigma_inv_X_mat %*% chol2inv(chol(X_t_Sigma_inv_X_mat)),
 #         Sigma_inv_X_mat
 #       )
 #     P_Y_tilde <- as.vector(P_mat %*% Y_tilde)
@@ -538,12 +551,12 @@ mcubeFitNullSinglePair <- function(
 
 #     # Modifiy to boost computation
 #     Sigma_inv_X_mat <- Sigma_inv_vec * X
-#     X_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
+#     X_t_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
 #     Sigma_inv_Y_vec <- Sigma_inv_vec * Y_tilde
 #     X_Sigma_inv_Y_mat <- crossprod(X, Sigma_inv_Y_vec)
 
 #     xi_new <- as.vector(
-#       chol2inv(chol(X_Sigma_inv_X_mat)) %*% X_Sigma_inv_Y_mat
+#       chol2inv(chol(X_t_Sigma_inv_X_mat)) %*% X_Sigma_inv_Y_mat
 #     )
 #     u_new <- tau_new * Sigma_inv_vec * membership_mat *
 #       as.vector(Y_tilde - X %*% xi_new)
