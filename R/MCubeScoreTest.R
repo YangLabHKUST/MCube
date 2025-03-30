@@ -171,10 +171,10 @@ mcubeTestSinglePairMultiKernels <- function(
 
   # Compute the projection matrix
   Sigma_inv_X_mat <- null_model_results$Sigma_inv * X
-  X_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
+  X_t_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
   P_mat <- diag(null_model_results$Sigma_inv) -
     tcrossprod(
-      Sigma_inv_X_mat %*% chol2inv(chol(X_Sigma_inv_X_mat)),
+      Sigma_inv_X_mat %*% chol2inv(chol(X_t_Sigma_inv_X_mat)),
       Sigma_inv_X_mat
     )
   P_Y_tilde <- as.vector(P_mat %*% null_model_results$Y_tilde)
