@@ -310,13 +310,11 @@ mcubeFitNullSinglePair <- function(
         step_size * deriv_first_vec / deriv_sec
     }
 
-    # Free memory
     rm(
       Sigma_inv_X_mat, X_t_Sigma_inv_X_mat,
       P_mat, P_Y_tilde,
       par_Sigma_par_tau_P_Y_tilde, deriv_first_vec, deriv_sec
     )
-    gc()
 
     ### Step 3: Update xi and u using current Y_tilde and new tau
 
@@ -334,12 +332,10 @@ mcubeFitNullSinglePair <- function(
     u_mat_new <- tau_new * Sigma_inv_vec * membership_mat *
       as.vector(Y_tilde - X %*% xi_new)
 
-    # Free memory
     rm(
       Sigma_inv_X_mat, X_t_Sigma_inv_X_mat,
       Sigma_inv_Y_vec, X_t_Sigma_inv_Y_mat
     )
-    gc()
 
     gap <- max(
       c(
