@@ -3,6 +3,7 @@
 export(ACAT)
 export(createMCube)
 export(format_sumstats)
+export(getCredibleSetSize)
 export(mcubeFilterCellTypes)
 export(mcubeFilterGenes)
 export(mcubeFilterGenesCellType)
