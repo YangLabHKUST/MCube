@@ -5,8 +5,6 @@
 \title{Get the size of the credible set}
 \usage{
 getCredibleSetSize(proportions, threshold = 0.95)
-
-getCredibleSetSize(proportions, threshold = 0.95)
 }
 \arguments{
 \item{proportions}{A numeric vector of proportions.}
@@ -15,11 +13,7 @@ getCredibleSetSize(proportions, threshold = 0.95)
 }
 \value{
 The size of the credible set.
-
-The size of the credible set.
 }
 \description{
-Get the size of the credible set
-
 Get the size of the credible set
 }
