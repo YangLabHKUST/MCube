@@ -483,22 +483,3 @@ getCredibleSetSize <- function(proportions, threshold = 0.95) {
     }
   }
 }
-
-#' Get the size of the credible set
-#'
-#' @param proportions A numeric vector of proportions.
-#' @param threshold A numeric value specifying the threshold for the credible set. The default is `0.95`.
-#'
-#' @return The size of the credible set.
-#'
-#' @export
-getCredibleSetSize <- function(proportions, threshold = 0.95) {
-  proportions <- sort(proportions, decreasing = TRUE)
-  proportion_sum <- 0
-  for (i in seq_along(proportions)) {
-    proportion_sum <- proportion_sum + proportions[i]
-    if (proportion_sum >= threshold) {
-      return(i)
-    }
-  }
-}
