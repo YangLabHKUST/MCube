@@ -116,16 +116,16 @@ mcubeFitNull <- function(
     object@celltype_gene_test_pairs$gene,
     sep = "_"
   )
-  error <- sapply(
+  error_vec <- sapply(
     object@null_models,
-    function(x) {
+    FUN = function(x) {
       # inherits(x, "try-error") || !(x$converge)
       inherits(x, "try-error")
     }
   )
-  if (any(error)) {
-    object@null_models <- object@null_models[!error]
-    object@celltype_gene_test_pairs <- object@celltype_gene_test_pairs[!error, , drop = FALSE]
+  if (any(error_vec)) {
+    object@null_models <- object@null_models[!error_vec]
+    object@celltype_gene_test_pairs <- object@celltype_gene_test_pairs[!error_vec, , drop = FALSE]
   }
 
   return(object)
