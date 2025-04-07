@@ -197,6 +197,28 @@ mcubeFilterCellTypes <- function(
   return(celltype_test)
 }
 
+#' Checking function for the fitting results
+#'
+#' @description Check if the fitting result list contains errors.
+#'
+#' @param result_list A list of fitting results.
+#'
+#' @return A logical vector indicating whether each element in the result list is an error.
+#'
+#' @export
+mcubeCheck <- function(result_list) {
+  if (length(result_list) == 0) {
+    stop("mcubeCheck: The result_list is empty!")
+  }
+  error_vec <- sapply(
+    result_list,
+    FUN = function(x) {
+      inherits(x, "try-error")
+    }
+  )
+  return(error_vec)
+}
+
 #' Get cell-type-specific spatially variable genes
 #'
 #' @description Get spatially variable genes specific to a cell type based on the adjusted p-values.
