@@ -36,25 +36,26 @@ mcubeFitNull <- function(
   if (max_cores == 1) {
     object@null_models <- list()
     for (i in 1:nrow(object@celltype_gene_test_pairs)) {
-      null_model_results_i <- try(mcubeFitNullSinglePair(
-        Y = object@counts[object@spots, object@celltype_gene_test_pairs[i, "gene"]],
-        library_sizes = object@library_sizes[object@spots],
-        X = object@covariates[object@spots, , drop = FALSE],
-        batch_id = object@batch_id[object@spots],
-        proportions = object@proportions[object@spots, , drop = FALSE],
-        reference = object@reference[, object@celltype_gene_test_pairs[i, "gene"]],
-        used_for_deconvolution = object@used_for_deconvolution[object@celltype_gene_test_pairs[i, "gene"]],
-        spot_effects = object@spot_effects[object@spots],
-        platform_effect = object@platform_effects[, object@celltype_gene_test_pairs[i, "gene"]],
-        celltype_test = object@celltype_gene_test_pairs[i, "celltype"],
-        proportion_threshold = object@config$proportion_threshold,
-        reference_threshold = object@config$reference_threshold_fit,
-        safeguard = object@config$safeguard,
-        iter_max = object@config$iter_max,
-        tol = object@config$tol,
-        verbose = verbose
-      ))
-      object@null_models <- append(object@null_models, list(null_model_results_i))
+      object@null_models[[i]] <- try(
+        mcubeFitNullSinglePair(
+          Y = object@counts[object@spots, object@celltype_gene_test_pairs[i, "gene"]],
+          library_sizes = object@library_sizes[object@spots],
+          X = object@covariates[object@spots, , drop = FALSE],
+          batch_id = object@batch_id[object@spots],
+          proportions = object@proportions[object@spots, , drop = FALSE],
+          reference = object@reference[, object@celltype_gene_test_pairs[i, "gene"]],
+          used_for_deconvolution = object@used_for_deconvolution[object@celltype_gene_test_pairs[i, "gene"]],
+          spot_effects = object@spot_effects[object@spots],
+          platform_effect = object@platform_effects[, object@celltype_gene_test_pairs[i, "gene"]],
+          celltype_test = object@celltype_gene_test_pairs[i, "celltype"],
+          proportion_threshold = object@config$proportion_threshold,
+          reference_threshold = object@config$reference_threshold_fit,
+          safeguard = object@config$safeguard,
+          iter_max = object@config$iter_max,
+          tol = object@config$tol,
+          verbose = verbose
+        )
+      )
     }
   } else if (max_cores > 1) {
     num_cores <- parallel::detectCores()
@@ -83,9 +84,9 @@ mcubeFitNull <- function(
         object@celltype_gene_test_pairs$celltype
       ),
       .export = "mcubeFitNullSinglePair",
-      .combine = "c"
+      .errorhandling = "pass"
     ) %dopar% {
-      null_model_results_i <- try(mcubeFitNullSinglePair(
+      mcubeFitNullSinglePair(
         Y = as.vector(Y_i),
         library_sizes = object@library_sizes[object@spots],
         X = object@covariates[object@spots, , drop = FALSE],
@@ -102,8 +103,7 @@ mcubeFitNull <- function(
         iter_max = object@config$iter_max,
         tol = object@config$tol,
         verbose = verbose
-      ))
-      list(null_model_results_i)
+      )
     }
 
     parallel::stopCluster(cl)
@@ -119,8 +119,8 @@ mcubeFitNull <- function(
   error_vec <- sapply(
     object@null_models,
     FUN = function(x) {
-      # inherits(x, "try-error") || !(x$converge)
-      inherits(x, "try-error")
+      # inherits(x, "error") || !(x$converge)
+      inherits(x, "error")
     }
   )
   if (any(error_vec)) {
@@ -202,21 +202,21 @@ mcubeFitNullSinglePair <- function(
   num_spots <- length(spot_names)
   num_covariates <- ncol(X) # Inclding intercept
 
-  celltype_minor <- which(reference / max(reference) < reference_threshold)
-  if (length(celltype_minor) > 0) {
-    if (celltype_test %in% celltype_names[celltype_minor]) {
+  celltype_minor_idx <- which(reference / max(reference) < reference_threshold)
+  if (length(celltype_minor_idx) > 0) {
+    if (celltype_test %in% celltype_names[celltype_minor_idx]) {
       stop(
         "mcubeFitNullSinglePair: The gene to test is lowly expressed in the cell type to test!"
       ) # End
     }
-    reference_minor <- reference[celltype_minor]
-    proportions_minor <- proportions[, celltype_minor, drop = FALSE]
+    reference_minor <- reference[celltype_minor_idx]
+    proportions_minor <- proportions[, celltype_minor_idx, drop = FALSE]
     Y_mean_minor_vec <- library_sizes *
       as.vector(proportions_minor %*% reference_minor)
 
-    celltype_names <- celltype_names[-celltype_minor]
-    reference <- reference[-celltype_minor]
-    proportions <- proportions[, -celltype_minor, drop = FALSE]
+    celltype_names <- celltype_names[-celltype_minor_idx]
+    reference <- reference[-celltype_minor_idx]
+    proportions <- proportions[, -celltype_minor_idx, drop = FALSE]
   } else {
     Y_mean_minor_vec <- rep(0, num_spots)
   }
@@ -412,21 +412,21 @@ mcubeFitNullSinglePair <- function(
 #   num_spots <- length(spot_names)
 #   num_covariates <- ncol(X) # Inclding intercept
 
-#   celltype_minor <- which(reference / max(reference) < reference_threshold)
-#   if (length(celltype_minor) > 0) {
-#     if (celltype_test %in% celltype_names[celltype_minor]) {
+#   celltype_minor_idx <- which(reference / max(reference) < reference_threshold)
+#   if (length(celltype_minor_idx) > 0) {
+#     if (celltype_test %in% celltype_names[celltype_minor_idx]) {
 #       stop(
 #         "mcubeFitNullSinglePair: The gene to test is lowly expressed in the cell type to test!"
 #       ) # End
 #     }
-#     reference_minor <- reference[celltype_minor]
-#     proportions_minor <- proportions[, celltype_minor, drop = FALSE]
+#     reference_minor <- reference[celltype_minor_idx]
+#     proportions_minor <- proportions[, celltype_minor_idx, drop = FALSE]
 #     Y_mean_minor_vec <- library_sizes *
 #       as.vector(proportions_minor %*% reference_minor)
 
-#     celltype_names <- celltype_names[-celltype_minor]
-#     reference <- reference[-celltype_minor]
-#     proportions <- proportions[, -celltype_minor, drop = FALSE]
+#     celltype_names <- celltype_names[-celltype_minor_idx]
+#     reference <- reference[-celltype_minor_idx]
+#     proportions <- proportions[, -celltype_minor_idx, drop = FALSE]
 #   } else {
 #     Y_mean_minor_vec <- rep(0, num_spots)
 #   }
