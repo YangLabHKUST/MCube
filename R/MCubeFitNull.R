@@ -36,7 +36,7 @@ mcubeFitNull <- function(
   if (max_cores == 1) {
     object@null_models <- list()
     for (i in 1:nrow(object@celltype_gene_test_pairs)) {
-      object@null_models[[i]] <- try(
+      object@null_models[[i]] <- tryCatch(
         mcubeFitNullSinglePair(
           Y = object@counts[object@spots, object@celltype_gene_test_pairs[i, "gene"]],
           library_sizes = object@library_sizes[object@spots],
@@ -54,7 +54,10 @@ mcubeFitNull <- function(
           iter_max = object@config$iter_max,
           tol = object@config$tol,
           verbose = verbose
-        )
+        ),
+        error = function(e) {
+          return(e)
+        }
       )
     }
   } else if (max_cores > 1) {
