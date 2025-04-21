@@ -26,10 +26,11 @@ mcubeTest <- function(
     num_kernels <- 2
     length_scale_seq <- c(1, sqrt(2)) *
       mcubeLengthScale(object@coordinates, standardize = standardize)
-    object@kernels <- mapply(
+    kernels_list <- mapply(
       FUN = function(kernel_type, length_scale) {
         mcubeKernel(
-          coordinates = object@coordinates[object@spots, , drop = FALSE],
+          coordinates = object@coordinates,
+          spots = object@spots,
           standardize = standardize,
           kernel_type = kernel_type,
           length_scale = length_scale
@@ -42,7 +43,7 @@ mcubeTest <- function(
       length_scale = c(0, length_scale_seq, length_scale_seq),
       SIMPLIFY = FALSE
     )
-    names(object@kernels) <- c(
+    names(kernels_list) <- c(
       "linear",
       paste0("Gaussian_", 1:num_kernels),
       paste0("Gaussian_transformed_", 1:num_kernels)
@@ -51,72 +52,58 @@ mcubeTest <- function(
     stop("mcubeTest: Please store the kernel matrices in a list!") # End
   } else if (!all(
     sapply(kernels_list,
-           FUN = function(kernel_mat) {
-             identical(rownames(object@counts), rownames(kernel_mat)) &&
-               identical(rownames(object@counts), colnames(kernel_mat))
-           }
+      FUN = function(kernel_mat) {
+        identical(rownames(object@counts), rownames(kernel_mat)) &&
+          identical(rownames(object@counts), colnames(kernel_mat))
+      }
     )
   )) {
     stop("mcubeTest: The rownames and colnames of the kernel matrices must match the sample names of the counts!") # End
   } else {
-    if (is.null(kernels_list)) {
+    if (is.null(names(kernels_list)) || all(names(kernels_list) != "")) {
       names(kernels_list) <- paste0("kernel_", length(object@kernels))
     }
-    object@kernels <- kernels_list
   }
 
   if (max_cores == 1) {
-    pvalues_df <- list()
+    pvalues <- list()
     for (i in 1:nrow(object@celltype_gene_test_pairs)) {
-      pvalues_df[[i]] <- tryCatch(
-        data.frame(
-          celltype = object@celltype_gene_test_pairs$celltype[i],
-          gene = object@celltype_gene_test_pairs$gene[i],
-          t(
-            mcubeTestSinglePairMultiKernels(
-              null_model_results = null_model_results_i,
-              X = object@covariates[object@spots, , drop = FALSE],
-              kernels_list = object@kernels,
-              celltype = celltype_i
-            )
-          )
+      pvalues[[i]] <- tryCatch(
+        mcubeTestSinglePairMultiKernels(
+          null_model_results = object@null_models[[i]],
+          X = object@covariates[object@spots, , drop = FALSE],
+          kernels_list = kernels_list,
+          celltype = object@celltype_gene_test_pairs$celltype[i]
         ),
         error = function(e) {
-          return(NULL)
+          return(e)
         }
       )
     }
-    pvalues_df <- do.call("rbind", pvalues_df)
   } else if (max_cores > 1) {
+    X <- object@covariates[object@spots, , drop = FALSE]
+
     num_cores <- parallel::detectCores()
     num_cores <- ifelse(num_cores <= max_cores, num_cores - 1, max_cores)
     message("Number of cores used: ", num_cores, ".")
     cl <- parallel::makeCluster(num_cores)
     doParallel::registerDoParallel(cl)
 
-    pvalues_df <- foreach::foreach(
-      null_model_results_i = object@null_models,
+    pvalues <- foreach::foreach(
+      null_model_results_i = iterators::iter(object@null_models),
       celltype_i = iterators::iter(object@celltype_gene_test_pairs$celltype),
-      gene_i = iterators::iter(object@celltype_gene_test_pairs$gene),
       .export = c(
         "mcubeTestSinglePairSingleKernel",
         "mcubeTestSinglePairMultiKernels",
         "ACAT"
       ),
-      .combine = "rbind",
-      .errorhandling = "remove"
+      .errorhandling = "pass"
     ) %dopar% {
-      data.frame(
-        celltype = celltype_i,
-        gene = gene_i,
-        t(
-          mcubeTestSinglePairMultiKernels(
-            null_model_results = null_model_results_i,
-            X = object@covariates[object@spots, , drop = FALSE],
-            kernels_list = object@kernels,
-            celltype = celltype_i
-          )
-        )
+      mcubeTestSinglePairMultiKernels(
+        null_model_results = null_model_results_i,
+        X = X,
+        kernels_list = kernels_list,
+        celltype = celltype_i
       )
     }
 
@@ -124,20 +111,41 @@ mcubeTest <- function(
   } else {
     stop("mcubeTest: max_cores must be a positive integer!") # End
   }
-  pvalues_df <- split(pvalues_df, pvalues_df$celltype)
-  pvalues_df <- lapply(
-    pvalues_df,
-    FUN = function(pvalues_celltype) {
-      pvalues_celltype$celltype <- NULL
-      rownames(pvalues_celltype) <- pvalues_celltype$gene
-      pvalues_celltype$gene <- NULL
-      return(pvalues_celltype)
+
+  # Remove the error results
+  error_vec <- sapply(
+    pvalues,
+    FUN = function(x) {
+      inherits(x, "error")
     }
   )
-  object@pvalues <- pvalues_df
+  if (any(error_vec)) {
+    object@null_models <- object@null_models[!error_vec]
+    object@celltype_gene_test_pairs <-
+      object@celltype_gene_test_pairs[!error_vec, , drop = FALSE]
+    pvalues <- pvalues[!error_vec]
+  }
 
-  if (!keep_kernels) {
-    object@kernels <- list("Please set keep_kernels = TRUE if you want to keep the kernels.")
+  object@pvalues <- mapply(
+    FUN = function(pvalues_df, genes) {
+      rownames(pvalues_df) <- genes
+      return(pvalues_df)
+    },
+    pvalues_df = split(
+      as.data.frame(do.call("rbind", pvalues)),
+      object@celltype_gene_test_pairs$celltype
+    ),
+    genes = split(
+      object@celltype_gene_test_pairs$gene,
+      object@celltype_gene_test_pairs$celltype
+    ),
+    SIMPLIFY = FALSE
+  )
+
+  if (keep_kernels) {
+    object@kernels <- kernels_list
+  } else {
+    object@kernels <- list("Please set keep_kernels = TRUE if you want to keep the kernels!")
   }
 
   return(object)

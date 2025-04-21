@@ -152,14 +152,14 @@ format_sumstats <- function(
 
   # check signed statistics
   if ((!beta_col %in% names(sumstats)) &
-      (!or_col %in% names(sumstats)) &
-      (!z_col %in% names(sumstats))) {
+    (!or_col %in% names(sumstats)) &
+    (!z_col %in% names(sumstats))) {
     stop("Signed statistics not found!")
   }
 
   # check sample size n
   if ((!n_col %in% names(sumstats)) & is.null(n) &
-      (!(ncase_col %in% names(sumstats) & ncontrol_col %in% names(sumstats)))) {
+    (!(ncase_col %in% names(sumstats) & ncontrol_col %in% names(sumstats)))) {
     stop("information for sample size not found!")
   }
 
@@ -418,7 +418,7 @@ format_sumstats <- function(
 
   # calculate z-score if no Z, but with BETA and SE
   if ((!"Z" %in% names(sumstats)) &
-      ("BETA" %in% names(sumstats) & "SE" %in% names(sumstats))) {
+    ("BETA" %in% names(sumstats) & "SE" %in% names(sumstats))) {
     message("Infer z-score from effect size and standard error.")
     sumstats$Z <- sumstats$BETA / sumstats$SE
     sumstats$CHI2 <- (sumstats$Z)^2

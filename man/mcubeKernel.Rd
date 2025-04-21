@@ -6,6 +6,7 @@
 \usage{
 mcubeKernel(
   coordinates,
+  spots = NULL,
   standardize = TRUE,
   kernel_type = "Gaussian",
   length_scale = NULL
@@ -14,6 +15,9 @@ mcubeKernel(
 \arguments{
 \item{coordinates}{A matrix of spatial coordinates.
 Each row represents a spot and each column represents a spatial dimension.}
+
+\item{spots}{A character vector specifying the spots to include in the kernel matrix.
+If \code{NULL}, all spots in the coordinates will be used. Default is \code{NULL}.}
 
 \item{standardize}{A logical value.
 If \code{TRUE}, the coordinates will be standardized. Default is \code{TRUE}.}

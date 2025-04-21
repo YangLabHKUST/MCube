@@ -28,6 +28,8 @@ mcubeFitNull <- function(
     object, reference_threshold = 0.25,
     safeguard = 1e-6, iter_max = 100, tol = 1e-6,
     verbose = FALSE, max_cores = 1) {
+  proportion_threshold <- object@config$proportion_threshold
+  # Record the fitting configurations
   object@config$reference_threshold_fit <- reference_threshold
   object@config$safeguard <- safeguard
   object@config$iter_max <- iter_max
@@ -48,11 +50,11 @@ mcubeFitNull <- function(
           spot_effects = object@spot_effects[object@spots],
           platform_effect = object@platform_effects[, object@celltype_gene_test_pairs[i, "gene"]],
           celltype_test = object@celltype_gene_test_pairs[i, "celltype"],
-          proportion_threshold = object@config$proportion_threshold,
-          reference_threshold = object@config$reference_threshold_fit,
-          safeguard = object@config$safeguard,
-          iter_max = object@config$iter_max,
-          tol = object@config$tol,
+          proportion_threshold = proportion_threshold,
+          reference_threshold = reference_threshold,
+          safeguard = safeguard,
+          iter_max = iter_max,
+          tol = tol,
           verbose = verbose
         ),
         error = function(e) {
@@ -61,6 +63,12 @@ mcubeFitNull <- function(
       )
     }
   } else if (max_cores > 1) {
+    library_sizes <- object@library_sizes[object@spots]
+    X <- object@covariates[object@spots, , drop = FALSE]
+    batch_id <- object@batch_id[object@spots]
+    proportions <- object@proportions[object@spots, , drop = FALSE]
+    spot_effects <- object@spot_effects[object@spots]
+
     num_cores <- parallel::detectCores()
     num_cores <- ifelse(num_cores <= max_cores, num_cores - 1, max_cores)
     message("Number of cores used: ", num_cores, ".")
@@ -91,20 +99,20 @@ mcubeFitNull <- function(
     ) %dopar% {
       mcubeFitNullSinglePair(
         Y = as.vector(Y_i),
-        library_sizes = object@library_sizes[object@spots],
-        X = object@covariates[object@spots, , drop = FALSE],
-        batch_id = object@batch_id[object@spots],
-        proportions = object@proportions[object@spots, , drop = FALSE],
+        library_sizes = library_sizes,
+        X = X,
+        batch_id = batch_id,
+        proportions = proportions,
         reference = as.vector(reference_i),
         used_for_deconvolution = used_for_deconvolution_i,
-        spot_effects = object@spot_effects[object@spots],
+        spot_effects = spot_effects,
         platform_effect = as.vector(platform_effect_i),
         celltype_test = celltype_test_i,
-        proportion_threshold = object@config$proportion_threshold,
-        reference_threshold = object@config$reference_threshold_fit,
-        safeguard = object@config$safeguard,
-        iter_max = object@config$iter_max,
-        tol = object@config$tol,
+        proportion_threshold = proportion_threshold,
+        reference_threshold = reference_threshold,
+        safeguard = safeguard,
+        iter_max = iter_max,
+        tol = tol,
         verbose = verbose
       )
     }
@@ -114,11 +122,7 @@ mcubeFitNull <- function(
     stop("max_cores must be a positive integer!") # End
   }
 
-  names(object@null_models) <- paste(
-    object@celltype_gene_test_pairs$celltype,
-    object@celltype_gene_test_pairs$gene,
-    sep = "_"
-  )
+  # Remove the error results
   error_vec <- sapply(
     object@null_models,
     FUN = function(x) {
@@ -128,8 +132,15 @@ mcubeFitNull <- function(
   )
   if (any(error_vec)) {
     object@null_models <- object@null_models[!error_vec]
-    object@celltype_gene_test_pairs <- object@celltype_gene_test_pairs[!error_vec, , drop = FALSE]
+    object@celltype_gene_test_pairs <-
+      object@celltype_gene_test_pairs[!error_vec, , drop = FALSE]
   }
+
+  names(object@null_models) <- paste(
+    object@celltype_gene_test_pairs$celltype,
+    object@celltype_gene_test_pairs$gene,
+    sep = "_"
+  )
 
   return(object)
 }
@@ -302,7 +313,7 @@ mcubeFitNullSinglePair <- function(
     # Compute second order derivative
     par_Sigma_par_tau_P_Y_tilde <- MMT_vec * P_Y_tilde # I
     deriv_sec <- as.vector(t(par_Sigma_par_tau_P_Y_tilde) %*% P_mat %*%
-                             par_Sigma_par_tau_P_Y_tilde) / 2
+      par_Sigma_par_tau_P_Y_tilde) / 2
 
     # Update tau
     tau_new <- tau + deriv_first_vec / deriv_sec
@@ -385,7 +396,7 @@ mcubeFitNullSinglePair <- function(
 # # A sparse version of the `mcubeFitNullSinglePair` function.
 # # Suitable for the case of a sparse cell type proportion matrix.
 # mcubeFitNullSinglePair <- function(
-    #     Y, library_sizes, X = NULL, proportions, batch_id = NULL,
+#     Y, library_sizes, X = NULL, proportions, batch_id = NULL,
 #     reference, used_for_deconvolution = TRUE,
 #     spot_effects = NULL, platform_effect = NULL,
 #     celltype_test, proportion_threshold = 0.1, reference_threshold = 0.25,

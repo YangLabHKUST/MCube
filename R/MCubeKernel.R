@@ -4,6 +4,8 @@
 #'
 #' @param coordinates A matrix of spatial coordinates.
 #' Each row represents a spot and each column represents a spatial dimension.
+#' @param spots A character vector specifying the spots to include in the kernel matrix.
+#' If `NULL`, all spots in the coordinates will be used. Default is `NULL`.
 #' @param standardize A logical value.
 #' If `TRUE`, the coordinates will be standardized. Default is `TRUE`.
 #' @param kernel_type A character string specifying the kernel type.
@@ -15,13 +17,22 @@
 #'
 #' @export
 mcubeKernel <- function(
-        coordinates, standardize = TRUE,
-        kernel_type = "Gaussian", length_scale = NULL) {
+    coordinates, spots = NULL, standardize = TRUE,
+    kernel_type = "Gaussian", length_scale = NULL) {
+    if (is.null(spots)) {
+        spots <- rownames(coordinates)
+    } else {
+        spots <- intersect(rownames(coordinates), spots)
+        if (length(spots) == 0) {
+            stop("mcubeKernel: no common spots between coordinates and spots!")
+        }
+    }
+
     if (kernel_type == "linear") {
         if (standardize) {
             coordinates <- scale(coordinates, center = TRUE, scale = TRUE)
         }
-        kernel_mat <- tcrossprod(coordinates)
+        kernel_mat <- tcrossprod(coordinates[spots, , drop = FALSE])
     } else {
         if (standardize) {
             coordinates <- scale(coordinates, center = TRUE, scale = FALSE)
@@ -29,25 +40,31 @@ mcubeKernel <- function(
         }
 
         # Set the length scale
-        if (is.null(coordinates) && is.null(length_scale)) {
-            stop("mcubeKernel: length scale is either estimated from coordinates or provided by the user!") # End
-        } else if (is.null(length_scale)) {
+        if (is.null(length_scale)) {
             length_scale <- mcubeLengthScale(coordinates)
         } else if (length_scale <= 0) {
             stop("mcubeKernel: length_scale must be positive!") # End
         }
-        message("mcubeKernel: length scale is set as ", length_scale, " for the ", kernel_type, " kernel.")
+        message(
+            "mcubeKernel: length scale is set as ", length_scale,
+            " for the ", kernel_type, " kernel."
+        )
+
+        coordinates <- coordinates[spots, , drop = FALSE]
 
         if (kernel_type == "Gaussian") {
             kernel_mat <- exp(
-                -(as.matrix(stats::dist(coordinates)))^2 / (2 * length_scale^2)
+                -(as.matrix(stats::dist(coordinates)))^2 /
+                    (2 * length_scale^2)
             )
         } else if (kernel_type == "Cauchy") {
             kernel_mat <- 1 /
-                (1 + (as.matrix(stats::dist(coordinates)))^2 / (2 * length_scale^2))
+                (1 + (as.matrix(stats::dist(coordinates)))^2 /
+                    (2 * length_scale^2))
         } else if (kernel_type == "periodic") {
             kernel_mat <- exp(
-                -sin(pi * (as.matrix(stats::dist(coordinates))))^2 / (2 * length_scale^2)
+                -sin(pi * (as.matrix(stats::dist(coordinates))))^2 /
+                    (2 * length_scale^2)
             )
         } else if (kernel_type == "Gaussian_transformed") {
             coordinates <- exp(-coordinates^2 / (2 * length_scale^2))

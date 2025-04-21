@@ -271,7 +271,7 @@ mcubePlotPropCellType3D <- function(
   if (plot_method == "plotly") {
     target_color_rgb <- 0.3 +
       (target_df$proportions - min(target_df$proportions)) * (1 - 0.3) /
-      (max(target_df$proportions) - min(target_df$proportions))
+        (max(target_df$proportions) - min(target_df$proportions))
     plotly::plot_ly(type = "scatter3d", mode = "markers") |>
       plotly::add_markers(
         data = target_df,
@@ -370,13 +370,13 @@ mcubePlotPropHeatmap <- function(
 
   # Heatmap of the proportions matrix
   p <- pheatmap::pheatmap(t(proportions),
-                          scale = "none",
-                          color = palettes, border_color = NA,
-                          clustering_method = "complete", cluster_row = TRUE, cluster_col = TRUE,
-                          treeheight_row = 3, treeheight_col = 10,
-                          show_rownames = TRUE, show_colnames = FALSE,
-                          cellwidth = 0.05, cellheight = 16, fontsize = 12,
-                          filename = filename
+    scale = "none",
+    color = palettes, border_color = NA,
+    clustering_method = "complete", cluster_row = TRUE, cluster_col = TRUE,
+    treeheight_row = 3, treeheight_col = 10,
+    show_rownames = TRUE, show_colnames = FALSE,
+    cellwidth = 0.05, cellheight = 16, fontsize = 12,
+    filename = filename
   )
 
   return(p)
@@ -609,11 +609,11 @@ mcubePlotExprCellType <- function(
     ggplot2::coord_fixed(ratio = ratio)
 
   title <- ifelse(is.null(title),
-                  ifelse(normalize,
-                         paste("Normalized expression of", gene, "in", celltype),
-                         paste("Expression of", gene, "in", celltype)
-                  ),
-                  title
+    ifelse(normalize,
+      paste("Normalized expression of", gene, "in", celltype),
+      paste("Expression of", gene, "in", celltype)
+    ),
+    title
   )
   p <- p + ggplot2::labs(title = title, x = NULL, y = NULL) +
     ggplot2::theme_classic()
