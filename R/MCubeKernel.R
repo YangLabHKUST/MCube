@@ -17,14 +17,14 @@
 #'
 #' @export
 mcubeKernel <- function(
-    coordinates, spots = NULL, standardize = TRUE,
-    kernel_type = "Gaussian", length_scale = NULL) {
+        coordinates, spots = NULL, standardize = TRUE,
+        kernel_type = "Gaussian", length_scale = NULL) {
     if (is.null(spots)) {
         spots <- rownames(coordinates)
     } else {
         spots <- intersect(rownames(coordinates), spots)
         if (length(spots) == 0) {
-            stop("mcubeKernel: No common spots between coordinates and spots!")
+            stop("mcubeKernel: no common spots between coordinates and spots!")
         }
     }
 
@@ -60,7 +60,7 @@ mcubeKernel <- function(
         } else if (kernel_type == "Cauchy") {
             kernel_mat <- 1 /
                 (1 + (as.matrix(stats::dist(coordinates)))^2 /
-                    (2 * length_scale^2))
+                     (2 * length_scale^2))
         } else if (kernel_type == "periodic") {
             kernel_mat <- exp(
                 -sin(pi * (as.matrix(stats::dist(coordinates))))^2 /
@@ -78,7 +78,7 @@ mcubeKernel <- function(
     #     kernel_mat <- as(kernel_mat, "sparseMatrix")
     # }
 
-    rownames(kernel_mat) <- colnames(kernel_mat) <- rownames(coordinates)
+    rownames(kernel_mat) <- colnames(kernel_mat) <- spots
 
     return(kernel_mat)
 }
