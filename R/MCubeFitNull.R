@@ -126,8 +126,7 @@ mcubeFitNull <- function(
   error_vec <- sapply(
     object@null_models,
     FUN = function(x) {
-      # inherits(x, "error") || !(x$converge)
-      inherits(x, "error")
+      inherits(x, "error") || !(x$converge)
     }
   )
   if (any(error_vec)) {
@@ -313,7 +312,7 @@ mcubeFitNullSinglePair <- function(
     # Compute second order derivative
     par_Sigma_par_tau_P_Y_tilde <- MMT_vec * P_Y_tilde # I
     deriv_sec <- as.vector(t(par_Sigma_par_tau_P_Y_tilde) %*% P_mat %*%
-      par_Sigma_par_tau_P_Y_tilde) / 2
+                             par_Sigma_par_tau_P_Y_tilde) / 2
 
     # Update tau
     tau_new <- tau + deriv_first_vec / deriv_sec
@@ -396,7 +395,7 @@ mcubeFitNullSinglePair <- function(
 # # A sparse version of the `mcubeFitNullSinglePair` function.
 # # Suitable for the case of a sparse cell type proportion matrix.
 # mcubeFitNullSinglePair <- function(
-#     Y, library_sizes, X = NULL, proportions, batch_id = NULL,
+    #     Y, library_sizes, X = NULL, proportions, batch_id = NULL,
 #     reference, used_for_deconvolution = TRUE,
 #     spot_effects = NULL, platform_effect = NULL,
 #     celltype_test, proportion_threshold = 0.1, reference_threshold = 0.25,
