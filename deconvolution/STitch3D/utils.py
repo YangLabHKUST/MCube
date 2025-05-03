@@ -242,10 +242,10 @@ def preprocess(adata_st_list_input,  # list of spatial transcriptomics (ST) annd
     if save_path is not None:
         if scipy.sparse.issparse(adata_ref.X):
             reference_counts = pd.DataFrame(
-                adata_ref.X.toarray(), index=adata_ref.obs_names, columns=adata_ref.var.index)
+                adata_ref.X.toarray().astype(int), index=adata_ref.obs_names, columns=adata_ref.var.index)
         else:
             reference_counts = pd.DataFrame(
-                adata_ref.X, index=adata_ref.obs_names, columns=adata_ref.var.index)
+                adata_ref.X.astype(int), index=adata_ref.obs_names, columns=adata_ref.var.index)
         reference_counts.to_csv(os.path.join(save_path, "sc_counts.csv"))
         reference_celltype = pd.DataFrame(adata_ref.obs[celltype_ref_col])
         reference_celltype.to_csv(os.path.join(save_path, "sc_labels.csv"))
@@ -314,7 +314,7 @@ def preprocess(adata_st_list_input,  # list of spatial transcriptomics (ST) annd
 
     if save_path is not None:
         st_counts = pd.DataFrame(
-            adata_st.obsm["count"], index = adata_st.obs_names, columns = adata_st.var_names)
+            adata_st.obsm["count"].astype(int), index = adata_st.obs_names, columns = adata_st.var_names)
         st_counts.to_csv(os.path.join(save_path, "counts.csv"))
         adata_st.obs["library_size"].to_csv(
             os.path.join(save_path, "library_sizes_ST.csv"), index = True, header = True)
