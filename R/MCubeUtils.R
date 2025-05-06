@@ -174,7 +174,8 @@ mcubeFilterCellTypes <- function(
         "mcubeFilterCellTypes: Cell types ",
         paste0(diff_celltypes, collapse = ", "),
         " have less than the minimum celltype_threshold = ", celltype_threshold,
-        ". To include these cell-types, please reduce the celltype_threshold."
+        " with proportion_threshold = ", proportion_threshold, ".",
+        " To include these cell types, please reduce celltype_threshold or proportion_threshold."
       )
     }
     celltype_test <- intersect(celltype_test, celltype_default)
@@ -184,14 +185,16 @@ mcubeFilterCellTypes <- function(
   if (length(celltype_test) == 0) {
     stop(
       "mcubeFilterCellTypes: No cell types occure greater than",
-      " celltype_threshold ", celltype_threshold, "!"
+      " celltype_threshold = ", celltype_threshold,
+      " with proportion_threshold = ", proportion_threshold, "!"
     )
   }
 
   message(
     "mcubeFilterCellTypes: Cell types ",
     paste(celltype_default, collapse = ", "),
-    " pass the celltype_threshold = ", celltype_threshold, "."
+    " pass the celltype_threshold = ", celltype_threshold,
+    " with proportion_threshold = ", proportion_threshold, "."
   )
 
   return(celltype_test)
