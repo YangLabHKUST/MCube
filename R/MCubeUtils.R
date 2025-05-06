@@ -196,6 +196,11 @@ mcubeFilterCellTypes <- function(
     " pass the celltype_threshold = ", celltype_threshold,
     " with proportion_threshold = ", proportion_threshold, "."
   )
+  message(
+    "mcubeFilterCellTypes: Cell types ",
+    paste(celltype_test, collapse = ", "),
+    " will be analyzed."
+  )
 
   return(celltype_test)
 }
