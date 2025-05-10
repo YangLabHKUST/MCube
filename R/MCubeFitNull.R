@@ -126,7 +126,8 @@ mcubeFitNull <- function(
   error_vec <- sapply(
     object@null_models,
     FUN = function(x) {
-      inherits(x, "error") || !(x$converge)
+      # inherits(x, "error") || !(x$converge)
+      inherits(x, "error")
     }
   )
   if (any(error_vec)) {
