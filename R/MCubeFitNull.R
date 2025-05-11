@@ -18,8 +18,8 @@
 #' The convergence criteria for the optimization algorithm.
 #' @param verbose A logical value.
 #' Whether to print the progress of the optimization algorithm. Default is FALSE.
-#' @param max_cores A positive integer.
-#' The maximum number of cores to use for parallel computing. Default is 1.
+#' @param max_clusters A positive integer.
+#' The maximum number of clusters to use for parallel computing. Default is 1.
 #'
 #' @return An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.
 #'
@@ -27,7 +27,7 @@
 mcubeFitNull <- function(
     object, reference_threshold = 0.25,
     safeguard = 1e-6, iter_max = 100, tol = 1e-6,
-    verbose = FALSE, max_cores = 1) {
+    verbose = FALSE, max_clusters = 1) {
   proportion_threshold <- object@config$proportion_threshold
   # Record the fitting configurations
   object@config$reference_threshold_fit <- reference_threshold
@@ -35,7 +35,7 @@ mcubeFitNull <- function(
   object@config$iter_max <- iter_max
   object@config$tol <- tol
 
-  if (max_cores == 1) {
+  if (max_clusters == 1) {
     object@null_models <- list()
     for (i in 1:nrow(object@celltype_gene_test_pairs)) {
       object@null_models[[i]] <- tryCatch(
@@ -62,17 +62,20 @@ mcubeFitNull <- function(
         }
       )
     }
-  } else if (max_cores > 1) {
+  } else if (max_clusters > 1) {
     library_sizes <- object@library_sizes[object@spots]
     X <- object@covariates[object@spots, , drop = FALSE]
     batch_id <- object@batch_id[object@spots]
     proportions <- object@proportions[object@spots, , drop = FALSE]
     spot_effects <- object@spot_effects[object@spots]
 
-    num_cores <- parallel::detectCores()
-    num_cores <- ifelse(num_cores <= max_cores, num_cores - 1, max_cores)
-    message("Number of cores used: ", num_cores, ".")
-    cl <- parallel::makeCluster(num_cores)
+    num_cores <- parallel::detectCores(logical = FALSE)
+    message("Number of detected physical cores: ", num_cores, ".")
+
+    num_clusters <- floor(num_cores / 2)
+    num_clusters <- ifelse(num_clusters <= max_clusters, num_clusters, max_clusters)
+    message("Number of clusters: ", num_clusters, ".")
+    cl <- parallel::makeCluster(num_clusters)
     doParallel::registerDoParallel(cl)
 
     object@null_models <- foreach::foreach(

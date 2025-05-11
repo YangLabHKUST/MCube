@@ -13,15 +13,15 @@
 #' @param standardize A logical value.
 #' If `TRUE`, the coordinates will be standardized. Default is `TRUE`.
 #' @param keep_kernels A logical value indicating whether to store kernels after testing. Default is `FALSE`.
-#' @param max_cores A positive integer.
-#' The maximum number of cores to use for parallel computing. Default is 1.
+#' @param max_clusters A positive integer.
+#' The maximum number of clusters to use for parallel computing. Default is 1.
 #'
 #' @return An \code{\link[=mcube-class]{mcube}} object with testing results for all celltype-gene pairs.
 #'
 #' @export
 mcubeTest <- function(
     object, kernels_list = NULL, standardize = TRUE,
-    keep_kernels = FALSE, max_cores = 1) {
+    keep_kernels = FALSE, max_clusters = 1) {
   if (is.null(kernels_list)) {
     num_kernels <- 2
     length_scale_seq <- c(1, sqrt(2)) *
@@ -52,10 +52,10 @@ mcubeTest <- function(
     stop("mcubeTest: Please store the kernel matrices in a list!") # End
   } else if (!all(
     sapply(kernels_list,
-      FUN = function(kernel_mat) {
-        identical(rownames(object@counts), rownames(kernel_mat)) &&
-          identical(rownames(object@counts), colnames(kernel_mat))
-      }
+           FUN = function(kernel_mat) {
+             identical(rownames(object@counts), rownames(kernel_mat)) &&
+               identical(rownames(object@counts), colnames(kernel_mat))
+           }
     )
   )) {
     stop("mcubeTest: The rownames and colnames of the kernel matrices must match the sample names of the counts!") # End
@@ -65,7 +65,7 @@ mcubeTest <- function(
     }
   }
 
-  if (max_cores == 1) {
+  if (max_clusters == 1) {
     pvalues <- list()
     for (i in 1:nrow(object@celltype_gene_test_pairs)) {
       pvalues[[i]] <- tryCatch(
@@ -80,13 +80,16 @@ mcubeTest <- function(
         }
       )
     }
-  } else if (max_cores > 1) {
+  } else if (max_clusters > 1) {
     X <- object@covariates[object@spots, , drop = FALSE]
 
-    num_cores <- parallel::detectCores()
-    num_cores <- ifelse(num_cores <= max_cores, num_cores - 1, max_cores)
-    message("Number of cores used: ", num_cores, ".")
-    cl <- parallel::makeCluster(num_cores)
+    num_cores <- parallel::detectCores(logical = FALSE)
+    message("Number of detected physical cores: ", num_cores, ".")
+
+    num_clusters <- floor(num_cores / 2)
+    num_clusters <- ifelse(num_clusters <= max_clusters, num_clusters, max_clusters)
+    message("Number of clusters: ", num_clusters, ".")
+    cl <- parallel::makeCluster(num_clusters)
     doParallel::registerDoParallel(cl)
 
     pvalues <- foreach::foreach(
