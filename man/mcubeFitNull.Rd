@@ -11,7 +11,7 @@ mcubeFitNull(
   iter_max = 100,
   tol = 1e-06,
   verbose = FALSE,
-  max_clusters = 1
+  max_cores = 1
 )
 }
 \arguments{
@@ -32,8 +32,8 @@ The convergence criteria for the optimization algorithm.}
 \item{verbose}{A logical value.
 Whether to print the progress of the optimization algorithm. Default is FALSE.}
 
-\item{max_clusters}{A positive integer.
-The maximum number of clusters to use for parallel computing. Default is 1.}
+\item{max_cores}{A positive integer.
+The maximum number of cores for parallel computing. Default is 1.}
 }
 \value{
 An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.
