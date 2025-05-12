@@ -6,7 +6,7 @@
 \usage{
 mcubeFilterGenesCellType(
   celltype,
-  celltype_all,
+  all_celltypes,
   gene_test,
   library_sizes,
   proportions,
@@ -18,7 +18,7 @@ mcubeFilterGenesCellType(
 \arguments{
 \item{celltype}{A character specifying the cell type.}
 
-\item{celltype_all}{A character vector containing all cell types.}
+\item{all_celltypes}{A character vector containing all cell types.}
 
 \item{gene_test}{A character vector specifying the genes to test.}
 

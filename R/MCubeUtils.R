@@ -58,7 +58,7 @@ mcubeFilterGenes <- function(
 #' @importFrom stats median
 #'
 #' @param celltype A character specifying the cell type.
-#' @param celltype_all A character vector containing all cell types.
+#' @param all_celltypes A character vector containing all cell types.
 #' @param gene_test A character vector specifying the genes to test.
 #' @param library_sizes A numeric vector containing library sizes of all spots.
 #' @param proportions A numeric matrix containing the proportion of each cell type at each spot.
@@ -70,9 +70,14 @@ mcubeFilterGenes <- function(
 #'
 #' @export
 mcubeFilterGenesCellType <- function(
-    celltype, celltype_all, gene_test,
+    celltype, all_celltypes, gene_test,
     library_sizes, proportions, reference,
     reference_threshold = 0.5, platform_effects) {
+  message(
+    "mcubeFilterGenesCellType: Select genes to analyze for cell type ", celltype,
+    " with threshold = ", reference_threshold, "."
+  )
+
   C <- 15
   N_cells <- colSums(proportions)[celltype]
   library_sizes_list <- library_sizes[
@@ -96,7 +101,7 @@ mcubeFilterGenesCellType <- function(
   library_sizes_median <- median(library_sizes_list)
   expr_thresh <- C / (N_cells * library_sizes_median)
   reference_renorm <- sweep(
-    reference[celltype_all, gene_test, drop = FALSE],
+    reference[all_celltypes, gene_test, drop = FALSE],
     MARGIN = 2,
     STATS = exp(platform_effects[gene_test]),
     FUN = "*"
@@ -106,7 +111,7 @@ mcubeFilterGenesCellType <- function(
     gene_test[which(reference_renorm[celltype, ] < expr_thresh)]
   )
   # Compare with the reference of other cell types
-  celltype_means <- reference_renorm[celltype_all, gene_list_type, drop = FALSE]
+  celltype_means <- reference_renorm[all_celltypes, gene_list_type, drop = FALSE]
   if (ncol(proportions) > 1) {
     celltype_mean_ratio <- celltype_means[celltype, ] / apply(celltype_means, 2, max)
     gene_list_type <- gene_list_type[which(celltype_mean_ratio >= reference_threshold)]
@@ -147,14 +152,13 @@ mcubeGetPlatformEffects <- function(
   return(platform_effects)
 }
 
-#' Get main cell types
+#' Get major cell types
 #'
 #' @description
 #' Fuction for data preprocessing.
 #' Credit goes to the R package `spacexr` (\url{https://github.com/dmcable/spacexr}).
 #'
 #' @param proportions A numeric matrix containing the proportion of each cell type at each spot.
-#' @param celltype_test A character vector specifying the cell types to test.
 #' @param proportion_threshold A numeric value. The proportions below this threshold will be ignored.
 #' @param celltype_threshold A numeric value. Cell types with column sums less than this number will be filtered out.
 #'
@@ -162,27 +166,18 @@ mcubeGetPlatformEffects <- function(
 #'
 #' @export
 mcubeFilterCellTypes <- function(
-    proportions, celltype_test = NULL,
+    proportions,
     proportion_threshold = 0.1, celltype_threshold = 100) {
-  proportions[proportions < proportion_threshold] <- 0
-  celltype_default <- names(which(colSums(proportions) >= celltype_threshold))
+  message(
+    "mcubeFilterCellTypes: Select high-abundance cell types to analyze",
+    " with proportion_threshold = ", proportion_threshold,
+    " and celltype_threshold = ", celltype_threshold, "."
+  )
 
-  if (!is.null(celltype_test)) {
-    diff_celltypes <- setdiff(celltype_test, celltype_default)
-    if (length(diff_celltypes) > 0) {
-      message(
-        "mcubeFilterCellTypes: Cell types ",
-        paste0(diff_celltypes, collapse = ", "),
-        " have less than the minimum celltype_threshold = ", celltype_threshold,
-        " with proportion_threshold = ", proportion_threshold, ".",
-        " To include these cell types, please reduce celltype_threshold or proportion_threshold."
-      )
-    }
-    celltype_test <- intersect(celltype_test, celltype_default)
-  } else {
-    celltype_test <- celltype_default
-  }
-  if (length(celltype_test) == 0) {
+  proportions[proportions < proportion_threshold] <- 0
+  celltype_major <- names(which(colSums(proportions) >= celltype_threshold))
+
+  if (length(celltype_major) == 0) {
     stop(
       "mcubeFilterCellTypes: No cell types occure greater than",
       " celltype_threshold = ", celltype_threshold,
@@ -191,18 +186,13 @@ mcubeFilterCellTypes <- function(
   }
 
   message(
-    "mcubeFilterCellTypes: Cell types ",
-    paste(celltype_default, collapse = ", "),
+    "mcubeFilterCellTypes: Cell type(s) ",
+    paste(celltype_major, collapse = ", "),
     " pass the celltype_threshold = ", celltype_threshold,
     " with proportion_threshold = ", proportion_threshold, "."
   )
-  message(
-    "mcubeFilterCellTypes: Cell types ",
-    paste(celltype_test, collapse = ", "),
-    " will be analyzed."
-  )
 
-  return(celltype_test)
+  return(celltype_major)
 }
 
 #' Checking function for the fitting results

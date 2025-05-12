@@ -2,19 +2,16 @@
 % Please edit documentation in R/MCubeUtils.R
 \name{mcubeFilterCellTypes}
 \alias{mcubeFilterCellTypes}
-\title{Get main cell types}
+\title{Get major cell types}
 \usage{
 mcubeFilterCellTypes(
   proportions,
-  celltype_test = NULL,
   proportion_threshold = 0.1,
   celltype_threshold = 100
 )
 }
 \arguments{
 \item{proportions}{A numeric matrix containing the proportion of each cell type at each spot.}
-
-\item{celltype_test}{A character vector specifying the cell types to test.}
 
 \item{proportion_threshold}{A numeric value. The proportions below this threshold will be ignored.}
 

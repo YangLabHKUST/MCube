@@ -111,15 +111,15 @@ setClass(
 #'
 #' @export
 createMCube <- function(
-    counts, coordinates, proportions,
-    library_sizes = NULL, covariates = NULL, batch_id = NULL,
-    reference, used_for_deconvolution = NULL,
-    spots = NULL, library_size_min = 10,
-    spot_effects = NULL, platform_effects = NULL,
-    celltype_test = NULL, gene_test = NULL,
-    celltype_threshold = 100, gene_threshold = 5e-5,
-    proportion_threshold = 0.1, reference_threshold = 0.5,
-    project = "MCube") {
+        counts, coordinates, proportions,
+        library_sizes = NULL, covariates = NULL, batch_id = NULL,
+        reference, used_for_deconvolution = NULL,
+        spots = NULL, library_size_min = 10,
+        spot_effects = NULL, platform_effects = NULL,
+        celltype_test = NULL, gene_test = NULL,
+        celltype_threshold = 100, gene_threshold = 5e-5,
+        proportion_threshold = 0.1, reference_threshold = 0.5,
+        project = "MCube") {
     # Check spot names
     if (!identical(rownames(counts), rownames(coordinates))) {
         stop("Spot names of counts and coordinates do not match!") # End
@@ -212,11 +212,32 @@ createMCube <- function(
             stop("The cell types in celltype_test do not match the input data!") # End
         }
     }
-    celltype_test <- mcubeFilterCellTypes(
+    celltype_major <- mcubeFilterCellTypes(
         proportions = proportions,
-        celltype_test = celltype_test,
         proportion_threshold = proportion_threshold,
         celltype_threshold = celltype_threshold
+    )
+    diff_celltypes <- setdiff(celltype_test, celltype_major)
+    if (length(diff_celltypes) > 0) {
+        message(
+            "Cell type(s) ", paste0(diff_celltypes, collapse = ", "),
+            " has/have less than the minimum celltype_threshold = ", celltype_threshold,
+            " and proportion_threshold = ", proportion_threshold, ".",
+            " To include the above cell type(s),",
+            " please reduce celltype_threshold or proportion_threshold."
+        )
+    }
+    celltype_test <- intersect(celltype_test, celltype_major)
+    if (length(celltype_test) == 0) {
+        stop(
+            "No cell types of interest occur greater than",
+            " celltype_threshold = ", celltype_threshold,
+            " with proportion_threshold = ", proportion_threshold, "!"
+        )
+    }
+    message(
+        "Cell type(s) ", paste(celltype_test, collapse = ", "),
+        " will be analyzed."
     )
 
     # Take the intersection of genes in counts, reference, and (set up) gene_test
@@ -303,7 +324,7 @@ createMCube <- function(
         FUN = function(celltype) {
             mcubeFilterGenesCellType(
                 celltype = celltype,
-                celltype_all = celltype_test,
+                all_celltypes = celltype_major,
                 gene_test = gene_test,
                 library_sizes = library_sizes,
                 proportions = proportions,
