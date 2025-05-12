@@ -73,11 +73,6 @@ mcubeFilterGenesCellType <- function(
     celltype, all_celltypes, gene_test,
     library_sizes, proportions, reference,
     reference_threshold = 0.5, platform_effects) {
-  message(
-    "mcubeFilterGenesCellType: Select genes to analyze for cell type ", celltype,
-    " with threshold = ", reference_threshold, "."
-  )
-
   C <- 15
   N_cells <- colSums(proportions)[celltype]
   library_sizes_list <- library_sizes[
@@ -116,6 +111,12 @@ mcubeFilterGenesCellType <- function(
     celltype_mean_ratio <- celltype_means[celltype, ] / apply(celltype_means, 2, max)
     gene_list_type <- gene_list_type[which(celltype_mean_ratio >= reference_threshold)]
   }
+
+  message(
+    "mcubeFilterGenesCellType: Select ", length(gene_list_type),
+    " genes to analyze for ", celltype,
+    " with reference_threshold = ", reference_threshold, "."
+  )
 
   return(gene_list_type)
 }
