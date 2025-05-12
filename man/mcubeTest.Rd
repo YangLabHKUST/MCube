@@ -9,7 +9,7 @@ mcubeTest(
   kernels_list = NULL,
   standardize = TRUE,
   keep_kernels = FALSE,
-  max_clusters = 1
+  max_workers = 1
 )
 }
 \arguments{
@@ -23,8 +23,8 @@ If \code{TRUE}, the coordinates will be standardized. Default is \code{TRUE}.}
 
 \item{keep_kernels}{A logical value indicating whether to store kernels after testing. Default is \code{FALSE}.}
 
-\item{max_clusters}{A positive integer.
-The maximum number of clusters to use for parallel computing. Default is 1.}
+\item{max_workers}{A positive integer.
+The maximum number of workers for parallel computing. Default is 1.}
 }
 \value{
 An \code{\link[=mcube-class]{mcube}} object with testing results for all celltype-gene pairs.
