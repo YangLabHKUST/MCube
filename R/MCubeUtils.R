@@ -189,7 +189,7 @@ mcubeFilterCellTypes <- function(
   message(
     "mcubeFilterCellTypes: Cell type(s) ",
     paste(celltype_major, collapse = ", "),
-    " pass the celltype_threshold = ", celltype_threshold,
+    " pass celltype_threshold = ", celltype_threshold,
     " with proportion_threshold = ", proportion_threshold, "."
   )
 
