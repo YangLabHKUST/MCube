@@ -7,7 +7,7 @@
 mcubeFilterGenes(
   counts,
   library_sizes = NULL,
-  threshold = 5e-05,
+  gene_threshold = 5e-05,
   batch_size = 1000
 )
 }
@@ -16,7 +16,7 @@ mcubeFilterGenes(
 
 \item{library_sizes}{A numeric vector containing library sizes of all spots.}
 
-\item{threshold}{A numeric value. Genes with average relative expression below this threshold are filtered out.}
+\item{gene_threshold}{A numeric value. Genes with average relative expression below this threshold are filtered out.}
 
 \item{batch_size}{An integer.
 The number of genes to process in each batch.}

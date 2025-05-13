@@ -6,7 +6,7 @@
 #'
 #' @param counts A matrix. Each row represents a spot and each column represents a gene.
 #' @param library_sizes A numeric vector containing library sizes of all spots.
-#' @param threshold A numeric value. Genes with average relative expression below this threshold are filtered out.
+#' @param gene_threshold A numeric value. Genes with average relative expression below this threshold are filtered out.
 #' @param batch_size An integer.
 #' The number of genes to process in each batch.
 #'
@@ -15,10 +15,10 @@
 #' @export
 mcubeFilterGenes <- function(
     counts, library_sizes = NULL,
-    threshold = 5e-5, batch_size = 1000) {
+    gene_threshold = 5e-5, batch_size = 1000) {
   message(
     "mcubeFilterGenes: Filter genes based on relative expression",
-    " with threshold = ", threshold, "."
+    " with gene_threshold = ", gene_threshold, "."
   )
 
   if (is.null(library_sizes)) {
@@ -38,7 +38,7 @@ mcubeFilterGenes <- function(
     norm_counts <- as.matrix(counts[, index_range, drop = FALSE]) / library_sizes
     gene_means[index_range] <- colMeans(norm_counts)
   }
-  gene_list_total <- names(which(gene_means > threshold))
+  gene_list_total <- names(which(gene_means > gene_threshold))
   mito_genes_idx <- c(
     grep("^MT-", gene_list_total),
     grep("^mt-", gene_list_total)
