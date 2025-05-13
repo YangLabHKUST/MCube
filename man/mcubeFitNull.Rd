@@ -11,7 +11,8 @@ mcubeFitNull(
   iter_max = 100,
   tol = 1e-06,
   verbose = FALSE,
-  max_workers = 1
+  max_workers = 1,
+  num_threads = 1
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ Whether to print the progress of the optimization algorithm. Default is FALSE.}
 
 \item{max_workers}{A positive integer.
 The maximum number of workers for parallel computing. Default is 1.}
+
+\item{num_threads}{A positive integer.
+The number of threads per worker to use for BLAS operations. Default is 1.}
 }
 \value{
 An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.

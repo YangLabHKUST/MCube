@@ -26,6 +26,7 @@ Imports:
     plotly,
     readr,
     rgl,
+    RhpcBLASctl,
     scales,
     stats,
     tidyr

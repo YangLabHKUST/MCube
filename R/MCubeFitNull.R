@@ -6,6 +6,7 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach foreach %dopar%
 #' @importFrom iterators iter
+#' @importFrom RhpcBLASctl blas_set_num_threads
 #'
 #' @param object An \code{\link[=mcube-class]{mcube}} object.
 #' @param reference_threshold A numeric value between 0 and 1.
@@ -20,6 +21,8 @@
 #' Whether to print the progress of the optimization algorithm. Default is FALSE.
 #' @param max_workers A positive integer.
 #' The maximum number of workers for parallel computing. Default is 1.
+#' @param num_threads A positive integer.
+#' The number of threads per worker to use for BLAS operations. Default is 1.
 #'
 #' @return An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.
 #'
@@ -27,7 +30,7 @@
 mcubeFitNull <- function(
     object, reference_threshold = 0.25,
     safeguard = 1e-6, iter_max = 100, tol = 1e-6,
-    verbose = FALSE, max_workers = 1) {
+    verbose = FALSE, max_workers = 1, num_threads = 1) {
   proportion_threshold <- object@config$proportion_threshold
   # Record the fitting configurations
   object@config$reference_threshold_fit <- reference_threshold
@@ -71,6 +74,9 @@ mcubeFitNull <- function(
 
     num_cores <- parallel::detectCores(logical = FALSE)
     message("Number of physical cores: ", num_cores, ".")
+
+    message("Number of threads per worker: ", num_threads, ".")
+    RhpcBLASctl::blas_set_num_threads(num_threads)
 
     num_workers <- num_cores - 1L
     num_workers <- ifelse(num_workers <= max_workers, num_workers, max_workers)

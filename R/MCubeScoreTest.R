@@ -6,6 +6,7 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach foreach %dopar%
 #' @importFrom iterators iter
+#' @importFrom RhpcBLASctl blas_set_num_threads
 #'
 #' @param object An \code{\link[=mcube-class]{mcube}} object with fitted results of the null model.
 #' @param kernels_list A list containing the kernel matrices for testing.
@@ -15,13 +16,15 @@
 #' @param keep_kernels A logical value indicating whether to store kernels after testing. Default is `FALSE`.
 #' @param max_workers A positive integer.
 #' The maximum number of workers for parallel computing. Default is 1.
+#' @param num_threads A positive integer.
+#' The number of threads per worker to use for BLAS operations. Default is 1.
 #'
 #' @return An \code{\link[=mcube-class]{mcube}} object with testing results for all celltype-gene pairs.
 #'
 #' @export
 mcubeTest <- function(
     object, kernels_list = NULL, standardize = TRUE,
-    keep_kernels = FALSE, max_workers = 1) {
+    keep_kernels = FALSE, max_workers = 1, num_threads = 1) {
   if (is.null(kernels_list)) {
     num_kernels <- 2
     length_scale_seq <- c(1, sqrt(2)) *
@@ -85,6 +88,9 @@ mcubeTest <- function(
 
     num_cores <- parallel::detectCores(logical = FALSE)
     message("Number of physical cores: ", num_cores, ".")
+
+    message("Number of threads per worker: ", num_threads, ".")
+    RhpcBLASctl::blas_set_num_threads(num_threads)
 
     num_workers <- num_cores - 1L
     num_workers <- ifelse(num_workers <= max_workers, num_workers, max_workers)
