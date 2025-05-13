@@ -4,7 +4,13 @@
 \alias{mcubeTestSinglePairMultiKernels}
 \title{Perform score test for a single pair of cell type and gene with multiple kernels}
 \usage{
-mcubeTestSinglePairMultiKernels(null_model_results, X, kernels_list, celltype)
+mcubeTestSinglePairMultiKernels(
+  null_model_results,
+  X,
+  kernels_list,
+  celltype,
+  num_threads = NULL
+)
 }
 \arguments{
 \item{null_model_results}{A list containing the fitted results of the null model.}
@@ -15,6 +21,9 @@ Each row represents a spot and each column represents a covariate.}
 \item{kernels_list}{A list containing the kernel matrices for testing.}
 
 \item{celltype}{A character specifying the cell type to test.}
+
+\item{num_threads}{A positive integer.
+The number of threads per worker to use for BLAS operations.}
 }
 \value{
 A data.frame containing the test results.

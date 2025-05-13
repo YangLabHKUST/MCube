@@ -18,9 +18,10 @@ mcubeFitNullSinglePair(
   proportion_threshold = 0.1,
   reference_threshold = 0.25,
   safeguard = 1e-06,
-  iter_max = 100,
+  iter_max = 100L,
   tol = 1e-06,
-  verbose = TRUE
+  verbose = TRUE,
+  num_threads = NULL
 )
 }
 \arguments{
@@ -69,6 +70,9 @@ The convergence criteria for the optimization algorithm.}
 
 \item{verbose}{A logical value.
 Whether to print the progress of the optimization algorithm. Default is TRUE.}
+
+\item{num_threads}{A positive integer.
+The number of threads for BLAS operations.}
 }
 \value{
 A list containing the fitted null model results.

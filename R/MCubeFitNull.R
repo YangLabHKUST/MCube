@@ -6,7 +6,6 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach foreach %dopar%
 #' @importFrom iterators iter
-#' @importFrom RhpcBLASctl blas_set_num_threads
 #'
 #' @param object An \code{\link[=mcube-class]{mcube}} object.
 #' @param reference_threshold A numeric value between 0 and 1.
@@ -22,15 +21,15 @@
 #' @param max_workers A positive integer.
 #' The maximum number of workers for parallel computing. Default is 1.
 #' @param num_threads A positive integer.
-#' The number of threads per worker to use for BLAS operations. Default is 1.
+#' The number of threads (per worker) for BLAS operations.
 #'
 #' @return An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.
 #'
 #' @export
 mcubeFitNull <- function(
     object, reference_threshold = 0.25,
-    safeguard = 1e-6, iter_max = 100, tol = 1e-6,
-    verbose = FALSE, max_workers = 1, num_threads = 1) {
+    safeguard = 1e-6, iter_max = 100L, tol = 1e-6,
+    verbose = FALSE, max_workers = 1L, num_threads = NULL) {
   proportion_threshold <- object@config$proportion_threshold
   # Record the fitting configurations
   object@config$reference_threshold_fit <- reference_threshold
@@ -58,7 +57,8 @@ mcubeFitNull <- function(
           safeguard = safeguard,
           iter_max = iter_max,
           tol = tol,
-          verbose = verbose
+          verbose = verbose,
+          num_threads = num_threads
         ),
         error = function(e) {
           return(e)
@@ -75,8 +75,10 @@ mcubeFitNull <- function(
     num_cores <- parallel::detectCores(logical = FALSE)
     message("Number of physical cores: ", num_cores, ".")
 
-    message("Number of threads per worker: ", num_threads, ".")
-    RhpcBLASctl::blas_set_num_threads(num_threads)
+    if (is.null(num_threads)) {
+      num_threads <- 1L
+    }
+    message("Number of thread(s) per worker: ", num_threads, ".")
 
     num_workers <- num_cores - 1L
     num_workers <- ifelse(num_workers <= max_workers, num_workers, max_workers)
@@ -122,7 +124,8 @@ mcubeFitNull <- function(
         safeguard = safeguard,
         iter_max = iter_max,
         tol = tol,
-        verbose = verbose
+        verbose = verbose,
+        num_threads = num_threads
       )
     }
 
@@ -159,6 +162,7 @@ mcubeFitNull <- function(
 #' @description Fit the null MMM model for a single celltype-gene pair using a PQL-based approach.
 #'
 #' @importFrom stats model.matrix
+#' @importFrom RhpcBLASctl blas_set_num_threads
 #'
 #' @param Y A numeric vector containing gene expression counts of all spots.
 #' @param library_sizes A numeric vector containing library sizes of all spots.
@@ -190,6 +194,8 @@ mcubeFitNull <- function(
 #' The convergence criteria for the optimization algorithm.
 #' @param verbose A logical value.
 #' Whether to print the progress of the optimization algorithm. Default is TRUE.
+#' @param num_threads A positive integer.
+#' The number of threads for BLAS operations.
 #'
 #' @return A list containing the fitted null model results.
 #'
@@ -199,7 +205,12 @@ mcubeFitNullSinglePair <- function(
     reference, used_for_deconvolution = TRUE,
     spot_effects = NULL, platform_effect = NULL,
     celltype_test, proportion_threshold = 0.1, reference_threshold = 0.25,
-    safeguard = 1e-6, iter_max = 100, tol = 1e-6, verbose = TRUE) {
+    safeguard = 1e-6, iter_max = 100L, tol = 1e-6,
+    verbose = TRUE, num_threads = NULL) {
+  if (!is.null(num_threads)) {
+    num_threads <- RhpcBLASctl::blas_set_num_threads(num_threads)
+  }
+
   spot_names <- rownames(proportions)
   celltype_names <- colnames(proportions)
 
