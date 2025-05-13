@@ -27,7 +27,7 @@ createMCube(
 )
 }
 \arguments{
-\item{counts}{A matrix, Matrix::dgCMatrix, or Matrix::dgTMatrix.
+\item{counts}{A matrix.
 Each Row represents a spot and each column represents a gene.}
 
 \item{coordinates}{A matrix.

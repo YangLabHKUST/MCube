@@ -10,7 +10,7 @@ Each \code{\linkS4class{mcube}} object has a number of slots which store informa
 \section{Slots}{
 
 \describe{
-\item{\code{counts}}{A matrix, Matrix::dgCMatrix, or Matrix::dgTMatrix.
+\item{\code{counts}}{A matrix.
 Each row represents a spot and each column represents a gene.}
 
 \item{\code{coordinates}}{A matrix.

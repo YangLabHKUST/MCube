@@ -4,7 +4,7 @@
 #'
 #' @importFrom methods setClass
 #'
-#' @slot counts A matrix, Matrix::dgCMatrix, or Matrix::dgTMatrix.
+#' @slot counts A matrix.
 #' Each row represents a spot and each column represents a gene.
 #' @slot coordinates A matrix.
 #' Each row represents a spot and each column represents a spatial dimension.
@@ -38,7 +38,7 @@ setClass(
 
     # Define the slots
     slots = c(
-        counts = "ANY",
+        counts = "matrix",
         coordinates = "matrix",
         proportions = "matrix",
         library_sizes = "numeric",
@@ -69,7 +69,7 @@ setClass(
 #'
 #' @importFrom methods new
 #'
-#' @param counts A matrix, Matrix::dgCMatrix, or Matrix::dgTMatrix.
+#' @param counts A matrix.
 #' Each Row represents a spot and each column represents a gene.
 #' @param coordinates A matrix.
 #' Each row represents a spot and each column represents a spatial dimension.
@@ -255,7 +255,11 @@ createMCube <- function(
     counts <- counts[, gene_test, drop = FALSE]
 
     # Filter out lowly expressed genes
-    gene_test <- mcubeFilterGenes(as.matrix(counts), library_sizes, gene_threshold)
+    gene_test <- mcubeFilterGenes(
+        counts = as.matrix(counts),
+        library_sizes = library_sizes,
+        gene_threshold = gene_threshold
+    )
     if (length(gene_test) == 0) {
         stop("No genes remain after filtering based on expression level!") # End
     }
