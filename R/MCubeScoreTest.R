@@ -13,8 +13,8 @@
 #' @param standardize A logical value.
 #' If `TRUE`, the coordinates will be standardized. Default is `TRUE`.
 #' @param keep_kernels A logical value indicating whether to store kernels after testing. Default is `FALSE`.
-#' @param max_workers A positive integer.
-#' The maximum number of workers for parallel computing. Default is 1.
+#' @param num_workers A positive integer.
+#' The number of workers for parallel computing. Default is 1.
 #' @param num_threads A positive integer.
 #' The number of threads per worker to use for BLAS operations.
 #'
@@ -67,7 +67,7 @@ mcubeTest <- function(
     }
   }
 
-  if (max_workers == 1) {
+  if (num_workers == 1) {
     pvalues <- list()
     for (i in 1:nrow(object@celltype_gene_test_pairs)) {
       pvalues[[i]] <- tryCatch(
@@ -83,20 +83,29 @@ mcubeTest <- function(
         }
       )
     }
-  } else if (max_workers > 1) {
+  } else if (num_workers > 1) {
     X <- object@covariates[object@spots, , drop = FALSE]
 
     num_cores <- parallel::detectCores(logical = FALSE)
+    if (num_cores <= 2) {
+      stop("Number of detected physical cores is not greater than 2!")
+    }
     message("Number of physical cores: ", num_cores, ".")
+
+    num_workers <- ifelse(
+      num_workers < num_cores, num_workers, num_cores - 1L
+    )
+    message("Number of workers: ", num_workers, ".")
 
     if (is.null(num_threads)) {
       num_threads <- 1L
     }
     message("Number of thread(s) per worker: ", num_threads, ".")
 
-    num_workers <- num_cores - 1L
-    num_workers <- ifelse(num_workers <= max_workers, num_workers, max_workers)
-    message("Number of workers: ", num_workers, ".")
+    if (num_workers * num_threads >= num_cores) {
+      stop("num_workers * num_threads >= num_cores will cause resource contention!")
+    }
+
     cl <- parallel::makeCluster(num_workers)
     doParallel::registerDoParallel(cl)
 

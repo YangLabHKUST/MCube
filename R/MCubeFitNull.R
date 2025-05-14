@@ -18,8 +18,8 @@
 #' The convergence criteria for the optimization algorithm.
 #' @param verbose A logical value.
 #' Whether to print the progress of the optimization algorithm. Default is FALSE.
-#' @param max_workers A positive integer.
-#' The maximum number of workers for parallel computing. Default is 1.
+#' @param num_workers A positive integer.
+#' The number of workers for parallel computing. Default is 1.
 #' @param num_threads A positive integer.
 #' The number of threads (per worker) for BLAS operations.
 #'
@@ -37,7 +37,7 @@ mcubeFitNull <- function(
   object@config$iter_max <- iter_max
   object@config$tol <- tol
 
-  if (max_workers == 1) {
+  if (num_workers == 1) {
     object@null_models <- list()
     for (i in 1:nrow(object@celltype_gene_test_pairs)) {
       object@null_models[[i]] <- tryCatch(
@@ -65,7 +65,7 @@ mcubeFitNull <- function(
         }
       )
     }
-  } else if (max_workers > 1) {
+  } else if (num_workers > 1) {
     library_sizes <- object@library_sizes[object@spots]
     X <- object@covariates[object@spots, , drop = FALSE]
     batch_id <- object@batch_id[object@spots]
@@ -73,16 +73,25 @@ mcubeFitNull <- function(
     spot_effects <- object@spot_effects[object@spots]
 
     num_cores <- parallel::detectCores(logical = FALSE)
+    if (num_cores <= 2) {
+      stop("Number of detected physical cores is not greater than 2!")
+    }
     message("Number of physical cores: ", num_cores, ".")
+
+    num_workers <- ifelse(
+      num_workers < num_cores, num_workers, num_cores - 1L
+    )
+    message("Number of workers: ", num_workers, ".")
 
     if (is.null(num_threads)) {
       num_threads <- 1L
     }
     message("Number of thread(s) per worker: ", num_threads, ".")
 
-    num_workers <- num_cores - 1L
-    num_workers <- ifelse(num_workers <= max_workers, num_workers, max_workers)
-    message("Number of workers: ", num_workers, ".")
+    if (num_workers * num_threads >= num_cores) {
+      stop("num_workers * num_threads >= num_cores will cause resource contention!")
+    }
+
     cl <- parallel::makeCluster(num_workers)
     doParallel::registerDoParallel(cl)
 

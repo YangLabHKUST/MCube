@@ -33,11 +33,11 @@ The convergence criteria for the optimization algorithm.}
 \item{verbose}{A logical value.
 Whether to print the progress of the optimization algorithm. Default is FALSE.}
 
-\item{max_workers}{A positive integer.
-The maximum number of workers for parallel computing. Default is 1.}
-
 \item{num_threads}{A positive integer.
 The number of threads (per worker) for BLAS operations.}
+
+\item{num_workers}{A positive integer.
+The number of workers for parallel computing. Default is 1.}
 }
 \value{
 An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.
