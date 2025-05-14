@@ -23,7 +23,7 @@
 #' @export
 mcubeTest <- function(
     object, kernels_list = NULL, standardize = TRUE,
-    keep_kernels = FALSE, max_workers = 1L, num_threads = NULL) {
+    keep_kernels = FALSE, num_workers = 1L, num_threads = NULL) {
   if (is.null(kernels_list)) {
     num_kernels <- 2
     length_scale_seq <- c(1, sqrt(2)) *

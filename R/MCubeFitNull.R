@@ -29,7 +29,7 @@
 mcubeFitNull <- function(
     object, reference_threshold = 0.25,
     safeguard = 1e-6, iter_max = 100L, tol = 1e-6,
-    verbose = FALSE, max_workers = 1L, num_threads = NULL) {
+    verbose = FALSE, num_workers = 1L, num_threads = NULL) {
   proportion_threshold <- object@config$proportion_threshold
   # Record the fitting configurations
   object@config$reference_threshold_fit <- reference_threshold

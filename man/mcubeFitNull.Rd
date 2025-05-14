@@ -11,7 +11,7 @@ mcubeFitNull(
   iter_max = 100L,
   tol = 1e-06,
   verbose = FALSE,
-  max_workers = 1L,
+  num_workers = 1L,
   num_threads = NULL
 )
 }
@@ -33,11 +33,11 @@ The convergence criteria for the optimization algorithm.}
 \item{verbose}{A logical value.
 Whether to print the progress of the optimization algorithm. Default is FALSE.}
 
-\item{num_threads}{A positive integer.
-The number of threads (per worker) for BLAS operations.}
-
 \item{num_workers}{A positive integer.
 The number of workers for parallel computing. Default is 1.}
+
+\item{num_threads}{A positive integer.
+The number of threads (per worker) for BLAS operations.}
 }
 \value{
 An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.

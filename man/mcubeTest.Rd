@@ -9,7 +9,7 @@ mcubeTest(
   kernels_list = NULL,
   standardize = TRUE,
   keep_kernels = FALSE,
-  max_workers = 1L,
+  num_workers = 1L,
   num_threads = NULL
 )
 }
@@ -24,11 +24,11 @@ If \code{TRUE}, the coordinates will be standardized. Default is \code{TRUE}.}
 
 \item{keep_kernels}{A logical value indicating whether to store kernels after testing. Default is \code{FALSE}.}
 
-\item{num_threads}{A positive integer.
-The number of threads per worker to use for BLAS operations.}
-
 \item{num_workers}{A positive integer.
 The number of workers for parallel computing. Default is 1.}
+
+\item{num_threads}{A positive integer.
+The number of threads per worker to use for BLAS operations.}
 }
 \value{
 An \code{\link[=mcube-class]{mcube}} object with testing results for all celltype-gene pairs.
