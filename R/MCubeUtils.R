@@ -16,11 +16,6 @@
 mcubeFilterGenes <- function(
     counts, library_sizes = NULL,
     gene_threshold = 5e-5, batch_size = 1000) {
-  message(
-    "mcubeFilterGenes: Filter genes based on relative expression",
-    " with gene_threshold = ", gene_threshold, "."
-  )
-
   if (is.null(library_sizes)) {
     library_sizes <- rowSums(as.matrix(counts))
   }
@@ -46,6 +41,11 @@ mcubeFilterGenes <- function(
   if (length(mito_genes_idx) > 0) {
     gene_list_total <- gene_list_total[-mito_genes_idx]
   }
+
+  message(
+    "mcubeFilterGenes: ", length(gene_list_total), " genes pass the threshold."
+  )
+
   return(gene_list_total)
 }
 
@@ -114,8 +114,7 @@ mcubeFilterGenesCellType <- function(
 
   message(
     "mcubeFilterGenesCellType: Select ", length(gene_list_type),
-    " genes to analyze for ", celltype,
-    " with reference_threshold = ", reference_threshold, "."
+    " genes to analyze for ", celltype, "."
   )
 
   return(gene_list_type)
@@ -169,12 +168,6 @@ mcubeGetPlatformEffects <- function(
 mcubeFilterCellTypes <- function(
     proportions,
     proportion_threshold = 0.1, celltype_threshold = 100) {
-  message(
-    "mcubeFilterCellTypes: Select high-abundance cell types to analyze",
-    " with proportion_threshold = ", proportion_threshold,
-    " and celltype_threshold = ", celltype_threshold, "."
-  )
-
   proportions[proportions < proportion_threshold] <- 0
   celltype_major <- names(which(colSums(proportions) >= celltype_threshold))
 
@@ -189,8 +182,7 @@ mcubeFilterCellTypes <- function(
   message(
     "mcubeFilterCellTypes: Cell type(s) ",
     paste(celltype_major, collapse = ", "),
-    " pass celltype_threshold = ", celltype_threshold,
-    " with proportion_threshold = ", proportion_threshold, "."
+    " pass the threshold."
   )
 
   return(celltype_major)
@@ -274,8 +266,10 @@ mcubeGetSigGenes <- function(
 #' A p-value combination method using the Cauchy distribution.
 #' Credit goes to the R package `ACAT` (\url{https://github.com/yaowuliu/ACAT}).
 #'
-#' @param Weights a numeric vector/matrix of non-negative weights for the combined p-values. When it is NULL, the equal weights are used.
-#' @param Pvals a numeric vector/matrix of p-values. When it is a matrix, each column of p-values is combined by ACAT.
+#' @param Weights a numeric vector/matrix of non-negative weights for the combined p-values.
+#' When it is NULL, the equal weights are used.
+#' @param Pvals a numeric vector/matrix of p-values.
+#' When it is a matrix, each column of p-values is combined by ACAT.
 #' @param threshold a numeric value of the numerical precision of the Cauchy cumulative density function.
 #'
 #' @return The p-value(s) of ACAT.

@@ -145,7 +145,7 @@ createMCube <- function(
         batch_id <- as.factor(batch_id)
     } else {
         message(
-            "The batch_id is not provided!\n",
+            "The batch_id is not provided!", "\n",
             "All spots are assumed to be from the same batch ",
             "and share the same gene platform effects."
         )
@@ -204,6 +204,16 @@ createMCube <- function(
     } # End
 
     # Check/assign celltype_test
+    message(
+        "Select high-abundance cell types to analyze",
+        " with proportion_threshold = ", proportion_threshold,
+        " and celltype_threshold = ", celltype_threshold, "."
+    )
+    celltype_major <- mcubeFilterCellTypes(
+        proportions = proportions,
+        proportion_threshold = proportion_threshold,
+        celltype_threshold = celltype_threshold
+    )
     if (is.null(celltype_test)) {
         celltype_test <- rownames(reference)
     } else {
@@ -212,18 +222,13 @@ createMCube <- function(
             stop("The cell types in celltype_test do not match the input data!") # End
         }
     }
-    celltype_major <- mcubeFilterCellTypes(
-        proportions = proportions,
-        proportion_threshold = proportion_threshold,
-        celltype_threshold = celltype_threshold
-    )
     diff_celltypes <- setdiff(celltype_test, celltype_major)
     if (length(diff_celltypes) > 0) {
         message(
             "Cell type(s) ", paste0(diff_celltypes, collapse = ", "),
             " has/have less than the minimum celltype_threshold = ", celltype_threshold,
-            " and proportion_threshold = ", proportion_threshold, ".",
-            " To include the above cell type(s),",
+            " with proportion_threshold = ", proportion_threshold, ".", "\n",
+            "To include the above cell type(s),",
             " please reduce celltype_threshold or proportion_threshold."
         )
     }
@@ -254,7 +259,11 @@ createMCube <- function(
     }
     counts <- counts[, gene_test, drop = FALSE]
 
-    # Filter out lowly expressed genes
+    # Filter out lowly-expressed genes
+    message(
+        "Filter out lowly-expressed genes",
+        " with gene_threshold = ", gene_threshold, "."
+    )
     gene_test <- mcubeFilterGenes(
         counts = as.matrix(counts),
         library_sizes = library_sizes,
@@ -323,6 +332,10 @@ createMCube <- function(
     )
 
     # Get the gene list to test for each cell type
+    message(
+        "Select highly-expressed genes to analyze for each specific cell type",
+        " with reference_threshold = ", reference_threshold, "."
+    )
     gene_test_each_celltype_list <- lapply(
         celltype_test,
         FUN = function(celltype) {
@@ -339,7 +352,7 @@ createMCube <- function(
         }
     )
     # Delete the cell type with no genes can be tested after filtering
-    empty_celltype <- sapply(gene_test_each_celltype_list, length) == 0
+    empty_celltype <- (sapply(gene_test_each_celltype_list, length) == 0)
     if (all(empty_celltype)) {
         stop("No genes can be tested for any cell type in celltype_test!") # End
     }
