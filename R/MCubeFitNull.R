@@ -19,9 +19,9 @@
 #' @param verbose A logical value.
 #' Whether to print the progress of the optimization algorithm. Default is FALSE.
 #' @param num_workers A positive integer.
-#' The number of workers for parallel computing. Default is 1.
+#' The number of worker processes for parallel computing. Default is 1.
 #' @param num_threads A positive integer.
-#' The number of threads (per worker) for BLAS operations.
+#' The number of threads on BLAS per worker.
 #'
 #' @return An \code{\link[=mcube-class]{mcube}} object with fitted null models for all celltype-gene pairs.
 #'
@@ -86,7 +86,7 @@ mcubeFitNull <- function(
     if (is.null(num_threads)) {
       num_threads <- 1L
     }
-    message("Number of thread(s) per worker: ", num_threads, ".")
+    message("Number of thread(s) on BLAS per worker: ", num_threads, ".")
 
     if (num_workers * num_threads >= num_cores) {
       stop("num_workers * num_threads >= num_cores will cause resource contention!")
@@ -204,7 +204,7 @@ mcubeFitNull <- function(
 #' @param verbose A logical value.
 #' Whether to print the progress of the optimization algorithm. Default is TRUE.
 #' @param num_threads A positive integer.
-#' The number of threads for BLAS operations.
+#' The number of threads on BLAS per worker.
 #'
 #' @return A list containing the fitted null model results.
 #'

@@ -72,7 +72,7 @@ The convergence criteria for the optimization algorithm.}
 Whether to print the progress of the optimization algorithm. Default is TRUE.}
 
 \item{num_threads}{A positive integer.
-The number of threads for BLAS operations.}
+The number of threads on BLAS per worker.}
 }
 \value{
 A list containing the fitted null model results.

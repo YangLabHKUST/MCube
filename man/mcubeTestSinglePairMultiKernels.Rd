@@ -23,7 +23,7 @@ Each row represents a spot and each column represents a covariate.}
 \item{celltype}{A character specifying the cell type to test.}
 
 \item{num_threads}{A positive integer.
-The number of threads per worker to use for BLAS operations.}
+The number of threads on BLAS per worker.}
 }
 \value{
 A data.frame containing the test results.

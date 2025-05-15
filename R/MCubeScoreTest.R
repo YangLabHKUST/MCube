@@ -14,9 +14,9 @@
 #' If `TRUE`, the coordinates will be standardized. Default is `TRUE`.
 #' @param keep_kernels A logical value indicating whether to store kernels after testing. Default is `FALSE`.
 #' @param num_workers A positive integer.
-#' The number of workers for parallel computing. Default is 1.
+#' The number of worker processes for parallel computing. Default is 1.
 #' @param num_threads A positive integer.
-#' The number of threads per worker to use for BLAS operations.
+#' The number of threads on BLAS per worker.
 #'
 #' @return An \code{\link[=mcube-class]{mcube}} object with testing results for all celltype-gene pairs.
 #'
@@ -100,7 +100,7 @@ mcubeTest <- function(
     if (is.null(num_threads)) {
       num_threads <- 1L
     }
-    message("Number of thread(s) per worker: ", num_threads, ".")
+    message("Number of thread(s) on BLAS per worker: ", num_threads, ".")
 
     if (num_workers * num_threads >= num_cores) {
       stop("num_workers * num_threads >= num_cores will cause resource contention!")
@@ -186,7 +186,7 @@ mcubeTest <- function(
 #' @param kernels_list A list containing the kernel matrices for testing.
 #' @param celltype A character specifying the cell type to test.
 #' @param num_threads A positive integer.
-#' The number of threads per worker to use for BLAS operations.
+#' The number of threads on BLAS per worker.
 #'
 #' @return A data.frame containing the test results.
 #'
