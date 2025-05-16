@@ -6,6 +6,8 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach foreach %dopar%
 #' @importFrom iterators iter
+#' @importClassesFrom bigstatsr FBM
+#' @importFrom bigstatsr as_FBM
 #'
 #' @param object An \code{\link[=mcube-class]{mcube}} object with fitted results of the null model.
 #' @param kernels_list A list containing the kernel matrices for testing.
@@ -17,13 +19,16 @@
 #' The number of worker processes for parallel computing. Default is 1.
 #' @param num_threads A positive integer.
 #' The number of threads on BLAS per worker.
+#' @param shared_memory A logical value.
+#' If `TRUE`, the large kernel matrices will be handled through memory-mapping to binary files on disk.
 #'
 #' @return An \code{\link[=mcube-class]{mcube}} object with testing results for all celltype-gene pairs.
 #'
 #' @export
 mcubeTest <- function(
-    object, kernels_list = NULL, standardize = TRUE,
-    keep_kernels = FALSE, num_workers = 1L, num_threads = NULL) {
+    object, kernels_list = NULL,
+    standardize = TRUE, keep_kernels = FALSE,
+    num_workers = 1L, num_threads = NULL, shared_memory = FALSE) {
   if (is.null(kernels_list)) {
     num_kernels <- 2
     length_scale_seq <- c(1, sqrt(2)) *
@@ -74,8 +79,8 @@ mcubeTest <- function(
         mcubeTestSinglePairMultiKernels(
           null_model_results = object@null_models[[i]],
           X = object@covariates[object@spots, , drop = FALSE],
-          kernels_list = kernels_list,
           celltype = object@celltype_gene_test_pairs$celltype[i],
+          kernels_list = kernels_list,
           num_threads = num_threads
         ),
         error = function(e) {
@@ -85,30 +90,29 @@ mcubeTest <- function(
     }
   } else if (num_workers > 1) {
     X <- object@covariates[object@spots, , drop = FALSE]
+    if (shared_memory) {
+      kernels_list <- lapply(kernels_list, FUN = bigstatsr::as_FBM)
+    }
 
     num_cores <- parallel::detectCores(logical = FALSE)
     if (num_cores <= 2) {
       stop("Number of detected physical cores is not greater than 2!")
     }
     message("Number of physical cores: ", num_cores, ".")
-
     num_workers <- ifelse(
       num_workers < num_cores, num_workers, num_cores - 1L
     )
     message("Number of workers: ", num_workers, ".")
-
     if (is.null(num_threads)) {
       num_threads <- 1L
     }
     message("Number of thread(s) on BLAS per worker: ", num_threads, ".")
-
     if (num_workers * num_threads >= num_cores) {
       stop("num_workers * num_threads >= num_cores will cause resource contention!")
     }
 
     cl <- parallel::makeCluster(num_workers)
     doParallel::registerDoParallel(cl)
-
     pvalues <- foreach::foreach(
       null_model_results_i = iterators::iter(object@null_models),
       celltype_i = iterators::iter(object@celltype_gene_test_pairs$celltype),
@@ -122,12 +126,11 @@ mcubeTest <- function(
       mcubeTestSinglePairMultiKernels(
         null_model_results = null_model_results_i,
         X = X,
-        kernels_list = kernels_list,
         celltype = celltype_i,
+        kernels_list = kernels_list,
         num_threads = num_threads
       )
     }
-
     parallel::stopCluster(cl)
   } else {
     stop("mcubeTest: max_cores must be a positive integer!") # End
@@ -192,7 +195,7 @@ mcubeTest <- function(
 #'
 #' @export
 mcubeTestSinglePairMultiKernels <- function(
-    null_model_results, X, kernels_list, celltype,
+    null_model_results, X, celltype, kernels_list,
     num_threads = NULL) {
   if (!is.null(num_threads)) {
     num_threads <- RhpcBLASctl::blas_set_num_threads(num_threads)
@@ -202,15 +205,9 @@ mcubeTestSinglePairMultiKernels <- function(
     stop("mcubeTestSinglePairMultiKernels: cell_type is not found in the null model results!") # End
   }
 
-  kernels_list <- lapply(
-    kernels_list,
-    FUN = function(kernel_mat) {
-      kernel_mat[null_model_results$spots, null_model_results$spots, drop = FALSE]
-    }
-  )
-  X <- X[null_model_results$spots, , drop = FALSE]
-
   # Compute the projection matrix
+  spot_ids <- match(null_model_results$spots, rownames(X))
+  X <- X[spot_ids, , drop = FALSE]
   Sigma_inv_X_mat <- null_model_results$Sigma_inv * X
   X_t_Sigma_inv_X_mat <- crossprod(X, Sigma_inv_X_mat)
   P_mat <- diag(null_model_results$Sigma_inv) -
@@ -225,7 +222,7 @@ mcubeTestSinglePairMultiKernels <- function(
     FUN = function(kernel_mat) {
       mcubeTestSinglePairSingleKernel(
         null_model_results, P_mat, P_Y_tilde,
-        kernel_mat, celltype
+        celltype, kernel_mat, spot_ids
       )
     }
   )
@@ -243,26 +240,29 @@ mcubeTestSinglePairMultiKernels <- function(
 #'
 #' @description Examine whether a gene is a spatially variable gene specific to a cell type with a single kernel.
 #'
+#' @importClassesFrom bigstatsr FBM
 #' @importFrom stats pchisq
 #'
 #' @param null_model_results A list containing the fitted results of the null model.
 #' @param P_mat A numeric projection matrix.
 #' @param P_Y_tilde A numeric vector contraining the value of P %*% Y_tilde.
-#' @param kernel_mat A kernel_mat for testing.
 #' @param celltype A character specifying the cell type to test.
+#' @param kernel_mat A kernel_mat for testing.
+#' @param spot_ids An integer vector containing the indices of the spots.
 #'
 #' @return A p-value.
 #'
 #' @export
 mcubeTestSinglePairSingleKernel <- function(
     null_model_results, P_mat, P_Y_tilde,
-    kernel_mat, celltype) {
+    celltype, kernel_mat, spot_ids) {
   if (!(celltype %in% null_model_results$celltype)) {
     return(NULL)
   }
 
   membership <- null_model_results$membership[, celltype]
-  kernel_mat <- kernel_mat * (membership %o% membership)
+  kernel_mat <- kernel_mat[spot_ids, spot_ids, drop = FALSE] *
+    (membership %o% membership)
   P_kernel_mat <- P_mat %*% kernel_mat
 
   teststat_var <- 0.5 * sum(P_kernel_mat^2) # variance of test statistic
@@ -274,7 +274,9 @@ mcubeTestSinglePairSingleKernel <- function(
   teststat <- 0.5 *
     sum(null_model_results$Y_tilde * P_kernel_P_Y_tilde) # test statistic
 
-  pvalue <- stats::pchisq(q = teststat / scaled_para, df = df_para, lower.tail = FALSE)
+  pvalue <- stats::pchisq(
+    q = teststat / scaled_para, df = df_para, lower.tail = FALSE
+  )
 
   return(pvalue)
 }

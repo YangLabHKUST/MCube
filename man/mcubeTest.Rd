@@ -10,7 +10,8 @@ mcubeTest(
   standardize = TRUE,
   keep_kernels = FALSE,
   num_workers = 1L,
-  num_threads = NULL
+  num_threads = NULL,
+  shared_memory = FALSE
 )
 }
 \arguments{
@@ -29,6 +30,9 @@ The number of worker processes for parallel computing. Default is 1.}
 
 \item{num_threads}{A positive integer.
 The number of threads on BLAS per worker.}
+
+\item{shared_memory}{A logical value.
+If \code{TRUE}, the large kernel matrices will be handled through memory-mapping to binary files on disk.}
 }
 \value{
 An \code{\link[=mcube-class]{mcube}} object with testing results for all celltype-gene pairs.

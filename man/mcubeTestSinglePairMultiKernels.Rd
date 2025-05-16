@@ -7,8 +7,8 @@
 mcubeTestSinglePairMultiKernels(
   null_model_results,
   X,
-  kernels_list,
   celltype,
+  kernels_list,
   num_threads = NULL
 )
 }
@@ -18,9 +18,9 @@ mcubeTestSinglePairMultiKernels(
 \item{X}{A numeric matrix containing covariates of all spots.
 Each row represents a spot and each column represents a covariate.}
 
-\item{kernels_list}{A list containing the kernel matrices for testing.}
-
 \item{celltype}{A character specifying the cell type to test.}
+
+\item{kernels_list}{A list containing the kernel matrices for testing.}
 
 \item{num_threads}{A positive integer.
 The number of threads on BLAS per worker.}

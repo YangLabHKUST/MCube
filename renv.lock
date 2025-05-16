@@ -135,6 +135,42 @@
       "Repository": "CRAN",
       "Encoding": "UTF-8"
     },
+    "RSpectra": {
+      "Package": "RSpectra",
+      "Version": "0.16-2",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Solvers for Large-Scale Eigenvalue and SVD Problems",
+      "Date": "2024-07-18",
+      "Authors@R": "c( person(\"Yixuan\", \"Qiu\", , \"yixuan.qiu@cos.name\", c(\"aut\", \"cre\")), person(\"Jiali\", \"Mei\", , \"vermouthmjl@gmail.com\", \"aut\", comment = \"Function interface of matrix operation\"), person(\"Gael\", \"Guennebaud\", , \"gael.guennebaud@inria.fr\", \"ctb\", comment = \"Eigenvalue solvers from the 'Eigen' library\"), person(\"Jitse\", \"Niesen\", , \"jitse@maths.leeds.ac.uk\", \"ctb\", comment = \"Eigenvalue solvers from the 'Eigen' library\") )",
+      "Description": "R interface to the 'Spectra' library <https://spectralib.org/> for large-scale eigenvalue and SVD problems. It is typically used to compute a few eigenvalues/vectors of an n by n matrix, e.g., the k largest eigenvalues, which is usually more efficient than eigen() if k << n. This package provides the 'eigs()' function that does the similar job as in 'Matlab', 'Octave', 'Python SciPy' and 'Julia'. It also provides the 'svds()' function to calculate the largest k singular values and corresponding singular vectors of a real matrix. The matrix to be computed on can be dense, sparse, or in the form of an operator defined by the user.",
+      "License": "MPL (>= 2)",
+      "URL": "https://github.com/yixuan/RSpectra",
+      "BugReports": "https://github.com/yixuan/RSpectra/issues",
+      "Depends": [
+        "R (>= 3.0.2)"
+      ],
+      "Imports": [
+        "Matrix (>= 1.1-0)",
+        "Rcpp (>= 0.11.5)"
+      ],
+      "Suggests": [
+        "knitr",
+        "rmarkdown",
+        "prettydoc"
+      ],
+      "LinkingTo": [
+        "Rcpp",
+        "RcppEigen (>= 0.3.3.3.0)"
+      ],
+      "VignetteBuilder": "knitr, rmarkdown",
+      "RoxygenNote": "7.1.2",
+      "NeedsCompilation": "yes",
+      "Author": "Yixuan Qiu [aut, cre], Jiali Mei [aut] (Function interface of matrix operation), Gael Guennebaud [ctb] (Eigenvalue solvers from the 'Eigen' library), Jitse Niesen [ctb] (Eigenvalue solvers from the 'Eigen' library)",
+      "Maintainer": "Yixuan Qiu <yixuan.qiu@cos.name>",
+      "Repository": "CRAN",
+      "Encoding": "UTF-8"
+    },
     "Rcpp": {
       "Package": "Rcpp",
       "Version": "1.0.14",
@@ -163,6 +199,83 @@
       "Author": "Dirk Eddelbuettel [aut, cre] (<https://orcid.org/0000-0001-6419-907X>), Romain Francois [aut] (<https://orcid.org/0000-0002-2444-4226>), JJ Allaire [aut] (<https://orcid.org/0000-0003-0174-9868>), Kevin Ushey [aut] (<https://orcid.org/0000-0003-2880-7407>), Qiang Kou [aut] (<https://orcid.org/0000-0001-6786-5453>), Nathan Russell [aut], Iñaki Ucar [aut] (<https://orcid.org/0000-0001-6403-5550>), Doug Bates [aut] (<https://orcid.org/0000-0001-8316-9503>), John Chambers [aut]",
       "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
       "Repository": "CRAN"
+    },
+    "RcppArmadillo": {
+      "Package": "RcppArmadillo",
+      "Version": "14.4.2-1",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "'Rcpp' Integration for the 'Armadillo' Templated Linear Algebra Library",
+      "Date": "2025-04-25",
+      "Authors@R": "c(person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\", comment = c(ORCID = \"0000-0001-6419-907X\")), person(\"Romain\", \"Francois\", role = \"aut\", comment = c(ORCID = \"0000-0002-2444-4226\")), person(\"Doug\", \"Bates\", role = \"aut\", comment = c(ORCID = \"0000-0001-8316-9503\")), person(\"Binxiang\", \"Ni\", role = \"aut\"), person(\"Conrad\", \"Sanderson\", role = \"aut\", comment = c(ORCID = \"0000-0002-0049-4501\")))",
+      "Description": "'Armadillo' is a templated C++ linear algebra library (by Conrad Sanderson) that aims towards a good balance between speed and ease of use. Integer, floating point and complex numbers are supported, as well as a subset of trigonometric and statistics functions. Various matrix decompositions are provided through optional integration with LAPACK and ATLAS libraries.  The 'RcppArmadillo' package includes the header files from the templated 'Armadillo' library. Thus users do not need to install 'Armadillo' itself in order to use 'RcppArmadillo'. From release 7.800.0 on, 'Armadillo' is licensed under Apache License 2; previous releases were under licensed as MPL 2.0 from version 3.800.0 onwards and LGPL-3 prior to that; 'RcppArmadillo' (the 'Rcpp' bindings/bridge to Armadillo) is licensed under the GNU GPL version 2 or later, as is the rest of 'Rcpp'.",
+      "License": "GPL (>= 2)",
+      "LazyLoad": "yes",
+      "Depends": [
+        "R (>= 3.3.0)"
+      ],
+      "LinkingTo": [
+        "Rcpp"
+      ],
+      "Imports": [
+        "Rcpp (>= 1.0.12)",
+        "stats",
+        "utils",
+        "methods"
+      ],
+      "Suggests": [
+        "tinytest",
+        "Matrix (>= 1.3.0)",
+        "pkgKitten",
+        "reticulate",
+        "slam"
+      ],
+      "URL": "https://github.com/RcppCore/RcppArmadillo, https://dirk.eddelbuettel.com/code/rcpp.armadillo.html",
+      "BugReports": "https://github.com/RcppCore/RcppArmadillo/issues",
+      "RoxygenNote": "6.0.1",
+      "NeedsCompilation": "yes",
+      "Author": "Dirk Eddelbuettel [aut, cre] (<https://orcid.org/0000-0001-6419-907X>), Romain Francois [aut] (<https://orcid.org/0000-0002-2444-4226>), Doug Bates [aut] (<https://orcid.org/0000-0001-8316-9503>), Binxiang Ni [aut], Conrad Sanderson [aut] (<https://orcid.org/0000-0002-0049-4501>)",
+      "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
+      "Repository": "CRAN",
+      "Encoding": "UTF-8"
+    },
+    "RcppEigen": {
+      "Package": "RcppEigen",
+      "Version": "0.3.4.0.2",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "'Rcpp' Integration for the 'Eigen' Templated Linear Algebra Library",
+      "Date": "2024-08-23",
+      "Authors@R": "c(person(\"Doug\", \"Bates\", role = \"aut\", comment = c(ORCID = \"0000-0001-8316-9503\")), person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\", comment = c(ORCID = \"0000-0001-6419-907X\")), person(\"Romain\", \"Francois\", role = \"aut\", comment = c(ORCID = \"0000-0002-2444-4226\")), person(\"Yixuan\", \"Qiu\", role = \"aut\", comment = c(ORCID = \"0000-0003-0109-6692\")), person(\"Authors of\", \"Eigen\", role = \"cph\", comment = \"Authorship and copyright in included Eigen library as detailed in inst/COPYRIGHTS\"))",
+      "Copyright": "See the file COPYRIGHTS for various Eigen copyright details",
+      "Description": "R and 'Eigen' integration using 'Rcpp'. 'Eigen' is a C++ template library for linear algebra: matrices, vectors, numerical solvers and related algorithms.  It supports dense and sparse matrices on integer, floating point and complex numbers, decompositions of such matrices, and solutions of linear systems. Its performance on many algorithms is comparable with some of the best implementations based on 'Lapack' and level-3 'BLAS'. The 'RcppEigen' package includes the header files from the 'Eigen' C++ template library. Thus users do not need to install 'Eigen' itself in order to use 'RcppEigen'. Since version 3.1.1, 'Eigen' is licensed under the Mozilla Public License (version 2); earlier version were licensed under the GNU LGPL version 3 or later. 'RcppEigen' (the 'Rcpp' bindings/bridge to 'Eigen') is licensed under the GNU GPL version 2 or later, as is the rest of 'Rcpp'.",
+      "License": "GPL (>= 2) | file LICENSE",
+      "LazyLoad": "yes",
+      "Depends": [
+        "R (>= 3.6.0)"
+      ],
+      "LinkingTo": [
+        "Rcpp"
+      ],
+      "Imports": [
+        "Rcpp (>= 0.11.0)",
+        "stats",
+        "utils"
+      ],
+      "Suggests": [
+        "Matrix",
+        "inline",
+        "tinytest",
+        "pkgKitten",
+        "microbenchmark"
+      ],
+      "URL": "https://github.com/RcppCore/RcppEigen, https://dirk.eddelbuettel.com/code/rcpp.eigen.html",
+      "BugReports": "https://github.com/RcppCore/RcppEigen/issues",
+      "NeedsCompilation": "yes",
+      "Author": "Doug Bates [aut] (<https://orcid.org/0000-0001-8316-9503>), Dirk Eddelbuettel [aut, cre] (<https://orcid.org/0000-0001-6419-907X>), Romain Francois [aut] (<https://orcid.org/0000-0002-2444-4226>), Yixuan Qiu [aut] (<https://orcid.org/0000-0003-0109-6692>), Authors of Eigen [cph] (Authorship and copyright in included Eigen library as detailed in inst/COPYRIGHTS)",
+      "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
+      "Repository": "CRAN",
+      "Encoding": "UTF-8"
     },
     "RhpcBLASctl": {
       "Package": "RhpcBLASctl",
@@ -224,6 +337,122 @@
       "NeedsCompilation": "yes",
       "Repository": "CRAN",
       "Encoding": "UTF-8"
+    },
+    "bigassertr": {
+      "Package": "bigassertr",
+      "Version": "0.1.6",
+      "Source": "Repository",
+      "Title": "Assertion and Message Functions",
+      "Date": "2022-12-30",
+      "Authors@R": "person(given = \"Florian\", family = \"Privé\", role = c(\"aut\", \"cre\"), email = \"florian.prive.21@gmail.com\")",
+      "Description": "Enhanced message functions (cat() / message() / warning() / error())  using wrappers around sprintf(). Also, multiple assertion functions  (e.g. to check class, length, values, files, arguments, etc.).",
+      "License": "GPL-3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.2.2",
+      "Suggests": [
+        "testthat",
+        "covr"
+      ],
+      "URL": "https://github.com/privefl/bigassertr",
+      "BugReports": "https://github.com/privefl/bigassertr/issues",
+      "NeedsCompilation": "no",
+      "Author": "Florian Privé [aut, cre]",
+      "Maintainer": "Florian Privé <florian.prive.21@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "bigparallelr": {
+      "Package": "bigparallelr",
+      "Version": "0.3.2",
+      "Source": "Repository",
+      "Title": "Easy Parallel Tools",
+      "Authors@R": "person(given = \"Florian\", family = \"Privé\", role = c(\"aut\", \"cre\"), email = \"florian.prive.21@gmail.com\")",
+      "Description": "Utility functions for easy parallelism in R. Include some reexports from other packages, utility functions for splitting and parallelizing over blocks, and choosing and setting the number of cores used.",
+      "License": "GPL-3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.1.1",
+      "Imports": [
+        "bigassertr (>= 0.1.1)",
+        "doParallel",
+        "flock",
+        "parallel",
+        "parallelly",
+        "RhpcBLASctl"
+      ],
+      "Depends": [
+        "foreach"
+      ],
+      "Suggests": [
+        "testthat",
+        "covr"
+      ],
+      "URL": "https://github.com/privefl/bigparallelr",
+      "BugReports": "https://github.com/privefl/bigparallelr/issues",
+      "NeedsCompilation": "no",
+      "Author": "Florian Privé [aut, cre]",
+      "Maintainer": "Florian Privé <florian.prive.21@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "bigstatsr": {
+      "Package": "bigstatsr",
+      "Version": "1.6.1",
+      "Source": "Repository",
+      "Encoding": "UTF-8",
+      "Type": "Package",
+      "Title": "Statistical Tools for Filebacked Big Matrices",
+      "Date": "2024-09-10",
+      "Authors@R": "c( person(\"Florian\", \"Privé\", email = \"florian.prive.21@gmail.com\",  role = c(\"aut\", \"cre\")), person(\"Michael\", \"Blum\", role = \"ths\"), person(\"Hugues\", \"Aschard\", email = \"hugues.aschard@pasteur.fr\", role = \"ths\"))",
+      "Description": "Easy-to-use, efficient, flexible and scalable statistical tools. Package bigstatsr provides and uses Filebacked Big Matrices via memory-mapping. It provides for instance matrix operations, Principal Component Analysis, sparse linear supervised models, utility functions and more <doi:10.1093/bioinformatics/bty185>.",
+      "License": "GPL-3",
+      "Language": "en-US",
+      "ByteCompile": "TRUE",
+      "Depends": [
+        "R (>= 3.4)"
+      ],
+      "Imports": [
+        "bigassertr (>= 0.1.1)",
+        "bigparallelr (>= 0.2.3)",
+        "cowplot",
+        "foreach",
+        "ggplot2 (>= 3.0)",
+        "graphics",
+        "methods",
+        "ps (>= 1.4)",
+        "Rcpp",
+        "rmio (>= 0.4)",
+        "RSpectra",
+        "stats",
+        "tibble",
+        "utils"
+      ],
+      "LinkingTo": [
+        "Rcpp",
+        "RcppArmadillo",
+        "rmio"
+      ],
+      "Suggests": [
+        "bigmemory (>= 4.5.33)",
+        "bigreadr (>= 0.2)",
+        "covr",
+        "data.table",
+        "dplyr",
+        "glmnet",
+        "hexbin",
+        "memuse",
+        "ModelMetrics",
+        "plotly",
+        "ppcor",
+        "RhpcBLASctl",
+        "spelling (>= 1.2)",
+        "testthat"
+      ],
+      "RoxygenNote": "7.3.2",
+      "URL": "https://privefl.github.io/bigstatsr/",
+      "BugReports": "https://github.com/privefl/bigstatsr/issues",
+      "Collate": "'AUC.R' 'FBM-attach.R' 'crochet.R' 'FBM.R' 'FBM-code256.R' 'FBM-copy.R' 'RcppExports.R' 'SVD.R' 'apply-parallelize.R' 'biglasso.R' 'bigstatsr-package.R' 'colstats.R' 'crossprodSelf.R' 'mult-mat.R' 'mult-vec.R' 'pcor.R' 'plot.R' 'predict.R' 'randomSVD.R' 'read-write.R' 'scaling.R' 'summary.R' 'tcrossprodSelf.R' 'transpose.R' 'univLinReg.R' 'univLogReg.R' 'utils-assert.R' 'utils.R' 'zzz.R'",
+      "NeedsCompilation": "yes",
+      "Author": "Florian Privé [aut, cre], Michael Blum [ths], Hugues Aschard [ths]",
+      "Maintainer": "Florian Privé <florian.prive.21@gmail.com>",
+      "Repository": "CRAN"
     },
     "bit": {
       "Package": "bit",
@@ -525,6 +754,56 @@
       "NeedsCompilation": "yes",
       "Author": "Ross Ihaka [aut], Paul Murrell [aut] (<https://orcid.org/0000-0002-3224-8858>), Kurt Hornik [aut] (<https://orcid.org/0000-0003-4198-9911>), Jason C. Fisher [aut] (<https://orcid.org/0000-0001-9032-8912>), Reto Stauffer [aut] (<https://orcid.org/0000-0002-3798-5507>), Claus O. Wilke [aut] (<https://orcid.org/0000-0002-7470-9261>), Claire D. McWhite [aut] (<https://orcid.org/0000-0001-7346-3047>), Achim Zeileis [aut, cre] (<https://orcid.org/0000-0003-0918-3766>)",
       "Maintainer": "Achim Zeileis <Achim.Zeileis@R-project.org>",
+      "Repository": "CRAN"
+    },
+    "cowplot": {
+      "Package": "cowplot",
+      "Version": "1.1.3",
+      "Source": "Repository",
+      "Title": "Streamlined Plot Theme and Plot Annotations for 'ggplot2'",
+      "Authors@R": "person( given = \"Claus O.\", family = \"Wilke\", role = c(\"aut\", \"cre\"), email = \"wilke@austin.utexas.edu\", comment = c(ORCID = \"0000-0002-7470-9261\") )",
+      "Description": "Provides various features that help with creating publication-quality figures with 'ggplot2', such as a set of themes, functions to align plots and arrange them into complex compound figures, and functions that make it easy to annotate plots and or mix plots with images. The package was originally written for internal use in the Wilke lab, hence the name (Claus O. Wilke's plot package). It has also been used extensively in the book Fundamentals of Data Visualization.",
+      "URL": "https://wilkelab.org/cowplot/",
+      "BugReports": "https://github.com/wilkelab/cowplot/issues",
+      "Depends": [
+        "R (>= 3.5.0)"
+      ],
+      "Imports": [
+        "ggplot2 (>= 3.4.0)",
+        "grid",
+        "gtable",
+        "grDevices",
+        "methods",
+        "rlang",
+        "scales"
+      ],
+      "License": "GPL-2",
+      "Suggests": [
+        "Cairo",
+        "covr",
+        "dplyr",
+        "forcats",
+        "gridGraphics (>= 0.4-0)",
+        "knitr",
+        "lattice",
+        "magick",
+        "maps",
+        "PASWR",
+        "patchwork",
+        "rmarkdown",
+        "ragg",
+        "testthat (>= 1.0.0)",
+        "tidyr",
+        "vdiffr (>= 0.3.0)",
+        "VennDiagram"
+      ],
+      "VignetteBuilder": "knitr",
+      "Collate": "'add_sub.R' 'align_plots.R' 'as_grob.R' 'as_gtable.R' 'axis_canvas.R' 'cowplot.R' 'draw.R' 'get_plot_component.R' 'get_axes.R' 'get_titles.R' 'get_legend.R' 'get_panel.R' 'gtable.R' 'key_glyph.R' 'plot_grid.R' 'save.R' 'set_null_device.R' 'setup.R' 'stamp.R' 'themes.R' 'utils_ggplot2.R'",
+      "RoxygenNote": "7.2.3",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "no",
+      "Author": "Claus O. Wilke [aut, cre] (<https://orcid.org/0000-0002-7470-9261>)",
+      "Maintainer": "Claus O. Wilke <wilke@austin.utexas.edu>",
       "Repository": "CRAN"
     },
     "cpp11": {
@@ -955,6 +1234,56 @@
       "Author": "Winston Chang [aut, cre], Posit Software, PBC [cph, fnd], Tessil [cph] (hopscotch_map library)",
       "Maintainer": "Winston Chang <winston@posit.co>",
       "Repository": "CRAN"
+    },
+    "ff": {
+      "Package": "ff",
+      "Version": "4.5.2",
+      "Source": "Repository",
+      "Date": "2025-01-12",
+      "Title": "Memory-Efficient Storage of Large Data on Disk and Fast Access Functions",
+      "Authors@R": "c(person(given = \"Daniel\", family = \"Adler\", role = \"aut\"), person(given = \"Christian\", family = \"Gläser\", role = \"ctb\"), person(given = \"Oleg\", family = \"Nenadic\", role = \"ctb\"), person(given = \"Jens\", family = \"Oehlschlägel\", role = c(\"aut\", \"cre\"), email = \"Jens.Oehlschlaegel@truecluster.com\"), person(given = \"Martijn\", family = \"Schuemie\", role = \"ctb\"), person(given = \"Walter\", family = \"Zucchini\", role = \"ctb\"))",
+      "Author": "Daniel Adler [aut], Christian Gläser [ctb], Oleg Nenadic [ctb], Jens Oehlschlägel [aut, cre], Martijn Schuemie [ctb], Walter Zucchini [ctb]",
+      "Maintainer": "Jens Oehlschlägel <Jens.Oehlschlaegel@truecluster.com>",
+      "Depends": [
+        "R (>= 3.4.0)",
+        "bit (>= 4.0.0)",
+        "utils"
+      ],
+      "Suggests": [
+        "biglm",
+        "testthat (>= 0.11.0)",
+        "markdown"
+      ],
+      "Description": "The ff package provides data structures that are stored on disk but behave (almost) as if they were in RAM by transparently  mapping only a section (pagesize) in main memory - the effective  virtual memory consumption per ff object. ff supports R's standard  atomic data types 'double', 'logical', 'raw' and 'integer' and  non-standard atomic types boolean (1 bit), quad (2 bit unsigned),  nibble (4 bit unsigned), byte (1 byte signed with NAs), ubyte (1 byte  unsigned), short (2 byte signed with NAs), ushort (2 byte unsigned),  single (4 byte float with NAs). For example 'quad' allows efficient  storage of genomic data as an 'A','T','G','C' factor. The unsigned  types support 'circular' arithmetic. There is also support for  close-to-atomic types 'factor', 'ordered', 'POSIXct', 'Date' and  custom close-to-atomic types.  ff not only has native C-support for vectors, matrices and arrays  with flexible dimorder (major column-order, major row-order and  generalizations for arrays). There is also a ffdf class not unlike  data.frames and import/export filters for csv files. ff objects store raw data in binary flat files in native encoding, and complement this with metadata stored in R as physical and virtual attributes. ff objects have well-defined hybrid copying semantics,  which gives rise to certain performance improvements through  virtualization. ff objects can be stored and reopened across R  sessions. ff files can be shared by multiple ff R objects  (using different data en/de-coding schemes) in the same process  or from multiple R processes to exploit parallelism. A wide choice of  finalizer options allows to work with 'permanent' files as well as  creating/removing 'temporary' ff files completely transparent to the  user. On certain OS/Filesystem combinations, creating the ff files works without notable delay thanks to using sparse file allocation. Several access optimization techniques such as Hybrid Index  Preprocessing and Virtualization are implemented to achieve good  performance even with large datasets, for example virtual matrix  transpose without touching a single byte on disk. Further, to reduce  disk I/O, 'logicals' and non-standard data types get stored native and  compact on binary flat files i.e. logicals take up exactly 2 bits to  represent TRUE, FALSE and NA.  Beyond basic access functions, the ff package also provides  compatibility functions that facilitate writing code for ff and ram  objects and support for batch processing on ff objects (e.g. as.ram,  as.ff, ffapply). ff interfaces closely with functionality from package  'bit': chunked looping, fast bit operations and coercions between  different objects that can store subscript information ('bit',  'bitwhich', ff 'boolean', ri range index, hi hybrid index). This allows to work interactively with selections of large datasets and quickly  modify selection criteria.  Further high-performance enhancements can be made available upon request.",
+      "License": "GPL-2 | GPL-3 | file LICENSE",
+      "LazyLoad": "yes",
+      "ByteCompile": "yes",
+      "NeedsCompilation": "yes",
+      "Encoding": "UTF-8",
+      "URL": "https://github.com/truecluster/ff",
+      "Repository": "CRAN"
+    },
+    "flock": {
+      "Package": "flock",
+      "Version": "0.7",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Process Synchronization Using File Locks",
+      "Date": "2016-11-10",
+      "Author": "Ivan Popivanov",
+      "Maintainer": "Ivan Popivanov <ivan.popivanov@gmail.com>",
+      "Description": "Implements synchronization between R processes (spawned by using the \"parallel\" package for instance) using file locks. Supports both exclusive and shared locking.",
+      "License": "Apache License 2.0",
+      "Imports": [
+        "Rcpp (>= 0.11.3)",
+        "methods"
+      ],
+      "LinkingTo": [
+        "Rcpp"
+      ],
+      "NeedsCompilation": "yes",
+      "Repository": "CRAN",
+      "Encoding": "UTF-8"
     },
     "fontawesome": {
       "Package": "fontawesome",
@@ -2065,6 +2394,35 @@
       "Maintainer": "Kevin Wright <kw.stat@gmail.com>",
       "Repository": "CRAN"
     },
+    "parallelly": {
+      "Package": "parallelly",
+      "Version": "1.44.0",
+      "Source": "Repository",
+      "Title": "Enhancing the 'parallel' Package",
+      "Imports": [
+        "parallel",
+        "tools",
+        "utils"
+      ],
+      "Suggests": [
+        "commonmark",
+        "base64enc"
+      ],
+      "VignetteBuilder": "parallelly",
+      "Authors@R": "c( person(\"Henrik\", \"Bengtsson\", role = c(\"aut\", \"cre\", \"cph\"), email = \"henrikb@braju.com\", comment = c(ORCID = \"0000-0002-7579-5165\")), person(\"Mike\", \"Cheng\", role = c(\"ctb\"), email = \"mikefc@coolbutuseless.com\") )",
+      "Description": "Utility functions that enhance the 'parallel' package and support the built-in parallel backends of the 'future' package.  For example, availableCores() gives the number of CPU cores available to your R process as given by the operating system, 'cgroups' and Linux containers, R options, and environment variables, including those set by job schedulers on high-performance compute clusters. If none is set, it will fall back to parallel::detectCores(). Another example is makeClusterPSOCK(), which is backward compatible with parallel::makePSOCKcluster() while doing a better job in setting up remote cluster workers without the need for configuring the firewall to do port-forwarding to your local computer.",
+      "License": "LGPL (>= 2.1)",
+      "LazyLoad": "TRUE",
+      "ByteCompile": "TRUE",
+      "URL": "https://parallelly.futureverse.org, https://github.com/futureverse/parallelly",
+      "BugReports": "https://github.com/futureverse/parallelly/issues",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "yes",
+      "Author": "Henrik Bengtsson [aut, cre, cph] (ORCID: <https://orcid.org/0000-0002-7579-5165>), Mike Cheng [ctb]",
+      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
+      "Repository": "CRAN"
+    },
     "pheatmap": {
       "Package": "pheatmap",
       "Version": "1.0.12",
@@ -2350,6 +2708,45 @@
       "NeedsCompilation": "yes",
       "Author": "Joe Cheng [aut, cre], Posit Software, PBC [cph, fnd]",
       "Maintainer": "Joe Cheng <joe@posit.co>",
+      "Repository": "CRAN"
+    },
+    "ps": {
+      "Package": "ps",
+      "Version": "1.9.0",
+      "Source": "Repository",
+      "Title": "List, Query, Manipulate System Processes",
+      "Authors@R": "c( person(\"Jay\", \"Loden\", role = \"aut\"), person(\"Dave\", \"Daeschler\", role = \"aut\"), person(\"Giampaolo\", \"Rodola'\", role = \"aut\"), person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "List, query and manipulate all system processes, on 'Windows', 'Linux' and 'macOS'.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://github.com/r-lib/ps, https://ps.r-lib.org/",
+      "BugReports": "https://github.com/r-lib/ps/issues",
+      "Depends": [
+        "R (>= 3.4)"
+      ],
+      "Imports": [
+        "utils"
+      ],
+      "Suggests": [
+        "callr",
+        "covr",
+        "curl",
+        "pillar",
+        "pingr",
+        "processx (>= 3.1.0)",
+        "R6",
+        "rlang",
+        "testthat (>= 3.0.0)",
+        "webfakes",
+        "withr"
+      ],
+      "Biarch": "true",
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "yes",
+      "Author": "Jay Loden [aut], Dave Daeschler [aut], Giampaolo Rodola' [aut], Gábor Csárdi [aut, cre], Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
       "Repository": "CRAN"
     },
     "purrr": {
@@ -2707,6 +3104,32 @@
       "NeedsCompilation": "no",
       "Author": "JJ Allaire [aut], Yihui Xie [aut, cre] (<https://orcid.org/0000-0003-0645-5666>), Christophe Dervieux [aut] (<https://orcid.org/0000-0003-4474-2498>), Jonathan McPherson [aut], Javier Luraschi [aut], Kevin Ushey [aut], Aron Atkins [aut], Hadley Wickham [aut], Joe Cheng [aut], Winston Chang [aut], Richard Iannone [aut] (<https://orcid.org/0000-0003-3925-190X>), Andrew Dunning [ctb] (<https://orcid.org/0000-0003-0464-5036>), Atsushi Yasumoto [ctb, cph] (<https://orcid.org/0000-0002-8335-495X>, Number sections Lua filter), Barret Schloerke [ctb], Carson Sievert [ctb] (<https://orcid.org/0000-0002-4958-2844>), Devon Ryan [ctb] (<https://orcid.org/0000-0002-8549-0971>), Frederik Aust [ctb] (<https://orcid.org/0000-0003-4900-788X>), Jeff Allen [ctb], JooYoung Seo [ctb] (<https://orcid.org/0000-0002-4064-6012>), Malcolm Barrett [ctb], Rob Hyndman [ctb], Romain Lesur [ctb], Roy Storey [ctb], Ruben Arslan [ctb], Sergio Oller [ctb], Posit Software, PBC [cph, fnd], jQuery UI contributors [ctb, cph] (jQuery UI library; authors listed in inst/rmd/h/jqueryui/AUTHORS.txt), Mark Otto [ctb] (Bootstrap library), Jacob Thornton [ctb] (Bootstrap library), Bootstrap contributors [ctb] (Bootstrap library), Twitter, Inc [cph] (Bootstrap library), Alexander Farkas [ctb, cph] (html5shiv library), Scott Jehl [ctb, cph] (Respond.js library), Ivan Sagalaev [ctb, cph] (highlight.js library), Greg Franko [ctb, cph] (tocify library), John MacFarlane [ctb, cph] (Pandoc templates), Google, Inc. [ctb, cph] (ioslides library), Dave Raggett [ctb] (slidy library), W3C [cph] (slidy library), Dave Gandy [ctb, cph] (Font-Awesome), Ben Sperry [ctb] (Ionicons), Drifty [cph] (Ionicons), Aidan Lister [ctb, cph] (jQuery StickyTabs), Benct Philip Jonsson [ctb, cph] (pagebreak Lua filter), Albert Krewinkel [ctb, cph] (pagebreak Lua filter)",
       "Maintainer": "Yihui Xie <xie@yihui.name>",
+      "Repository": "CRAN"
+    },
+    "rmio": {
+      "Package": "rmio",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Title": "Provides 'mio' C++11 Header Files",
+      "Authors@R": "person(given = \"Florian\", family = \"Privé\", role = c(\"aut\", \"cre\"), email = \"florian.prive.21@gmail.com\")",
+      "Description": "Provides header files of 'mio', a cross-platform C++11 header-only  library for memory mapped file IO <https://github.com/mandreyel/mio>.",
+      "License": "GPL-3",
+      "Copyright": "file COPYRIGHTS",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.1.1",
+      "URL": "https://github.com/privefl/rmio",
+      "BugReports": "https://github.com/privefl/rmio/issues",
+      "Imports": [
+        "bigassertr",
+        "ff"
+      ],
+      "Suggests": [
+        "testthat (>= 3.0.0)"
+      ],
+      "Config/testthat/edition": "3",
+      "NeedsCompilation": "no",
+      "Author": "Florian Privé [aut, cre]",
+      "Maintainer": "Florian Privé <florian.prive.21@gmail.com>",
       "Repository": "CRAN"
     },
     "sass": {

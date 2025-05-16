@@ -8,8 +8,9 @@ mcubeTestSinglePairSingleKernel(
   null_model_results,
   P_mat,
   P_Y_tilde,
+  celltype,
   kernel_mat,
-  celltype
+  spot_ids
 )
 }
 \arguments{
@@ -19,9 +20,11 @@ mcubeTestSinglePairSingleKernel(
 
 \item{P_Y_tilde}{A numeric vector contraining the value of P \%*\% Y_tilde.}
 
+\item{celltype}{A character specifying the cell type to test.}
+
 \item{kernel_mat}{A kernel_mat for testing.}
 
-\item{celltype}{A character specifying the cell type to test.}
+\item{spot_ids}{An integer vector containing the indices of the spots.}
 }
 \value{
 A p-value.
