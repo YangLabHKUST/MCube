@@ -192,8 +192,6 @@ mcubeTest <- function(
 #' The number of threads on BLAS per worker.
 #'
 #' @return A data.frame containing the test results.
-#'
-#' @export
 mcubeTestSinglePairMultiKernels <- function(
     null_model_results, X, celltype, kernels_list,
     num_threads = NULL) {
@@ -251,8 +249,6 @@ mcubeTestSinglePairMultiKernels <- function(
 #' @param spot_ids An integer vector containing the indices of the spots.
 #'
 #' @return A p-value.
-#'
-#' @export
 mcubeTestSinglePairSingleKernel <- function(
     null_model_results, P_mat, P_Y_tilde,
     celltype, kernel_mat, spot_ids) {

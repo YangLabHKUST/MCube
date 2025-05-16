@@ -202,8 +202,6 @@ mcubeFitNull <- function(
 #' The number of threads on BLAS per worker.
 #'
 #' @return A list containing the fitted null model results.
-#'
-#' @export
 mcubeFitNullSinglePair <- function(
     Y, library_sizes, X = NULL, proportions, batch_id = NULL,
     reference, used_for_deconvolution = TRUE,

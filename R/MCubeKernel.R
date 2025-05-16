@@ -93,8 +93,6 @@ mcubeKernel <- function(
 #' If `TRUE`, the coordinates will be standardized. Default is `TRUE`.
 #'
 #' @return A numeric value specifying the length scale of the kernel.
-#'
-#' @export
 mcubeLengthScale <- function(coordinates, standardize = TRUE) {
     if (standardize) {
         coordinates <- scale(coordinates, center = TRUE, scale = FALSE)

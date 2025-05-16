@@ -11,8 +11,6 @@
 #' The number of genes to process in each batch.
 #'
 #' @return A character vector containing the names of genes that pass the threshold.
-#'
-#' @export
 mcubeFilterGenes <- function(
     counts, library_sizes = NULL,
     gene_threshold = 5e-5, batch_size = 1000) {
@@ -67,8 +65,6 @@ mcubeFilterGenes <- function(
 #' @param platform_effects A numeric vector containing the platform effects for each gene.
 #'
 #' @return A character vector containing the names of genes that pass the threshold.
-#'
-#' @export
 mcubeFilterGenesCellType <- function(
     celltype, all_celltypes, gene_test,
     library_sizes, proportions, reference,
@@ -133,8 +129,6 @@ mcubeFilterGenesCellType <- function(
 #' @param spot_effects A numeric vector containing the spot effects for each spot.
 #'
 #' @return A numeric vector containing the platform effects for each gene.
-#'
-#' @export
 mcubeGetPlatformEffects <- function(
     counts, library_sizes, proportions,
     reference, spot_effects) {
@@ -163,8 +157,6 @@ mcubeGetPlatformEffects <- function(
 #' @param celltype_threshold A numeric value. Cell types with column sums less than this number will be filtered out.
 #'
 #' @return A character vector containing the names of cell types that pass the threshold.
-#'
-#' @export
 mcubeFilterCellTypes <- function(
     proportions,
     proportion_threshold = 0.1, celltype_threshold = 100) {
@@ -195,8 +187,6 @@ mcubeFilterCellTypes <- function(
 #' @param result_list A list of fitting results.
 #'
 #' @return A logical vector indicating whether each element in the result list is an error.
-#'
-#' @export
 mcubeCheck <- function(result_list) {
   if (length(result_list) == 0) {
     stop("mcubeCheck: The result_list is empty!")
