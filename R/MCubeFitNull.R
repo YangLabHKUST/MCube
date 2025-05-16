@@ -77,27 +77,23 @@ mcubeFitNull <- function(
       stop("Number of detected physical cores is not greater than 2!")
     }
     message("Number of physical cores: ", num_cores, ".")
-
     num_workers <- ifelse(
       num_workers < num_cores, num_workers, num_cores - 1L
     )
     message("Number of workers: ", num_workers, ".")
-
     if (is.null(num_threads)) {
       num_threads <- 1L
     }
     message("Number of thread(s) on BLAS per worker: ", num_threads, ".")
-
     if (num_workers * num_threads >= num_cores) {
       stop("num_workers * num_threads >= num_cores will cause resource contention!")
     }
 
     cl <- parallel::makeCluster(num_workers)
     doParallel::registerDoParallel(cl)
-
     object@null_models <- foreach::foreach(
       Y_i = iterators::iter(
-        as.matrix(object@counts[object@spots, object@celltype_gene_test_pairs$gene, drop = FALSE]),
+        object@counts[object@spots, object@celltype_gene_test_pairs$gene, drop = FALSE],
         by = "column"
       ),
       reference_i = iterators::iter(
@@ -137,7 +133,6 @@ mcubeFitNull <- function(
         num_threads = num_threads
       )
     }
-
     parallel::stopCluster(cl)
   } else {
     stop("max_workers must be a positive integer!") # End
