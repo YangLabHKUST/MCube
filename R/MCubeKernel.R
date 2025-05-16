@@ -24,7 +24,7 @@ mcubeKernel <- function(
     } else {
         spots <- intersect(rownames(coordinates), spots)
         if (length(spots) == 0) {
-            stop("mcubeKernel: no common spots between coordinates and spots!")
+            stop("mcubeKernel: No common spots between coordinates and spots!")
         }
     }
 
@@ -46,7 +46,7 @@ mcubeKernel <- function(
             stop("mcubeKernel: length_scale must be positive!") # End
         }
         message(
-            "mcubeKernel: length scale is set as ", length_scale,
+            "mcubeKernel: length_scale is set as ", length_scale,
             " for the ", kernel_type, " kernel."
         )
 

@@ -56,7 +56,7 @@ mcubeTest <- function(
       paste0("Gaussian_transformed_", 1:num_kernels)
     )
   } else if (!is.list(kernels_list)) {
-    stop("mcubeTest: Please store the kernel matrices in a list!") # End
+    stop("Please store the kernel matrices in a list!") # End
   } else if (!all(
     sapply(kernels_list,
            FUN = function(kernel_mat) {
@@ -65,7 +65,7 @@ mcubeTest <- function(
            }
     )
   )) {
-    stop("mcubeTest: The rownames and colnames of the kernel matrices must match the sample names of the counts!") # End
+    stop("The rownames and colnames of the kernel matrices must match the sample names of the counts!") # End
   } else {
     if (is.null(names(kernels_list)) || all(names(kernels_list) != "")) {
       names(kernels_list) <- paste0("kernel_", length(object@kernels))
@@ -133,7 +133,7 @@ mcubeTest <- function(
     }
     parallel::stopCluster(cl)
   } else {
-    stop("mcubeTest: max_cores must be a positive integer!") # End
+    stop("The num_workers must be a positive integer!") # End
   }
 
   # Remove the error results
@@ -167,9 +167,20 @@ mcubeTest <- function(
   )
 
   if (keep_kernels) {
-    object@kernels <- kernels_list
+    if (shared_memory) {
+      object@kernels <- lapply(
+        kernels_list,
+        FUN = function(kernel_mat) {
+          kernel_mat[]
+        }
+      )
+    } else {
+      object@kernels <- kernels_list
+    }
   } else {
-    object@kernels <- list("Please set keep_kernels = TRUE if you want to keep the kernels!")
+    object@kernels <- list(
+      "Please set keep_kernels = TRUE if you want to keep the kernels!"
+    )
   }
 
   return(object)
