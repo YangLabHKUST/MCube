@@ -405,7 +405,7 @@ createMCube <- function(
         ncol(proportions), " cell types in total. ",
         length(spots), " spots, ",
         length(gene_test), " genes, and ",
-        length(celltype_test), " cell types to analyze."
+        length(celltype_test), " cell type(s) to analyze."
     )
 
     # Inheriting
