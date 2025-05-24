@@ -74,7 +74,7 @@ repository useful for your work, please cite:
 > A unified framework for identification of cell-type-specific spatially
 > variable genes in spatial transcriptomic studies.  
 > Zhiwei Wang, Yeqin Zeng, Ziyue Tan, Yuheng Chen, Xinrui Huang, Hongyu
-> Zhao#, Zhixiang Lin#, and Can Yang#.  
+> Zhao, Zhixiang Lin, and Can Yang.  
 > Under revision. 2025.
 
 ## Development
