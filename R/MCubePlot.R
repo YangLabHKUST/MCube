@@ -139,6 +139,8 @@ mcubePlotExpr <- function(
 #' Spots with proportions greater than or equal to the threshold will be plotted. Default is 0.01.
 #' @param spot_size A numeric value specifying the size of spots. Default is 1.
 #' @param palettes A vector of color palettes. Default is `pals::brewer.orrd(22)[3:22]`.
+#' @param opacity_target A numeric value specifying the opacity of target spots. Default is 1.
+#' @param opacity_background A numeric value specifying the opacity of background spots. Default is 0.5.
 #' @param xlim A numeric vector specifying the x-axis limits. Default is `NULL`.
 #' @param ylim A numeric vector specifying the y-axis limits. Default is `NULL`.
 #' @param ratio A numeric value specifying the aspect ratio. Default is 1.
@@ -149,8 +151,9 @@ mcubePlotExpr <- function(
 #' @export
 mcubePlotPropCellType <- function(
     proportions, coordinates, celltype, spots = NULL,
-    he_image = NULL, background = TRUE, proportion_threshold = 0.01,
+    he_image = NULL, background = FALSE, proportion_threshold = 0.1,
     spot_size = 1, palettes = pals::brewer.orrd(22)[3:22],
+    opacity_target = 1, opacity_background = 0.5,
     xlim = NULL, ylim = NULL, ratio = 1, title = NULL) {
   # Check sample names
   if (!all.equal(rownames(proportions), rownames(coordinates))) {
@@ -166,9 +169,16 @@ mcubePlotPropCellType <- function(
     y = coordinates[spots, 2],
     prop = proportions[spots, celltype]
   )
-  if (!background) {
-    # Remove spots with low proportion
-    plot_df <- plot_df[plot_df$prop >= proportion_threshold, , drop = FALSE]
+
+  # Use spots with low proportions as background
+  if (background) {
+    spots_target <- spots[plot_df$prop >= proportion_threshold]
+    spots_background <- setdiff(spots, spots_target)
+    plot_df <- plot_df[spots_target, , drop = FALSE]
+    background_df <- data.frame(
+      x = plot_df[spots_background, 1],
+      y = plot_df[spots_background, 2]
+    )
   }
 
   p <- ggplot2::ggplot(data = plot_df, ggplot2::aes(x = x, y = y))
@@ -189,8 +199,18 @@ mcubePlotPropCellType <- function(
       ymin = -ylim[2], ymax = -ylim[1]
     )
   }
+  # Add spots with low proportions as background
+  if (background) {
+    p <- p + ggplot2::geom_point(
+      data = background_df, ggplot2::aes(x = x, y = y),
+      color = "gray", size = spot_size, alpha = opacity_background
+    )
+  }
 
-  p <- p + ggplot2::geom_point(ggplot2::aes(color = prop), size = spot_size) +
+  p <- p + ggplot2::geom_point(
+    ggplot2::aes(color = prop),
+    size = spot_size, alpha = opacity_target
+  ) +
     ggplot2::scale_colour_gradientn(name = NULL, colors = palettes) +
     ggplot2::scale_x_continuous(limits = xlim) +
     ggplot2::scale_y_continuous(trans = "reverse", limits = rev(ylim)) +
@@ -271,7 +291,7 @@ mcubePlotPropCellType3D <- function(
   if (plot_method == "plotly") {
     target_color_rgb <- 0.3 +
       (target_df$proportions - min(target_df$proportions)) * (1 - 0.3) /
-        (max(target_df$proportions) - min(target_df$proportions))
+      (max(target_df$proportions) - min(target_df$proportions))
     plotly::plot_ly(type = "scatter3d", mode = "markers") |>
       plotly::add_markers(
         data = target_df,
@@ -370,13 +390,13 @@ mcubePlotPropHeatmap <- function(
 
   # Heatmap of the proportions matrix
   p <- pheatmap::pheatmap(t(proportions),
-    scale = "none",
-    color = palettes, border_color = NA,
-    clustering_method = "complete", cluster_row = TRUE, cluster_col = TRUE,
-    treeheight_row = 3, treeheight_col = 10,
-    show_rownames = TRUE, show_colnames = FALSE,
-    cellwidth = 0.05, cellheight = 16, fontsize = 12,
-    filename = filename
+                          scale = "none",
+                          color = palettes, border_color = NA,
+                          clustering_method = "complete", cluster_row = TRUE, cluster_col = TRUE,
+                          treeheight_row = 3, treeheight_col = 10,
+                          show_rownames = TRUE, show_colnames = FALSE,
+                          cellwidth = 0.05, cellheight = 16, fontsize = 12,
+                          filename = filename
   )
 
   return(p)
@@ -609,11 +629,11 @@ mcubePlotExprCellType <- function(
     ggplot2::coord_fixed(ratio = ratio)
 
   title <- ifelse(is.null(title),
-    ifelse(normalize,
-      paste("Normalized expression of", gene, "in", celltype),
-      paste("Expression of", gene, "in", celltype)
-    ),
-    title
+                  ifelse(normalize,
+                         paste("Normalized expression of", gene, "in", celltype),
+                         paste("Expression of", gene, "in", celltype)
+                  ),
+                  title
   )
   p <- p + ggplot2::labs(title = title, x = NULL, y = NULL) +
     ggplot2::theme_classic()

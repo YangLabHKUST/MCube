@@ -10,10 +10,12 @@ mcubePlotPropCellType(
   celltype,
   spots = NULL,
   he_image = NULL,
-  background = TRUE,
-  proportion_threshold = 0.01,
+  background = FALSE,
+  proportion_threshold = 0.1,
   spot_size = 1,
   palettes = pals::brewer.orrd(22)[3:22],
+  opacity_target = 1,
+  opacity_background = 0.5,
   xlim = NULL,
   ylim = NULL,
   ratio = 1,
@@ -44,6 +46,10 @@ Spots with proportions greater than or equal to the threshold will be plotted. D
 \item{spot_size}{A numeric value specifying the size of spots. Default is 1.}
 
 \item{palettes}{A vector of color palettes. Default is \code{pals::brewer.orrd(22)[3:22]}.}
+
+\item{opacity_target}{A numeric value specifying the opacity of target spots. Default is 1.}
+
+\item{opacity_background}{A numeric value specifying the opacity of background spots. Default is 0.5.}
 
 \item{xlim}{A numeric vector specifying the x-axis limits. Default is \code{NULL}.}
 
