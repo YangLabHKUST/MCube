@@ -169,6 +169,7 @@ mcubePlotPropCellType <- function(
     y = coordinates[spots, 2],
     prop = proportions[spots, celltype]
   )
+  rownames(plot_df) <- spots
 
   # Use spots with low proportions as background
   if (background) {
@@ -176,8 +177,8 @@ mcubePlotPropCellType <- function(
     spots_background <- setdiff(spots, spots_target)
     plot_df <- plot_df[spots_target, , drop = FALSE]
     background_df <- data.frame(
-      x = plot_df[spots_background, 1],
-      y = plot_df[spots_background, 2]
+      x = coordinates[spots_background, 1],
+      y = coordinates[spots_background, 2]
     )
   }
 
