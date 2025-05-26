@@ -569,8 +569,10 @@ mcubePlotExprCellType <- function(
   }
   expr_level <- null_model_results$u[spots_target, celltype]
   if (normalize) {
-    expr_level <- (expr_level - min(expr_level)) /
-      (max(expr_level) - min(expr_level))
+    expr_max <- max(expr_level)
+    expr_min <- min(expr_level)
+    expr_level <- (expr_level - 0.5 * (expr_max + expr_min)) /
+      (0.5 * (expr_max - expr_min))
   }
   target_df <- data.frame(
     x = object@coordinates[spots_target, 1],
