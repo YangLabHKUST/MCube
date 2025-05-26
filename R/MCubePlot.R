@@ -136,7 +136,7 @@ mcubePlotExpr <- function(
 #' @param background A logical value.
 #' If `TRUE`, the spots with low proportions will be removed. Default is `TRUE`.
 #' @param proportion_threshold A numeric value between 0 and 1.
-#' Spots with proportions greater than or equal to the threshold will be plotted. Default is 0.1.
+#' Spots with proportions lower than the threshold will be set as background if needed. Default is 0.1.
 #' @param spot_size A numeric value specifying the size of spots. Default is 1.
 #' @param palettes A vector of color palettes. Default is `pals::brewer.orrd(22)[3:22]`.
 #' @param opacity_target A numeric value specifying the opacity of target spots. Default is 1.
