@@ -284,6 +284,9 @@ mcubeTestSinglePairSingleKernel <- function(
   pvalue <- stats::pchisq(
     q = teststat / scaled_para, df = df_para, lower.tail = FALSE
   )
+  if (pvalue == 0) {
+    pvalue <- .Machine$double.xmin
+  }
 
   return(pvalue)
 }
