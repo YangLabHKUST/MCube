@@ -557,7 +557,7 @@ mcubePlotPvalues <- function(
 mcubePlotExprCellType <- function(
     object, celltype, gene, spots = NULL, normalize = TRUE,
     he_image = NULL, background = FALSE,
-    spot_size = 1, palettes = rev(pals::brewer.piyg(10)),
+    spot_size = 1, palettes = rev(pals::brewer.piyg(11)),
     opacity_target = 1, opacity_background = 0.2,
     xlim = NULL, ylim = NULL, ratio = 1, title = NULL) {
   pair_name <- paste(celltype, gene, sep = "_")
@@ -569,10 +569,11 @@ mcubePlotExprCellType <- function(
   }
   expr_level <- null_model_results$u[spots_target, celltype]
   if (normalize) {
+    expr_level <- log(1 + abs(expr_level)) * sign(expr_level)
     expr_max <- max(expr_level)
+    expr_level[expr_level > 0] <- expr_level[expr_level > 0] / expr_max
     expr_min <- min(expr_level)
-    expr_level <- (expr_level - 0.5 * (expr_max + expr_min)) /
-      (0.5 * (expr_max - expr_min))
+    expr_level[expr_level < 0] <- -expr_level[expr_level < 0] / expr_min
   }
   target_df <- data.frame(
     x = object@coordinates[spots_target, 1],
@@ -624,7 +625,7 @@ mcubePlotExprCellType <- function(
     ggplot2::scale_colour_gradientn(
       name = "Level", colors = palettes,
       values = scales::rescale(
-        c(min(expr_level), median(expr_level), max(expr_level))
+        c(min(expr_level), 0, max(expr_level))
       )
     ) +
     ggplot2::scale_x_continuous(limits = xlim) +
