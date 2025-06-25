@@ -1,4 +1,4 @@
-#' An S4 class to represent spatial transcriptomic and single-cell RNA-sequencing reference data
+#' An S4 class used to represent spatial transcriptomic data and single-cell RNA-sequencing data and run the MMM algorithm.
 #'
 #' @description Each \code{\linkS4class{mcube}} object has a number of slots which store information. Key slots to access are listed below.
 #'
