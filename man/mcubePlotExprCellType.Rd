@@ -13,7 +13,7 @@ mcubePlotExprCellType(
   he_image = NULL,
   background = FALSE,
   spot_size = 1,
-  palettes = rev(pals::brewer.piyg(10)),
+  palettes = rev(pals::brewer.piyg(11)),
   opacity_target = 1,
   opacity_background = 0.2,
   xlim = NULL,
