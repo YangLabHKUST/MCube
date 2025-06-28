@@ -68,6 +68,16 @@ paper are available on the tutorial website
 - [3D *Drosophila* embryo model constructed from Stereo-seq
   dataset](https://mcube-tutorial.readthedocs.io/en/latest/analysis/Drosophila_embryo/)
 
+We also provide a simple way to integrate `MCube` with the cell type
+deconvolution results from [`RCTD`](https://github.com/dmcable/spacexr)
+using the
+[`MCube::mcubeRCTD()`](https://github.com/YangLabHKUST/MCube/blob/main/R/MCubeRCTD.R)
+function in just one line of code. We use the human CRC datasets as an
+example:
+
+- [Integration of `MCube` and `RCTD` using one line of
+  code](https://mcube-tutorial.readthedocs.io/en/latest/MCube_RCTD.html)
+
 ## Reference
 
 If you find the `MCube` package or any of the source code in this
