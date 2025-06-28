@@ -272,7 +272,7 @@ mcubeGetSigGenes <- function(
 #' under arbitrary dependency structures. \emph{Journal of American Statistical Association},115(529), 393-402. (\href{https://amstat.tandfonline.com/doi/abs/10.1080/01621459.2018.1554485}{pub})
 #'
 #' @export
-ACAT <- function(Pvals, Weights = NULL, threshold = 5.55e-17) {
+mcubeACAT <- function(Pvals, Weights = NULL, threshold = 5.55e-17) {
   #### check if there is NA
   if (sum(is.na(Pvals)) > 0) {
     stop("ACAT: Cannot have NAs in the p-values!")

@@ -119,7 +119,7 @@ mcubeTest <- function(
       .export = c(
         "mcubeTestSinglePairSingleKernel",
         "mcubeTestSinglePairMultiKernels",
-        "ACAT"
+        "mcubeACAT"
       ),
       .errorhandling = "pass"
     ) %dopar% {
@@ -238,7 +238,7 @@ mcubeTestSinglePairMultiKernels <- function(
 
   if (length(kernels_list) > 1) {
     # Combine p-values using the Cauchy distribution
-    pvalues <- c(pvalues, combined_pvalue = ACAT(pvalues))
+    pvalues <- c(pvalues, combined_pvalue = mcubeACAT(pvalues))
   }
   names(pvalues)[1:length(kernels_list)] <- names(kernels_list)
 
