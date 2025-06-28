@@ -33,9 +33,9 @@
 #' @export
 mcubePlotExpr <- function(
     counts, coordinates, gene, spots = NULL, normalize = TRUE,
-    he_image = NULL, background = TRUE, expr_threshold = 1,
+    he_image = NULL, background = FALSE, expr_threshold = 1,
     spot_size = 1, palettes = pals::brewer.bugn(20)[11:20],
-    opacity_target = 1, opacity_background = 0.2,
+    opacity_target = 1, opacity_background = 0.5,
     xlim = NULL, ylim = NULL, ratio = 1, title = NULL) {
   # Check sample names
   if (!all.equal(rownames(counts), rownames(coordinates))) {
