@@ -2,7 +2,7 @@
 % Please edit documentation in R/MCubeRCTD.R
 \name{mcubeRCTD}
 \alias{mcubeRCTD}
-\title{Directly integrate MCube with the cell type deconvolution results from RCTD}
+\title{Directly integrating MCube with the cell type deconvolution results from RCTD}
 \usage{
 mcubeRCTD(
   RCTD_object,
@@ -34,13 +34,14 @@ mcubeRCTD(
 }
 \arguments{
 \item{RCTD_object}{An S4 class used to represent spatial transcriptomic data and single-cell RNA-sequencing data,
-run the RCTD algorithm and store the cell type deconvolution results.}
+run the \code{RCTD} algorithm, and store the cell type deconvolution results.
+Please refer to the \code{RCTD} paper (\url{https://doi.org/10.1038/s41587-021-00830-w}) and the \code{spacexr} package (\url{https://github.com/dmcable/spacexr}) for more details.}
 
 \item{RCTD_mode}{A character indicating in which mode to \code{RCTD}, corresponding to the \code{doublet_mode} argument in the \code{spacexr::run.RCTD()} function.
 The choice of the \code{RCTD} mode depends on the resolution of the ST data and determines the analysis strategy of \code{MCube}.
 For the low resolution ST data like Visium, we recommend to use the \code{full} mode.
 Then, \code{MCube} will analyze all the cell types of interest together and store the results in a single \code{\linkS4class{mcube}} object.
-For the high resolution ST data like Visium HD and Xenium, we recommend to use the \code{doublet} mode.
+For the high resolution ST data with large sample size like Visium HD and Xenium, we recommend to use the \code{doublet} mode.
 Then, \code{MCube} will analyze each cell type separately using the spots with a high probability of containing the target cell type according to the deconvolution results.
 The results will be stored in a list of \code{\linkS4class{mcube}} objects, each corresponding to a cell type.}
 
@@ -118,5 +119,5 @@ A single \code{\linkS4class{mcube}} object if \code{RCTD_mode} is \code{full},
 and a list of \code{\linkS4class{mcube}} objects with each element corresponding to a cell type if \code{RCTD_mode} is \code{doublet}.
 }
 \description{
-Directly integrate MCube with the cell type deconvolution results from RCTD
+Directly integrating MCube with the cell type deconvolution results from RCTD
 }

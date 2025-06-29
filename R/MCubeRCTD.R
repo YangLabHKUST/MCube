@@ -3,12 +3,13 @@
 #' @importClassesFrom spacexr RCTD SpatialRNA Reference
 #'
 #' @param RCTD_object An S4 class used to represent spatial transcriptomic data and single-cell RNA-sequencing data,
-#' run the RCTD algorithm and store the cell type deconvolution results.
+#' run the `RCTD` algorithm, and store the cell type deconvolution results.
+#' Please refer to the `RCTD` paper (\url{https://doi.org/10.1038/s41587-021-00830-w}) and the `spacexr` package (\url{https://github.com/dmcable/spacexr}) for more details.
 #' @param RCTD_mode A character indicating in which mode to `RCTD`, corresponding to the `doublet_mode` argument in the `spacexr::run.RCTD()` function.
 #' The choice of the `RCTD` mode depends on the resolution of the ST data and determines the analysis strategy of `MCube`.
 #' For the low resolution ST data like Visium, we recommend to use the `full` mode.
 #' Then, `MCube` will analyze all the cell types of interest together and store the results in a single \code{\linkS4class{mcube}} object.
-#' For the high resolution ST data like Visium HD and Xenium, we recommend to use the `doublet` mode.
+#' For the high resolution ST data with large sample size like Visium HD and Xenium, we recommend to use the `doublet` mode.
 #' Then, `MCube` will analyze each cell type separately using the spots with a high probability of containing the target cell type according to the deconvolution results.
 #' The results will be stored in a list of \code{\linkS4class{mcube}} objects, each corresponding to a cell type.
 #' @param sample_size_max A positive integer.
@@ -151,18 +152,14 @@ mcubeRCTD <- function(
       if (all(spot_names %in% rownames(covariates))) {
         covariates <- covariates[spot_names, , drop = FALSE]
       } else {
-        stop(
-          "The row names of the covariate matrix must contain all the spots in the RCTD object."
-        )
+        stop("The row names of the covariate matrix must contain all the spots in the RCTD object.")
       }
     }
     if (!is.null(batch_id)) {
       if (all(spot_names %in% names(batch_id))) {
         batch_id <- batch_id[spot_names]
       } else {
-        stop(
-          "The name of the batch id vector must contain all the spots in the RCTD object."
-        )
+        stop("The name of the batch id vector must contain all the spots in the RCTD object.")
       }
     }
     proportions_RCTD <- weights_RCTD / weights_rowsums_RCTD
@@ -178,9 +175,7 @@ mcubeRCTD <- function(
     if (!is.null(spots)) {
       spots <- intersect(spots, rownames(doublet_results_RCTD))
       if (length(spots) == 0) {
-        stop(
-          "No spots found in the RCTD object that match the specified spots."
-        )
+        stop("No spots found in the RCTD object that match the specified spots.")
       }
       doublet_results_RCTD <- doublet_results_RCTD[spots, , drop = FALSE]
     }
