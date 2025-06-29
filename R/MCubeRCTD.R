@@ -1,4 +1,4 @@
-#' Directly integrate MCube with the cell type deconvolution results from RCTD
+#' Directly integrating MCube with the cell type deconvolution results from RCTD
 #'
 #' @importClassesFrom spacexr RCTD SpatialRNA Reference
 #'
@@ -151,14 +151,18 @@ mcubeRCTD <- function(
       if (all(spot_names %in% rownames(covariates))) {
         covariates <- covariates[spot_names, , drop = FALSE]
       } else {
-        stop("The row names of the covariate matrix must contain all the spots in the RCTD object.")
+        stop(
+          "The row names of the covariate matrix must contain all the spots in the RCTD object."
+        )
       }
     }
     if (!is.null(batch_id)) {
       if (all(spot_names %in% names(batch_id))) {
         batch_id <- batch_id[spot_names]
       } else {
-        stop("The name of the batch id vector must contain all the spots in the RCTD object.")
+        stop(
+          "The name of the batch id vector must contain all the spots in the RCTD object."
+        )
       }
     }
     proportions_RCTD <- weights_RCTD / weights_rowsums_RCTD
@@ -171,9 +175,18 @@ mcubeRCTD <- function(
       celltype_test <- intersect(colnames(proportions_RCTD), celltype_test)
     }
     doublet_results_RCTD <- RCTD_object@results$results_df
+    if (!is.null(spots)) {
+      spots <- intersect(spots, rownames(doublet_results_RCTD))
+      if (length(spots) == 0) {
+        stop(
+          "No spots found in the RCTD object that match the specified spots."
+        )
+      }
+      doublet_results_RCTD <- doublet_results_RCTD[spots, , drop = FALSE]
+    }
 
     i <- 0 # Cell type counter
-    mcube_list <- list() # A list to store the MCube objects for each cell type
+    mcube_list <- list() # A list to store the mcube objects for each cell type
     for (celltype in celltype_test) {
       spots_used <- rownames(doublet_results_RCTD)[
         ((doublet_results_RCTD$spot_class == "singlet" |
@@ -202,7 +215,7 @@ mcubeRCTD <- function(
           batch_id = batch_id[spots_used],
           reference = t(RCTD_object@cell_type_info$info[[1]]),
           used_for_deconvolution = rownames(RCTD_object@spatialRNA@counts),
-          spots = spots,
+          spots = NULL,
           library_size_min = library_size_min,
           spot_effects = spot_effects_RCTD[spots_used],
           platform_effects = NULL,
@@ -246,6 +259,6 @@ mcubeRCTD <- function(
     }
     return(mcube_list)
   } else {
-    stop("Invalid RCTD_mode! Please set RCTD_mode = doublet or full.")
+    stop("Invalid RCTD_mode! Please set RCTD_mode as doublet or full.")
   }
 }
