@@ -39,14 +39,14 @@ Please refer to the \code{RCTD} paper (\url{https://doi.org/10.1038/s41587-021-0
 
 \item{RCTD_mode}{A character indicating in which mode to \code{RCTD}, corresponding to the \code{doublet_mode} argument in the \code{spacexr::run.RCTD()} function.
 The choice of the \code{RCTD} mode depends on the resolution of the ST data and determines the analysis strategy of \code{MCube}.
-For the low resolution ST data like Visium, we recommend to use the \code{full} mode.
+For the low-resolution ST data like Visium, we recommend using the \code{full} mode.
 Then, \code{MCube} will analyze all the cell types of interest together and store the results in a single \code{\linkS4class{mcube}} object.
-For the high resolution ST data with large sample size like Visium HD and Xenium, we recommend to use the \code{doublet} mode.
+For the high-resolution ST data with large sample size like Visium HD and Xenium, we recommend using the \code{doublet} mode.
 Then, \code{MCube} will analyze each cell type separately using the spots with a high probability of containing the target cell type according to the deconvolution results.
 The results will be stored in a list of \code{\linkS4class{mcube}} objects, each corresponding to a cell type.}
 
 \item{sample_size_max}{A positive integer.
-The high resolution ST data may contain over 100K samples in total and lead to high computational costs.
+The high-resolution ST data may contain over 100K samples in total and lead to high computational costs.
 Therefore, in the \code{doublet} mode, we randomly sample \code{sample_size_max} spots to analyze for the cell type with valid spots greater than \code{sample_size_max}.}
 
 \item{covariates}{A matrix.

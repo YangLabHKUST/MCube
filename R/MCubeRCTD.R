@@ -7,13 +7,13 @@
 #' Please refer to the `RCTD` paper (\url{https://doi.org/10.1038/s41587-021-00830-w}) and the `spacexr` package (\url{https://github.com/dmcable/spacexr}) for more details.
 #' @param RCTD_mode A character indicating in which mode to `RCTD`, corresponding to the `doublet_mode` argument in the `spacexr::run.RCTD()` function.
 #' The choice of the `RCTD` mode depends on the resolution of the ST data and determines the analysis strategy of `MCube`.
-#' For the low resolution ST data like Visium, we recommend to use the `full` mode.
+#' For the low-resolution ST data like Visium, we recommend using the `full` mode.
 #' Then, `MCube` will analyze all the cell types of interest together and store the results in a single \code{\linkS4class{mcube}} object.
-#' For the high resolution ST data with large sample size like Visium HD and Xenium, we recommend to use the `doublet` mode.
+#' For the high-resolution ST data with large sample size like Visium HD and Xenium, we recommend using the `doublet` mode.
 #' Then, `MCube` will analyze each cell type separately using the spots with a high probability of containing the target cell type according to the deconvolution results.
 #' The results will be stored in a list of \code{\linkS4class{mcube}} objects, each corresponding to a cell type.
 #' @param sample_size_max A positive integer.
-#' The high resolution ST data may contain over 100K samples in total and lead to high computational costs.
+#' The high-resolution ST data may contain over 100K samples in total and lead to high computational costs.
 #' Therefore, in the `doublet` mode, we randomly sample `sample_size_max` spots to analyze for the cell type with valid spots greater than `sample_size_max`.
 #' @param covariates A matrix.
 #' Each row represents a spot and each column represents a covariate.
