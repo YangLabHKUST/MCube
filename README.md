@@ -75,10 +75,9 @@ using the
 function in just one line of code. We also provide the example code for
 real data analysis on the tutorial website:
 
-- [Direct integration of `MCube` and `RCTD` on the Visium adult mouse
-  brain
+- [Direct integration with `RCTD` on the Visium adult mouse brain
   dataset](https://mcube-tutorial.readthedocs.io/en/latest/RCTD/mouse_brain.html)
-- [Direct integration of `MCube` and `RCTD` on the human CRC
+- [Direct integration with `RCTD` on the human CRC
   datasets](https://mcube-tutorial.readthedocs.io/en/latest/RCTD/CRC.html)
 
 ## Reference
