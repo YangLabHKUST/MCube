@@ -5,4 +5,4 @@
 ^README\.Rmd$
 ^LICENSE\.md$
 ^\.github$
-^deconvolution$
+^inst/figures/.*[.]ai$
