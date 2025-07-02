@@ -77,7 +77,7 @@ real data analysis on the tutorial website:
 
 - [Direct integration with `RCTD` on the Visium adult mouse brain
   dataset](https://mcube-tutorial.readthedocs.io/en/latest/RCTD/mouse_brain.html)
-- [Direct integration with `RCTD` on the human CRC
+- [Direct integration with `RCTD` on the two human colorectal cancer
   datasets](https://mcube-tutorial.readthedocs.io/en/latest/RCTD/CRC.html)
 
 ## Reference
