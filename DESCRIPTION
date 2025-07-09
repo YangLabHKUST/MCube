@@ -29,6 +29,7 @@ Imports:
     rgl,
     RhpcBLASctl,
     scales,
+    spacexr,
     stats,
     tidyr
 Suggests: 
