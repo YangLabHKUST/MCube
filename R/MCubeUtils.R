@@ -265,8 +265,8 @@ mcubeGetSigGenes <- function(
 #' @return The p-value(s) of ACAT.
 #'
 #' @examples p.values <- c(2e-02, 4e-04, 0.2, 0.1, 0.8)
-#' ACAT(Pvals = p.values)
-#' @examples ACAT(matrix(runif(1000), ncol = 10))
+#' mcubeACAT(Pvals = p.values)
+#' @examples mcubeACAT(matrix(runif(1000), ncol = 10))
 #'
 #' @references Liu, Y., & Xie, J. (2019). Cauchy combination test: a powerful test with analytic p-value calculation
 #' under arbitrary dependency structures. \emph{Journal of American Statistical Association},115(529), 393-402. (\href{https://amstat.tandfonline.com/doi/abs/10.1080/01621459.2018.1554485}{pub})

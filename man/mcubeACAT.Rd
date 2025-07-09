@@ -24,8 +24,8 @@ Credit goes to the R package \code{ACAT} (\url{https://github.com/yaowuliu/ACAT}
 }
 \examples{
 p.values <- c(2e-02, 4e-04, 0.2, 0.1, 0.8)
-ACAT(Pvals = p.values)
-ACAT(matrix(runif(1000), ncol = 10))
+mcubeACAT(Pvals = p.values)
+mcubeACAT(matrix(runif(1000), ncol = 10))
 
 }
 \references{
