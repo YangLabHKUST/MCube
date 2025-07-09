@@ -38,5 +38,5 @@ Suggests:
     rmarkdown,
     tiff,
     usethis
-URL: https://github.com/YangLabHKUST/MCube
+URL: https://github.com/YangLabHKUST/MCube, https://mcube-tutorial.readthedocs.io/
 BugReports: https://github.com/YangLabHKUST/MCube/issues
