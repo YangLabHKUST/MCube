@@ -38,5 +38,7 @@ Suggests:
     rmarkdown,
     tiff,
     usethis
+Remotes:
+    github::dmcable/spacexr
 URL: https://github.com/YangLabHKUST/MCube, https://mcube-tutorial.readthedocs.io/
 BugReports: https://github.com/YangLabHKUST/MCube/issues
