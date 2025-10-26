@@ -37,6 +37,7 @@ significance of spatial variations is then examined using a powerful
 non-parametric test capable of detecting diverse spatial patterns.
 
 <figure>
+
 <img src="inst/figures/pipeline.png" style="width:95.0%"
 alt="Pipeline" />
 </figure>
@@ -89,7 +90,8 @@ repository useful for your work, please cite:
 > variable genes in spatial transcriptomic studies.  
 > Zhiwei Wang, Yeqin Zeng, Ziyue Tan, Yuheng Chen, Xinrui Huang, Hongyu
 > Zhao, Zhixiang Lin, and Can Yang.  
-> Under revision. 2025.
+> *Proceedings of the National Academy of Sciences of the United States
+> of America*, in press.
 
 ## Development
 
