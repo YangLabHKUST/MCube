@@ -26,15 +26,16 @@ The R package `MCube` implements the methods in the **MMM** paper.
 framework for statistical identification of cell-type-specific spatially
 variable genes in spatial transcriptomic (ST) studies.
 
-Beginning with the raw count data, **MMM** uses a log-mixture structure
-to account for cell type composition while simultaneously correcting for
-the spot and platform effects between ST and single‐cell RNA sequencing
-(scRNA-seq) data. The mixed-effects model decomposes the
-cell-type-specific gene expression in ST data into three components: the
-average gene expression of the same cell type obtained from scRNA-seq
-data, spatial variations, and non-spatial variations. The statistical
-significance of spatial variations is then examined using a powerful
-non-parametric test capable of detecting diverse spatial patterns.
+Beginning with the raw count data, **MMM** uses a **log-mixture
+structure** to account for cell type composition while simultaneously
+correcting for the spot and platform effects between ST and single‐cell
+RNA sequencing (scRNA-seq) data. The **mixed-effects model** decomposes
+the cell-type-specific gene expression in ST data into three components:
+the average gene expression of the same cell type obtained from
+scRNA-seq data, spatial variations, and non-spatial variations. The
+statistical significance of spatial variations is then examined using a
+powerful **non-parametric test** capable of detecting diverse spatial
+patterns.
 
 <figure>
 
@@ -91,7 +92,9 @@ repository useful for your work, please cite:
 > Zhiwei Wang, Yeqin Zeng, Ziyue Tan, Yuheng Chen, Xinrui Huang, Hongyu
 > Zhao, Zhixiang Lin, and Can Yang.  
 > *Proceedings of the National Academy of Sciences of the United States
-> of America*, in press.
+> of America*, 2025.  
+> DOI:
+> [10.1073/pnas.2503952122](https://doi.org/10.1073/pnas.2503952122)
 
 ## Development
 
