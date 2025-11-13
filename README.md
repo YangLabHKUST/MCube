@@ -93,8 +93,8 @@ repository useful for your work, please cite:
 > Zhao, Zhixiang Lin, and Can Yang.  
 > *Proceedings of the National Academy of Sciences of the United States
 > of America*, 2025.  
-> DOI:
-> [10.1073/pnas.2503952122](https://doi.org/10.1073/pnas.2503952122)
+> [DOI:
+> 10.1073/pnas.2503952122](https://doi.org/10.1073/pnas.2503952122)
 
 ## Development
 
