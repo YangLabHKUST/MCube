@@ -21,21 +21,26 @@ forks](https://img.shields.io/github/forks/YangLabHKUST/MCube)
 
 ## Introduction
 
-The R package `MCube` implements the methods in the **MMM** paper.
-**MMM**, standing for the **Mixture of Mixed Models**, is a unified
-framework for statistical identification of cell-type-specific spatially
-variable genes in spatial transcriptomic (ST) studies.
+The R package `MCube` implements the methods in the [MMM
+paper](https://doi.org/10.1073/pnas.2503952122). **MMM**, standing for
+the **Mixture of Mixed Models**, is a unified framework for statistical
+identification of cell-type-specific spatially variable genes (SVGs) in
+spatial transcriptomic (ST) studies.
 
-Beginning with the raw count data, **MMM** uses a **log-mixture
-structure** to account for cell type composition while simultaneously
-correcting for the spot and platform effects between ST and single‐cell
-RNA sequencing (scRNA-seq) data. The **mixed-effects model** decomposes
-the cell-type-specific gene expression in ST data into three components:
-the average gene expression of the same cell type obtained from
-scRNA-seq data, spatial variations, and non-spatial variations. The
-statistical significance of spatial variations is then examined using a
-powerful **non-parametric test** capable of detecting diverse spatial
-patterns.
+MMM’s effectiveness comes from our innovations in model and algorithm
+design:
+
+- Beginning with the raw count data, MMM uses a **log-mixture
+  structure** to account for cell type composition while simultaneously
+  correcting for the spot and platform effects between ST and
+  single‐cell RNA sequencing (scRNA-seq) data.
+- The **mixed-effects model** decomposes the cell-type-specific gene
+  expression in ST data into three components: the average gene
+  expression of the same cell type obtained from scRNA-seq data, spatial
+  variations, and non-spatial variations.
+- The statistical significance of spatial variations is then examined
+  using a powerful **non-parametric test** capable of detecting diverse
+  spatial patterns.
 
 <figure>
 
