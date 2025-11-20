@@ -27,7 +27,7 @@ the **Mixture of Mixed Models**, is a unified framework for statistical
 identification of cell-type-specific spatially variable genes (SVGs) in
 spatial transcriptomic (ST) studies.
 
-MMM’s effectiveness comes from our innovations in model and algorithm
+MMM’s effectiveness stems from our innovations in model and algorithm
 design:
 
 - Beginning with the raw count data, MMM uses a **log-mixture
