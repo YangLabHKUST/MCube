@@ -27,7 +27,7 @@ the **Mixture of Mixed Models**, is a unified framework for statistical
 identification of cell-type-specific spatially variable genes (SVGs) in
 spatial transcriptomic (ST) studies.
 
-MMM’s effectiveness stems from our innovations in model and algorithm
+MMM’s effectiveness relies on our innovations in model and algorithm
 design:
 
 - Beginning with the raw count data, MMM uses a **log-mixture
@@ -58,7 +58,7 @@ You can install the development version of `MCube` from
 devtools::install_github("YangLabHKUST/MCube")
 ```
 
-## Real data analysis
+## Real data analyses
 
 The code for reproducing the real data analysis results presented in our
 paper are available on the tutorial website
@@ -79,8 +79,8 @@ We provide a simple way to integrate `MCube` with the cell type
 deconvolution results from [`RCTD`](https://github.com/dmcable/spacexr)
 using the
 [`MCube::mcubeRCTD()`](https://github.com/YangLabHKUST/MCube/blob/main/R/MCubeRCTD.R)
-function in just one line of code. We also provide the example code for
-real data analysis on the tutorial website:
+function in just **one line of code**. We also provide the example code
+for real data analysis on the tutorial website:
 
 - [Direct integration with `RCTD` on the Visium adult mouse brain
   dataset](https://mcube-tutorial.readthedocs.io/en/latest/RCTD/mouse_brain.html)
