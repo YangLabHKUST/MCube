@@ -67,9 +67,13 @@ mcubeTest <- function(
   )) {
     stop("The rownames and colnames of the kernel matrices must match the sample names of the counts!") # End
   } else {
-    if (is.null(names(kernels_list)) || all(names(kernels_list) != "")) {
-      names(kernels_list) <- paste0("kernel_", length(object@kernels))
+    kernel_names <- names(kernels_list)
+    if (is.null(kernel_names)) {
+      kernel_names <- rep("", length(kernels_list))
     }
+    unnamed_idx <- which(is.na(kernel_names) | kernel_names == "")
+    kernel_names[unnamed_idx] <- paste0("kernel_", unnamed_idx)
+    names(kernels_list) <- make.unique(kernel_names)
   }
 
   if (num_workers == 1) {
