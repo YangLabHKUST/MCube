@@ -119,7 +119,8 @@ mcubeTest <- function(
       .export = c(
         "mcubeTestSinglePairSingleKernel",
         "mcubeTestSinglePairMultiKernels",
-        "mcubeACAT"
+        "mcubeACAT",
+        "mcubeACATVector"
       ),
       .errorhandling = "pass"
     ) %dopar% {
@@ -272,7 +273,7 @@ mcubeTestSinglePairSingleKernel <- function(
     (membership %o% membership)
   P_kernel_mat <- P_mat %*% kernel_mat
 
-  teststat_var <- 0.5 * sum(P_kernel_mat^2) # variance of test statistic
+  teststat_var <- 0.5 * sum(P_kernel_mat * t(P_kernel_mat))
   teststat_mean <- 0.5 * sum(diag(P_kernel_mat)) # mean of test statistic
   scaled_para <- 0.5 * teststat_var / teststat_mean # scaled parameter
   df_para <- 2.0 * teststat_mean^2 / teststat_var # degrees of freedom
