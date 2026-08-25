@@ -235,7 +235,16 @@ mcubeGetSigGenes <- function(
   sig_genes_list <- lapply(
     pvalues_list,
     FUN = function(x) {
-      x <- x[order(x[, which_pvalue]), ]
+      if (!(which_pvalue %in% colnames(x))) {
+        stop(
+          "mcubeGetSigGenes: Column ", which_pvalue,
+          " is not found in the p-value table! Available column(s): ",
+          paste(colnames(x), collapse = ", "),
+          ". Note that no combined_pvalue column is produced",
+          " when testing with a single kernel."
+        ) # End
+      }
+      x <- x[order(x[, which_pvalue]), , drop = FALSE]
       adjusted_pvalues <- stats::p.adjust(x[, which_pvalue], method = adjust_method)
       sig_genes_idx <- which(adjusted_pvalues <= alpha)
       data.frame(
@@ -273,6 +282,48 @@ mcubeGetSigGenes <- function(
 #'
 #' @export
 mcubeACAT <- function(Pvals, Weights = NULL, threshold = 5.55e-17) {
+  if (is.matrix(Pvals)) {
+    #### each column is combined separately
+    if (!is.null(Weights)) {
+      if (is.matrix(Weights)) {
+        if (!identical(dim(Weights), dim(Pvals))) {
+          stop("ACAT: The dimensions of the weights should be the same as those of the p-values") # End
+        }
+      } else if (length(Weights) != nrow(Pvals)) {
+        stop("ACAT: The length of weights should be the same as the number of rows of the p-values") # End
+      }
+    }
+    pvalues <- vapply(
+      seq_len(ncol(Pvals)),
+      FUN = function(j) {
+        if (is.null(Weights)) {
+          Weights_j <- NULL
+        } else if (is.matrix(Weights)) {
+          Weights_j <- Weights[, j]
+        } else {
+          Weights_j <- Weights
+        }
+        as.numeric(
+          mcubeACATVector(
+            Pvals = Pvals[, j], Weights = Weights_j, threshold = threshold
+          )
+        )
+      },
+      FUN.VALUE = numeric(1)
+    )
+    names(pvalues) <- colnames(Pvals)
+    return(pvalues)
+  }
+
+  return(
+    mcubeACATVector(Pvals = Pvals, Weights = Weights, threshold = threshold)
+  )
+}
+
+# Combine a single vector of p-values with the Cauchy combination method.
+# Internal workhorse of mcubeACAT; kept separate so that the matrix case can
+# apply it column by column, as documented.
+mcubeACATVector <- function(Pvals, Weights = NULL, threshold = 5.55e-17) {
   #### check if there is NA
   if (sum(is.na(Pvals)) > 0) {
     stop("ACAT: Cannot have NAs in the p-values!")
